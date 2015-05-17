@@ -1,4 +1,4 @@
-# DataMelt(jhplot)
+# DataMelt (jhplot package)
 The core jhplot library of the DMelt project
 
 This library is a core of the <a href="http://jwork.org/dmelt/">DMelt</a> - a free mathematics software for numeric computation, statistics, symbolic calculations, data analysis and data visualization.

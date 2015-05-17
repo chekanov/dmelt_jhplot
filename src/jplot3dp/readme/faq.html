@@ -1,0 +1,22 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>UVModeller Readme</title>
+</head>
+
+<body bgcolor="#fefee0">
+<h1>FAQ</h1>
+<p><b>Q: How do I plot a function <code>z = </code>[my function]?</b>
+<br>A: Start a new document. Click <i>Scene</i> > <i>Edit Scene</i> (or click <img src="../images/edit.gif"> in the toolbar). Replace the function definition with <code>z = </code>[your function], for example, <code>z=(sin(5x)+sin(5y))/5</code>.
+<p><b>Q: How do I plot a curve?</b>
+<br>A: Make sure that the <i>Function is Curve</i> button is pressed. Now define x, y and z as function of t. The curve will be plotted with t varying over [0,1]. For example, <code>x=cos(t);y=sin(t);z=0</code> will give an 1 radian arc. If you need to vary t in a different range, give the transformation in the beginning of the function code, for example <code>t=2 Pi t</code>.
+<p><b>Q: How do I define a parametric surface?</b>
+<br>A: Define x, y, z as functions of u and v. Your surface will be plotted as u and v each vary over [0,1]. For example, <code>u=2 Pi u; x=cos(u); y=sin(u); z=v</code> will define a cylinder.
+<p><b>Q: How do I make the parameters u,v, or t vary over a different range than [0,1]?</b>
+<br>A: Insert a line in the beginning, for example if you want to change the range of u to [5,15] then add in the beginning, <code>u=u*(15-5)+5</code>.
+<p><b>Q: If I know equation of a curve on x-z plane, how do create a rotational sweep of it along z axis?</b>
+<br>A: Define your curve with respecto parameter <code>u</code> or <code>t</code>, and in the end, add: <code>v=2*Pi*v; r=x; x=r*sin(v); y=r*cos(v)</code>. Do not forget to turn off <i>Funtion is Curve</i> button. You can modify this to rotate along other axes also.
+<p><b>Q: I can see the surface clearly in Wireframe mode, but it completely disappears when I turn on Solid mode.</b>
+<br>A: Turn off the Fog, or increase its range.
+</body>
+</html>

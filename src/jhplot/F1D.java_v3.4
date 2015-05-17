@@ -1,0 +1,1274 @@
+// * This code is licensed under:
+// * JHPlot License, Version 1.0
+// * - for license details see http://hepforge.cedar.ac.uk/jhepwork/ 
+// *
+// * Copyright (c) 2005 by S.Chekanov (chekanov@mail.desy.de). 
+// * All rights reserved.
+package jhplot;
+
+import jplot.LinePars;
+import graph.*;
+import hep.aida.*;
+import jscl.math.Expression;
+import jscl.text.ParseException;
+import java.io.Serializable;
+
+/**
+ * Create a function in one dimension using "x" as a variable. The function name could have parameters named in
+ * unique way as P0, P1, P2 ... They have to be replaced with values using
+ * setPar() method for evaluation. 
+ * 
+ * @author S.Chekanov
+ * 
+ */
+
+public class F1D extends DrawOptions implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private double min;
+
+	private double max;
+
+	private int points;
+
+	private String name;
+
+	private String title = "F1D";
+
+	private double[] x = null;
+
+	private double[] y = null;
+
+	private ParseFunction function = null;
+
+	private IFunction iname = null;
+
+	private boolean isParsed = false;
+	
+	private String lastException="";
+
+	/**
+	 * Create a function in 1D. 500 points are used between Min and Max for
+	 * evaluation. The title is set to the function's definition
+	 * 
+	 * The function may have up to 3 independent variables in it (x,y,z).
+	 * <p>
+	 * <b>Known Bugs</B> This class is not fool proof. If the answer is wrong
+	 * then use the parenthesis to force the order of evaluation. The most
+	 * likely place this will be needed is in the use of the power command. The
+	 * exponent is not evaluated correctly if it begins with a unary operator.
+	 * 
+	 * <h3>List of commands</h3>
+	 * <ul>
+	 * <li>( ) parenthesis , comma
+	 * <li>+, -, unary -, unary +
+	 * <li>, /
+	 * <li>^ or ** (raise to a power)
+	 * <li>pi, e, All the constants in class SpecialFunction
+	 * <li>log
+	 * <li>sin, cos, tan, sinh, cosh, tanh
+	 * <li>asin, acos, atan
+	 * <li>sqrt
+	 * <li>rand
+	 * <li>exp
+	 * <li>remainder
+	 * <li>atan2(x,y) + special functions and constants. Read the book
+	 * <li>All the functions in class SpecialFunction
+	 * <li>Independent variables x
+	 * <li>Scientific notation using "e", "E", "d", "D".
+	 * </ul>
+	 * 
+	 * @param name
+	 *            String representing the function's definition
+	 * @param min
+	 *            Min value
+	 * @param max
+	 *            Max value
+	 */
+	public F1D(String name, double min, double max) {
+		this(name,name,min,max,true);
+		
+	}
+
+	/**
+	 * Same function, but one can specify is it parsed or not.
+	 * @param name Name
+	 * @param min  Min value
+	 * @param max  Max value
+	 * @param parsed parsed or not.
+	 */
+	public F1D(String name, double min, double max, boolean parsed) {
+		this(name,name,min,max,parsed);
+		
+	}
+        /**
+         * Create a function in 1D for evaluation.
+         * 
+         * The function may have one independent variable: x
+         * <p>
+         * If the answer is wrong then use the parenthesis to force the order of
+         * evaluation. The most likely place this will be needed is in the use of
+         * the power command. The exponent is not evaluated correctly if it begins
+         * with a unary operator.
+         * 
+         * <h3>List of commands</h3>
+         * <ul>
+         * <li>( ) parenthesis , comma
+         * <li>+, -, unary -, unary +
+         * <li>, /
+         * <li>^ or ** (raise to a power)
+         * <li>pi, e, All the constants in class SpecialFunction
+         * <li>log
+         * <li>sin, cos, tan, sinh, cosh, tanh
+         * <li>asin, acos, atan, asinh, acosh, atanh
+         * <li>sqrt
+         * <li>rand
+         * <li>exp
+         * <li>remainder
+         * <li>atan2
+         * <li>Special functions and constants. Look at the book
+         * <li>All the functions in class SpecialFunction
+         * <li>Independent variables x
+         * <li>Scientific notation using "e", "E", "d", "D".
+         * </ul>
+         * 
+         * 
+         * 
+         * @param name
+         *            String representing the function
+         */
+        public F1D(String name) {
+                this(name, name,0.0,1.0,true);
+        }
+
+        
+        /**
+         * Create new function.
+         * @param title title
+         * @param name  definition
+         */
+        
+        public F1D(String title, String name) {
+            this(title, name,0.0,1.0,true);
+        }
+         
+
+        
+        /**
+         * Create a new function.
+         * 
+         *  
+	 * The function may have up to 3 independent variables in it (x,y,z).
+	 * <p>
+	 * <b>Known Bugs</B> This class is not fool proof. If the answer is wrong
+	 * then use the parenthesis to force the order of evaluation. The most
+	 * likely place this will be needed is in the use of the power command. The
+	 * exponent is not evaluated correctly if it begins with a unary operator.
+	 * 
+	 * <h3>List of commands</h3>
+	 * <ul>
+	 * <li>( ) parenthesis , comma
+	 * <li>+, -, unary -, unary +
+	 * <li>, /
+	 * <li>^ or ** (raise to a power)
+	 * <li>pi, e, All the constants in class SpecialFunction
+	 * <li>log
+	 * <li>sin, cos, tan, sinh, cosh, tanh
+	 * <li>asin, acos, atan
+	 * <li>sqrt
+	 * <li>rand
+	 * <li>exp
+	 * <li>remainder
+	 * <li>atan2(x,y) + special functions and constants. Read the book
+	 * <li>All the functions in class SpecialFunction
+	 * <li>Independent variables x
+	 * <li>Scientific notation using "e", "E", "d", "D".
+	 * </ul>
+         * 
+         * @param title title
+         * @param name  definition
+         * @param min   min value
+         * @param max   max value
+         * @param parse parset or not
+         */
+	public F1D(String title, String name, double min, double max, boolean parse) {
+		this.iname = null;
+		this.title=title;
+        	this.name = name.replace("**","^"); // preprocess power	
+		this.points = 500;
+		this.min = min;
+		this.max = max;
+		setTitle(title);
+		lpp.setType(LinePars.F1D);
+		if (parse == true) {
+			function = new ParseFunction(this.name);
+			isParsed = function.parse();
+			if (isParsed == false)
+				utils.Util.ErrorMessage("Failed to parse function " + this.name);
+			return;
+		}
+		isParsed = false;
+
+	}
+
+	
+	
+	/**
+	 * Create a polynomial analytical function using a list of values.
+	 * Example: pars[0]+pars[1]*x+pars[2]*x*x +pars[3]*x*x*x 
+	 * 
+	 * @param title Title of this function
+	 * @param pars  array of coefficients for polynomial function
+	 * @param min   Min value for evaluation
+	 * @param max   Max value for evaluation
+	 * @param parse set true if it should be parsed
+	 */
+	
+	
+	public F1D(String title, double[] pars, double min, double max, boolean parse) {
+		this.iname = null;
+		this.title=title;
+		if ( pars == null || pars.length<1) utils.Util.ErrorMessage("Failed to evaluate this polynomial");
+		
+	    this.name = Double.toString(pars[0]);
+	    for (int i=1; i<pars.length; i++){
+	    	String sig="+";
+	    	if (pars[i]<0) sig="-";
+	    	double val=Math.abs(pars[i]);
+	    	String X="*x";
+	    	for (int j=1; j<i; j++) X=X+"*x";
+	    	this.name=this.name+sig+Double.toString(val)+X;
+	    	
+	    }
+	        
+		this.points = 500;
+		this.min = min;
+		this.max = max;
+		setTitle(title);
+		lpp.setType(LinePars.F1D);
+		if (parse == true) {
+			function = new ParseFunction(this.name);
+			isParsed = function.parse();
+			if (isParsed == false)
+				utils.Util.ErrorMessage("Failed to parse function " + this.name);
+			return;
+		}
+		isParsed = false;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Build a function
+	 * @param name name
+	 * @param parse is parsed or not?
+	 */
+	public F1D(String name, boolean parse) {
+                this(name, name,0.,1., parse);  
+	}
+
+	/**
+	 * Parse the function.
+	 * 
+	 * @param true if parsed OK
+	 **/
+	public boolean parse() {
+
+		function = new ParseFunction(this.name);
+		isParsed = function.parse();
+		return isParsed;
+	}
+
+	/**
+	 * Create a function in 1D. 500 points are used between Min and Max for
+	 * evaluation.
+	 * 
+	 * The function may have up to 3 independent variables in it (x,y,z).
+	 * <p>
+	 * <b>Known Bugs</B> This class is not fool proof. If the answer is wrong
+	 * then use the parenthesis to force the order of evaluation. The most
+	 * likely place this will be needed is in the use of the power command. The
+	 * exponent is not evaluated correctly if it begins with a unary operator.
+	 * 
+	 * <h3>List of commands</h3>
+	 * <ul>
+	 * <li>( ) parenthesis , comma
+	 * <li>+, -, unary -, unary +
+	 * <li>, /
+	 * <li>^ (raise to a power)
+	 * <li>pi, e, All the constants in class SpecialFunction
+	 * <li>log
+	 * <li>sin, cos, tan, sinh, cosh, tanh
+	 * <li>asin, acos, atan
+	 * <li>sqrt
+	 * <li>rand
+	 * <li>exp
+	 * <li>remainder
+	 * <li>atan2(x,y) + special functions and constants. Read the book
+	 * <li>All the functions in class SpecialFunction
+	 * <li>Independent variables x
+	 * <li>Scientific notation using "e", "E", "d", "D".
+	 * </ul>
+	 * 
+	 * @param title
+	 *         Title
+	 * @param function
+	 *            ParseFunction representing the function
+	 * @param min
+	 *            Min value
+	 * @param max
+	 *            Max value
+	 */
+	public F1D(String title, ParseFunction function, double min, double max) {
+		this.iname = null;
+		this.title=title;
+		this.function = function;
+		this.points = 500;
+		this.min = min;
+		this.max = max;
+		setTitle(name);
+		lpp.setType(LinePars.F1D);
+		isParsed = function.parse();
+		if (isParsed == false)
+			utils.Util.ErrorMessage("Failed to parse function " + this.name);
+
+	}
+	
+	
+
+	
+	/**
+	 * Build a function.
+	 * 
+	 * @param function input 
+ 	 * @param min  Min value
+	 * @param max  Max value
+	 */
+	public F1D(ParseFunction function, double min, double max) {
+		this("F1D",function,min,max);
+	}
+	
+	
+	
+	
+	
+	
+
+	/**
+	 * Create a function in 1D. 500 points are used between Min and Max for
+	 * evaluation. Function will be parsed.
+	 * 
+	 * @param title
+	 *            String representing the title
+	 * @param name
+	 *            String representing the function's definition
+	 * @param min
+	 *            Min value
+	 * @param max
+	 *            Max value
+	 */
+	public F1D(String title, String name, double min, double max) {
+		
+		this(title,name,min,max,true);
+		
+	}
+
+	/**
+	 * Evaluate a function at a specific point in x
+	 * 
+	 * @param x
+	 *            value in x for evaluation
+	 * @return function value at x
+	 */
+	public double eval(double x) {
+
+		double y = 0;
+
+		// jPlot function first
+		if (iname == null && (function == null || isParsed == false)) {
+			utils.Util.ErrorMessage("eval(): Function was not parsed correctly!");
+			return y;
+		}
+
+		// evaluate function
+		if (iname == null && function != null && isParsed == true) {
+			try {
+				y = function.getResult(x);
+			} catch (Exception e) {
+				lastException=e.getMessage().toString();
+				utils.Util.ErrorMessage("eval(): Failed to evaluate function:" + name);
+
+				// System.out.println("Failed to evaluate function:" + name);
+
+			}
+
+			return y;
+		} // end of the standard jPlot function
+
+		// start AIDA function
+		if (iname != null && iname.dimension() == 2) {
+			try {
+				double[] xx = new double[iname.dimension()];
+				xx[0] = x;
+				y = iname.value(xx);
+			} catch (Exception e) {
+				// System.out.println("Failed to evaluate function!");
+				lastException=e.getMessage().toString();
+				utils.Util.ErrorMessage("Failed to evaluate function:" + name);
+			}
+
+			return y;
+
+		} // end IFunction
+
+		return y;
+	}
+
+	/**
+	 * Evaluate a function for an array of x-values
+	 * 
+	 * @param x
+	 *            array of values in x for evaluation
+	 * @return array of function values
+	 */
+	public double[] eval(double[] x) {
+
+		double[] y = new double[x.length];
+
+		// jPlot function first
+		if (iname == null && (function == null || isParsed == false)) {
+			utils.Util.ErrorMessage("eval(): Function was not parsed correctly!");
+			return y;
+		}
+
+		// evaluate function
+		if (iname == null && function != null && isParsed == true) {
+                       
+                        for (int i = 0; i < x.length; i++) { 
+
+			try {
+     			    y[i] = function.getResult(x[i]);
+			} catch (Exception e) {
+                
+				
+				String ss=Integer.toString(i);
+				lastException=e.getMessage().toString()+" at position="+ss ;
+			     utils.Util.ErrorMessage("eval(): Failed to evaluate:" + name+" at position="+ss);
+                             return  null;
+	      		
+			}
+                        }
+
+			return y;
+		} // end of the standard jPlot function
+
+		// start AIDA function
+		if (iname != null) {
+
+                        for (int i = 0; i < x.length; i++) {
+			try {
+					double[] xx = new double[iname.dimension()];
+					xx[0] = x[i];
+					y[i] = iname.value(xx);
+			} catch (Exception e) {
+                                String ss=Integer.toString(i);
+                                lastException=e.getMessage().toString() +" at position="+ss ;
+				utils.Util.ErrorMessage("Failed to evaluate:" + name+" at position="+ss);
+			}
+                        }
+
+			return y;
+
+		} // end IFunction
+
+		return y;
+	}
+
+	/**
+	 * Evaluate a function for graphic representation. Number of points for
+	 * evaluations is 500.
+	 * 
+	 * @param Min
+	 *            value in x
+	 * @param Max
+	 *            value in x
+	 */
+	public void eval(double min, double max) {
+
+		this.min = min;
+		this.max = max;
+		this.points = 500;
+		eval();
+
+	}
+
+	/**
+	 * Evaluate a function for graphic representation. Number of points for
+	 * evaluations is 500.
+	 * 
+	 * @param Min
+	 *            value in x
+	 * @param Max
+	 *            value in x
+	 * @param Number
+	 *            of evaluation points
+	 */
+	public void eval(double min, double max, int Npoints) {
+
+		this.min = min;
+		this.max = max;
+		this.points = Npoints;
+		eval();
+
+	}
+
+	/**
+	 * Evaluate a function for graphic representation. Min and Max should be
+	 * given in constructor.
+	 */
+	public void eval() {
+
+		if (iname == null && (function == null || isParsed == false)) {
+			utils.Util.ErrorMessage("eval(): Function was not parsed correctly!");
+			return;
+		}
+
+		if (iname == null && isParsed == true) {
+			x = new double[points];
+			y = new double[points];
+			double d=(max - min) / (points - 1);
+			for (int i = 0; i < points; i++) {
+				x[i] = min + i * d;
+				try {
+					y[i] = function.getResult(x[i]);
+				} catch (Exception e) {
+                                         String ss=Double.toString(x[i]);
+                                         utils.Util.ErrorMessage("Failed to evaluate:" + name+" at position="+ss); 
+                                         return;
+				}
+
+			}
+		} // end of the standard jPlot function
+
+		// start AIDA function
+		if (iname != null) {
+
+			x = new double[points];
+			y = new double[points];
+
+			double d=(max - min) / (points - 1);
+			for (int i = 0; i < points; i++) {
+				x[i] = min + i * d;
+				double[] xx = new double[iname.dimension()];
+				try {
+					xx[0] = x[i];
+					y[i] = iname.value(xx);
+				} catch (Exception e) {
+				         String ss=Double.toString(x[i]);
+                                         utils.Util.ErrorMessage("Failed to evaluate at position="+ss); 
+                                         return;
+				}
+
+			}
+
+		} // end IFunction
+
+	}
+
+	/**
+	 * Show online documentation.
+	 */
+	public void doc() {
+
+		String a = this.getClass().getName();
+		a = a.replace(".", "/") + ".html";
+		new HelpBrowser(HelpBrowser.JHPLOT_HTTP + a);
+
+	}
+
+	/**
+	 * Create a F1D function from JAIDA IFunction. By default, 500 points for
+	 * evaluation are used
+	 * 
+	 * @param iname
+	 *            input IFunction
+	 * @param min
+	 *            Min value
+	 * @param max
+	 *            Max value
+	 */
+	public F1D(IFunction iname, double min, double max) {
+
+		this.iname = iname;
+		this.name = iname.title();
+		this.points = 500;
+		this.min = min;
+		this.max = max;
+		setTitle(this.name);
+		lpp.setType(LinePars.F1D);
+
+	}
+
+	/**
+	 * Create a F1D function from JAIDA IFunction. By default, 500 points for
+	 * evaluation are used
+	 * 
+	 * @param iname
+	 *            input IFunction
+	 */
+	public F1D(IFunction iname) {
+
+		this.iname = iname;
+		this.name = iname.title();
+		this.points = 500;
+		this.min = 0;
+		this.max = 1;
+		setTitle(this.name);
+		lpp.setType(LinePars.F1D);
+
+	}
+
+	/**
+	 * Create F1D function from JAIDA IFunction. By default 500 points are used
+	 * 
+	 * @param title
+	 *            Title
+	 * @param iname
+	 *            input IFunction
+	 * @param min
+	 *            Min X values
+	 * @param max
+	 *            Max X values
+	 */
+
+	public F1D(String title, IFunction iname, double min, double max) {
+
+		this.iname = iname;
+		this.name = iname.title();
+		this.points = 500;
+		this.min = min;
+		this.max = max;
+		setTitle(title);
+		lpp.setType(LinePars.F1D);
+
+	}
+
+	/**
+	 * Print the F1D function to a Table in a separate Frame. The numbers are
+	 * formatted to scientific format. One can sort and search the data in this
+	 * table (data cannot be modified)
+	 */
+
+	public void toTable() {
+
+		new HTable(this);
+
+	}
+
+	/**
+	 * Print the F1D function to a Table in a separate Frame. The numbers are
+	 * formatted to scientific format. One can sort and search the data in this
+	 * table (but not modify)
+	 * 
+	 * @param format
+	 *            if false, numbers will not be formatted to scientific format.
+	 */
+
+	public void toTable(boolean format) {
+
+		new HTable(this, format);
+
+	}
+
+	/**
+	 * Replace abstract parameter with the value (double). Case sensitive!
+	 * 
+	 * @param parameter
+	 *            parameter name
+	 * @param value
+	 *            value to be inserted
+	 */
+
+	public void setPar(String parameter, double value) {
+
+		String s1 = Double.toString(value);
+		name = name.replaceAll(parameter, s1);
+	}
+
+	
+	
+	/**
+	 * Return H1D histogram from F1D function. The number of points are given by setPoints() method,
+	 * but the default 500 is used if not given. Min and Max values are given by the values used to parse the function.
+	 * @return
+	 */
+	
+	public H1D getH1D() {
+
+		int bins=getPoints();
+		H1D h= new H1D(getTitle(),bins,min,max);
+		 int ibins = bins + 2;
+         double[] newHeights = new double[ibins];
+         double[] newErrors = new double[ibins];
+         double[] newMeans = new double[ibins];
+         double[] newRmss = new double[ibins];
+         int[] newEntries = new int[ibins];
+         newHeights[0] = 0;
+         newHeights[ibins - 1] = 0;
+		
+         for (int i = 0; i < ibins-2; i++) {
+        	 newHeights[i + 1] = y[i];
+             newErrors[i + 1] = 0;
+             newEntries[i + 1] = (int)y[i];
+             newMeans[i + 1] = y[i];
+             newRmss[i + 1] = 0;
+         }
+		
+         h.setContents(newHeights, newErrors, newEntries, newMeans, newRmss);
+         h.setMeanAndRms(0, 0);
+         
+         /*
+		for (int i = 0; i < bins; i++) {
+			h.fill(x[i]+0.5*d, y[i]  );
+		}
+		*/
+         
+		return h;
+	}
+	
+	
+	/**
+	 * Return a Histogram given by the F1D function. All statistical characteristics of such histogram are meaningless. 
+	 * Bins and Min and Max values are user defined. The function is evaluated at the bin center which is important for small 
+	 * number of bins.
+	 * 
+	 * @param hname Name of the histogram
+	 * @param bins number of bins for histogram
+	 * @param hmin   min value of histogram
+	 * @param hmax   max value of histogram 
+	 * @return     H1D histogram
+	 */
+	public H1D getH1D(String hname, int bins, double hmin, double hmax) {
+
+	
+		
+		double d=(hmax-hmin)/(double)bins;
+		double[] xx = new double[bins];
+		
+		for (int i = 0; i < bins; i++) {
+			 xx[i]=hmin+i*d + 0.5*d;
+		}
+		double[] yy=eval(xx);	
+		
+		
+		H1D h= new H1D(hname,bins,hmin,hmax);
+		int ibins = bins + 2;
+        double[] newHeights = new double[ibins];
+        double[] newErrors = new double[ibins];
+        double[] newMeans = new double[ibins];
+        double[] newRmss = new double[ibins];
+        int[] newEntries = new int[ibins];
+        newHeights[0] = 0;
+        newHeights[ibins - 1] = 0;
+		
+        for (int i = 0; i < ibins-2; i++) {
+       	    newHeights[i + 1] = yy[i];
+            newErrors[i + 1] = 0;
+            newEntries[i + 1] = (int)yy[i];
+            newMeans[i + 1] = yy[i];
+            newRmss[i + 1] = 0;
+        }
+		
+        h.setContents(newHeights, newErrors, newEntries, newMeans, newRmss);
+        h.setMeanAndRms(0, 0);
+		
+		
+		return h;
+		
+		
+	}
+	
+	
+	
+	/**
+	 * Replace abstract parameter with the value (integer). Case sensitive.
+	 * 
+	 * @param parameter
+	 *            parameter name
+	 * @param value
+	 *            value to be inserted.
+	 */
+
+	public void setPar(String parameter, int value) {
+
+		String s1 = Integer.toString(value);
+		name = name.replaceAll(parameter, s1);
+	}
+
+	/**
+	 * Get value in X-axis
+	 * 
+	 * @param i
+	 *            index
+	 * 
+	 * @return value in X
+	 */
+
+	public double getX(int i) {
+		return this.x[i];
+	}
+
+	/**
+	 * Get value in Y-axis
+	 * 
+	 * @param i
+	 *            index
+	 * 
+	 * @return value in Y
+	 */
+
+	public double getY(int i) {
+		return this.y[i];
+	}
+
+	/**
+	 * Sets a new title of a function
+	 * 
+	 * @param title
+	 *            Title of a function
+	 */
+
+	public void setTitle(String title) {
+		this.title = title;
+
+	}
+
+	/**
+	 * Get a function title
+	 * 
+	 * @return Title of a function
+	 */
+	public String getTitle() {
+		return this.title;
+
+	}
+
+	/**
+	 * Sets a name of the function, i.e. what will be used for evaluation
+	 * 
+	 * @param name
+	 *            Name
+	 */
+
+	public void setName(String name) {
+		this.name = name;
+
+	}
+
+	/**
+	 * Get the name of the function used for evaluation
+	 * 
+	 * @return Name
+	 */
+	public String getName() {
+		return this.name;
+
+	}
+
+	
+
+	/**
+	 * Return parsed function. One can evaluate Y as: y =function.getResult(x),
+	 * where function is what returned by this method.
+	 * 
+	 * @return function
+	 **/
+	public ParseFunction getParse() {
+		return this.function;
+	}
+
+	/**
+	 * Set Min value in X
+	 * 
+	 * @param min
+	 *            Minimum value
+	 */
+
+	public void setMin(double min) {
+		this.min = min;
+
+	}
+
+	/**
+	 * Get the minimum value in X
+	 * 
+	 * @return min Minimum value
+	 */
+	public double getMin() {
+		return this.min;
+	}
+
+	/**
+	 * Set the maximum value in X
+	 * 
+	 * @param max
+	 *            Maximal value
+	 */
+	public void setMax(double max) {
+		this.max = max;
+
+	}
+
+	/**
+	 * Get the maximum value in X
+	 * 
+	 * @return Maximal value
+	 */
+	public double getMax() {
+		return this.max;
+
+	}
+
+	/**
+	 * Sets the number points between Min and Max for evaluation
+	 * 
+	 * @param bins
+	 *            Number of points
+	 */
+	public void setPoints(int bins) {
+		this.points = bins;
+
+	}
+
+	/**
+	 * Numerical integration.
+	 * Define types as:<br>
+	 * type="gauss4" -  Gaussian integration formula (4 points)<br>
+	 * type="gauss8" -  Gaussian integration formula (8 points)<br>
+	 * type="richardson" -  Richardson extrapolation <br>
+	 * type="simpson" -   using Simpson's rule. <br>
+	 *  type="trapezium" -   trapezium rule. <br>
+	 * 
+	 * @param type
+	 *          type of algorithm. Can be: "gauss4","gauss8","richardson","simpson","trapezium".
+	 * @param N
+	 *            the number of strips to use for integration
+	 * @param min
+	 *            the first ordinate.
+	 * @param max
+	 *            the last ordinate.
+	 * @return integral           
+	 */
+	public double integral(String type, final int N, double min,
+			final double max) {
+
+		if (type == "gauss4") {
+			return jhplot.math.Numeric.gaussian4(N, this, min, max);
+		} else if (type == "gauss8") {
+			return jhplot.math.Numeric.gaussian8(N, this, min, max);
+		} else if (type == "richardson") {
+			return jhplot.math.Numeric.richardson(N, this, min, max);
+		} else if (type == "simpson") {
+			return jhplot.math.Numeric.simpson(N, this, min, max);
+		} else if (type == "trapezium") {
+			return jhplot.math.Numeric.trapezium(N, this, min, max);
+
+		} else {
+			return jhplot.math.Numeric.gaussian4(N, this, min, max);
+
+		}
+
+	}
+
+	/**
+	 * Numerical integration using trapezium rule.
+	
+	 * @param N
+	 *            the number of strips to use for integration
+	 * @param min
+	 *            the first ordinate.
+	 * @param max
+	 *            the last ordinate.
+	 * @return integral           
+	 */
+	public double integral(final int N, double min, final double max) {
+	
+			return jhplot.math.Numeric.trapezium(N, this, min, max);
+
+
+	}
+	
+	
+	/**
+	 * Get Jaida function
+	 * @return
+	 */
+	public IFunction getIFunction(){
+		
+		if (iname != null ) return iname;
+		
+		/**
+		if (function != null && iname==null) {
+			
+			IAnalysisFactory af = IAnalysisFactory.create();
+			ITree m_ITree = af.createTreeFactory().create();
+			
+			IFunctionFactory functionfact = af.createFunctionFactory(tree)
+			
+			String ss=getName().replace("x", "x[0]");
+			
+			IFunction inum=functionfact.createFunctionFromScript(getName(), arg1, arg2, arg3, arg4);
+			return inum;
+			
+		}
+		**/
+		return null;
+		
+	}
+	
+	
+	/**
+	 * Get array of X-values after function after evaluation using the default number of points
+	 * @return X-values
+	 */
+	
+	public double[] getArrayX(){
+		return x;
+	}
+	
+	
+	/**
+	 * Get array of Y-values after function after evaluation using the default number of points
+	 * @return Y-values
+	 */
+	
+	public double[] getArrayY(){
+		return y;
+	}
+	
+	
+
+	/**
+	 * If the function is parsed correctly, return true.
+	 * Use this check before drawing it. 
+	 *  
+	 * @return true if parsed.
+	 */
+	public boolean isParsed(){
+		
+		return isParsed;
+	}
+	
+	
+	
+	/**
+	 * Convert the function into MathML form.
+	 * @return String representing this function in MathML.
+	 */
+	
+	public String  toMathML(){
+		 
+		  
+		    try {
+		    return Expression.valueOf(name).toMathML();
+		    }
+		    catch (ParseException e)
+		    {
+		    	lastException=e.getMessage().toString();
+		    	return "";
+		    }
+
+		
+	}
+	
+	/**
+	 * Convert the function into Java code.
+	 * @return String representing this function in Java.
+	 */
+	
+	public String  toJava(){
+		 
+		  
+		    try {
+		    return Expression.valueOf(name).toJava();
+		    }
+		    catch (ParseException e)
+		    {
+		    	lastException=e.getMessage().toString();
+		    	return "";
+		    }
+
+		
+	}
+	/**
+	 * Try to simplify this function. 
+	 * It is often useful to rewrite an expression in term of elementary functions 
+	 * (log, exp, frac, sqrt, implicit roots), using the "elementary()"  before simplifying it.
+	 * Retrieve the simplified name as a string using getName() method.
+	 * @return false if error occurs. Retrieve this error as a string  using  getException().
+	 */
+	
+	public boolean simplify(){
+		 
+		  
+		    try {
+		    name=Expression.valueOf(name).simplify().toString();
+		    }
+		    catch (ParseException e)
+		    {
+		    	lastException=e.getMessage().toString();
+		    	return false;
+		    }
+		    return true;
+		   
+	}
+	
+	
+	/**
+	 * Convert this function rewrite in term of elementary functions (log, exp, frac, sqrt, implicit roots)
+	 * This is useful before simplifying function. 
+	 * Retrieve the simplified name as a string using getName() method.
+	 * @return false if error occurs. Retrieve this error as a string  using  getException().
+	 */
+	
+	public boolean elementary(){
+		 
+		  
+		    try {
+		    name=Expression.valueOf(name).elementary().toString();
+		    }
+		    catch (ParseException e)
+		    {
+		    	lastException=e.getMessage().toString();
+		    	return false;
+		    }
+		    return true;
+		   
+	}
+	
+	/**
+	 * Convert this function rewrite in expanded form.
+	 * Retrieve the expanded name as a string using getName() method.
+	 * @return false if error occurs. Retrieve this error as a string  using  getException().
+	 */
+	
+	public boolean expand(){
+		 
+		  
+		    try {
+		    name=Expression.valueOf(name).expand().toString();
+		    }
+		    catch (ParseException e)
+		    {
+		    	lastException=e.getMessage().toString();
+		    	return false;
+		    }
+		    return true;
+		   
+	}
+	
+	
+	/**
+	 * Convert this function rewrite in factorized form (if can).
+	 * Retrieve the expanded name as a string using getName() method.
+	 * @return false if error occurs. Retrieve this error as a string  using  getException().
+	 */
+	
+	public boolean factorize(){
+		 
+		  
+		    try {
+		    name=Expression.valueOf(name).factorize().toString();
+		    }
+		    catch (ParseException e)
+		    {
+		    	lastException=e.getMessage().toString();
+		    	return false;
+		    }
+		    return true;
+		   
+	}
+	
+	
+	/**
+	 * Perform some numeric substitutions. 
+	 * Examples: exp(1) should be 2.71828182, "pi" should be 3.14159 etc.
+	 * Retrieve the expanded name as a string using getName() method.
+	 * @return false if error occurs. Retrieve this error as a string  using  getException().
+	 */
+	
+	public boolean numeric(){
+		 
+		  
+		    try {
+		    name=Expression.valueOf(name).numeric().toString();
+		    }
+		    catch (ParseException e)
+		    {
+		    	lastException=e.getMessage().toString();
+		    	return false;
+		    }
+		    return true;
+		   
+	}
+	
+	
+	
+	/**
+	 * Numerical differentiation.
+	 * 
+	 * @param N
+	 *            the number of points to use.
+	 * @param min
+	 *            the first ordinate.
+	 * @param max
+	 *            the last ordinate.
+	 * @return array with differentials
+	 */
+	public double[] differentiate(final int N, final double min,
+			final double max) {
+		return jhplot.math.Numeric.differentiate(N, this, min, max);
+
+	}
+
+	/**
+	 * Get the number of points
+	 * 
+	 * @return Number of points
+	 */
+
+	public int getPoints() {
+		return this.points;
+
+	}
+
+	
+	/**
+	 * If error occurs at some step, this is the way to retrieve it.
+	 * @return last exception happened in any method of this class. 
+	 */
+	public String getException(){
+		return lastException;
+	}
+	
+
+}

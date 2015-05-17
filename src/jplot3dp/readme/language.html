@@ -1,0 +1,41 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>UVModeller Readme</title>
+</head>
+
+<body bgcolor="#fefee0">
+<h1>Language Features</h1>
+<h2>System Variables</h2>
+Before evaluation, the following variables are automatically set.
+<table border=1>
+	<tr><th>Variable Name</th><th>Value</th></tr>
+	<tr><td><code>Pi</code></td><td>Mathematical constant pi = circumference/diameter.</td></tr>
+	<tr><td><code>E</code></td><td>Mathematical constant e = <code>lim<sub>h->0</sub>(1+h)<sup>1/h</sup></code>.</td></tr>
+	<tr><td><code>uSteps</code><br><code>vSteps</code><br><code>tSteps</code></td><td>Returns the steps as set in the scene editor dialog.</td></tr>
+</table>
+<p>Note: The variable names (as anything else) are case sensetive.
+<h2>Operators</h3>
+<table border=1>
+	<tr><th>Priority Level</th><th>Operator</th></tr>
+	<tr><td>Level 0</td><td><code>==</code>, <code>!=</code><br><code>&lt;</code>, <code>&gt;</code><br><code>&lt;=</code>, <code>&gt;=</code></td></tr>
+	<tr><td>Level 1</td><td><code>+</code>, <code>-</code></td></tr>
+	<tr><td>Level 2</td><td><code>*</code>, <code>/</code>, <code>%</code> (modulo)</td></tr>
+	<tr><td>Level 3</td><td><code>^</code> (power)</td></tr>
+</table>
+<h2>Functions</h3>
+<table border=1>
+	<tr><th>Class</th>
+	<th>Available Functions</th></tr>
+	<tr><td>Algebraic</td>
+	<td>sqrt, exp, ln, log10, log2</td></tr>
+	<tr><td>Trigonometric,<br>Inverse Trigonometric</td>
+	<td>sin, cos, tan, cosec, sec, cot,<br>arcsin, arccos, arctan, atan2, arccosec, arcsec, arccot</td></tr>
+	<tr><td>Hyperbolic,<br>Inverse Hyperbolic</td>
+	<td>sinh, cosh, tanh, cosech, sech, coth,<br>arcsinh, arccosh, arctanh arccosech, arcsech, arccoth</td></tr>
+	<tr><td>Others</td>
+	<td>abs, floor/box, ceil, sign, frac</td></tr>
+</table>
+<p>Note: Unlike <b>Arnab's Graph Explorer</b> (see <a href="http://geocities.com/hirak_99/goodies/graph.html">http://geocities.com/hirak_99/goodies/graph.html</a>), <b>3D Graph Explorer</b> distinguishes between cases, so <code>z=Sin(x)</code> does not work, but <code>z=sin(x)</code> works.
+</body>
+</html>

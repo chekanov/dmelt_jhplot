@@ -1,0 +1,438 @@
+package jhplot.io;
+
+import java.awt.*;
+import java.util.Map;
+import jhplot.*;
+import jhplot.shapes.*;
+import javax.swing.JFrame;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import hep.aida.*;
+import hep.aida.ref.histogram.*;
+import hep.io.root.*;
+import hep.io.root.interfaces.*;
+import jhplot.HPlot;
+import java.util.Random;
+/**
+ * 
+ * A generic GUI to browser data stored files.
+ * 
+ * @author S.Chekanov
+ * 
+ */
+class BrowserDataGeneric extends JDialog {
+
+	private static final long serialVersionUID = 1L;
+	public JButton closeButton;
+	public DefaultListModel variableModel;
+	private JTable jTab;
+	private String[] rows;
+	private JButton runButton;
+	private JButton tableButton;
+	private Map<String, Object> map;
+	private JCheckBox cb; // A checkbox.
+	boolean state; // True/false state of checkbox.
+	private HPlot frame = null;
+	private HPlot3D frame3D = null;
+	private GHFrame  gframe;
+    private boolean is3D;
+     static Random random = new Random();
+	/**
+	 * Default constructor
+	 */
+	public BrowserDataGeneric() {
+
+	}
+
+	/**
+	 * Open a dialog to display a map of objects.
+	 * 
+	 * @param frame
+	 * @param map
+	 * @param ishow
+	 */
+	public void setDataFileBrowser(final GHFrame gframe,
+			final Map<String, Object> map, boolean ishow) {
+
+		this.gframe = gframe;
+		cb = new JCheckBox("Overlay");
+		this.map = map;
+ 
+  
+  
+		setTitle("Objects");
+		// setModal( true );
+		setResizable(true);
+
+		// LocationSize(parent);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+		JPanel lowerPanel = new JPanel();
+		// lowerPanel.setPreferredSize(new Dimension(100, 30));
+
+		closeButton = new JButton();
+		closeButton.setText("Exit");
+
+		tableButton = new JButton();
+		tableButton.setText("Table");
+		tableButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				String skey = rows[jTab.getSelectedRow()];
+				Object obj = map.get(skey);
+				Class<? extends Object> cls = obj.getClass();
+				String name = cls.getName();
+
+				if (name.indexOf("P0D") > -1)
+					new HTable((P0D) obj);
+				else if (name.indexOf("P0I") > -1)
+					new HTable((P0I) obj);
+				else if (name.indexOf("P1D") > -1)
+					new HTable((P1D) obj);
+				else if (name.indexOf("H1D") > -1)
+					new HTable((H1D) obj);
+				else if (name.indexOf("F1D") > -1)
+					new HTable((F1D) obj);
+				else if (name.indexOf("PND") > -1)
+					new HTable((PND) obj);
+				else if (name.indexOf("PNI") > -1)
+					new HTable((PNI) obj);
+				else {
+					String a = "The object \"" + name
+							+ "\" cannot be shown as a table";
+					jhplot.utils.Util.ErrorMessage(a);
+
+				}
+			}
+
+		});
+
+		runButton = new JButton();
+		runButton.setText("Plot");
+
+		runButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+				String skey = rows[jTab.getSelectedRow()];
+				Object obj = map.get(skey);
+				Class<? extends Object> cls = obj.getClass();
+				String name = cls.getName();
+				// System.out.println(name);
+                Color randomColor = Color.getHSBColor(random.nextFloat(), 1.0F, 1.0F);
+
+
+				if (gframe instanceof jhplot.HPlot) {
+					HPlot frame = (HPlot) gframe;
+					frame.setAutoRange();
+					
+					if (cb.isSelected() == false)
+						frame.clearAll();
+
+					frame.setRange(0, 0, 1);
+					frame.setRange(1, 0, 1);
+
+					if (name.indexOf("TH1F") > -1 || name.indexOf("TH1D") > -1) {
+						H1D h = new H1D((TH1) obj);
+						
+						frame.draw(h);
+					} else if (name.indexOf("TGraph") > -1) {
+						TGraph tt = (TGraph) obj;
+						String tname = tt.getTitle();
+						double[] x = tt.getX();
+						double[] y = tt.getY();
+						P1D p = new P1D(tname, x, y);
+						frame.draw(p);
+					} else if (name.indexOf("P0D") > -1) {
+						P0D a = (P0D) obj;
+						H1D h = a.getH1D(100);
+						frame.draw(h);
+					} else if (name.indexOf("P0I") > -1) {
+						P0I a = (P0I) obj;
+						H1D h = a.getH1D(100);
+						frame.draw(h);
+					} else if (name.indexOf("PND") > -1) {
+						PND a = (PND) obj;
+						H1D h = a.getH1D(100);
+						frame.draw(h);
+					} else if (name.indexOf("PNI") > -1) {
+						PNI a = (PNI) obj;
+						if (a.size() > 0) {
+							H1D h = a.getH1D(100);
+							
+							frame.draw(h);
+						}
+					} else if (name.indexOf("P1D") > -1) {
+						P1D a = (P1D) obj;
+						
+						                       a.setColor(randomColor);
+                                                int symbol= (int)(5*random.nextFloat());
+                                                if (symbol <=0) symbol=1;
+                                                a.setSymbol(symbol);
+                                                a.setSymbolSize(4);
+                                                a.setStyle("p");
+                                                a.setPenWidth(3);
+                                                a.setColor(randomColor);
+						frame.draw(a);
+					} else if (name.indexOf("F1D") > -1) {
+					
+					    F1D a = (F1D)obj;
+					     a.setColor(randomColor);
+					     frame.draw(a);
+					} else if (name.indexOf("H1D") > -1) {
+					     H1D h1= (H1D)obj;
+                                h1.setFill(true);
+                                h1.setStyle("h");
+                                h1.setPenWidthErr(1);
+                                h1.setPenWidth(1);
+                                h1.setFillColorTransparency(0.6);
+                                h1.setFillColor(randomColor);
+                                h1.setColor(Color.black);
+                                frame.draw(h1);
+						
+					} else if (name.indexOf("FND") > -1) {
+						
+						frame.draw((FND) obj);
+					} else if (name.indexOf("FNI") > -1) {
+						
+						frame.draw((FND) obj);
+					} else if (name.indexOf("HLabel") > -1) {
+						frame.draw((HLabel) obj);
+					} else if (name.equalsIgnoreCase("jhplot.HKey")) {
+						frame.draw((HKey) obj);
+					} else if (name.equalsIgnoreCase("jhplot.HShape")) {
+						frame.draw((HShape) obj);
+					} else if (name.equalsIgnoreCase("jhplot.HMLabel")) {
+						frame.draw((HMLabel) obj);
+					} else if (name.equalsIgnoreCase("java.lang.String")) {
+						HLabel a = new HLabel((String) obj);
+						frame.draw(a);
+					} else if (name.equalsIgnoreCase("javax.swing.JFrame")) {
+						((JFrame) obj).setVisible(true);
+
+					} else if (name.indexOf("IHistogram1D") > -1) {
+						
+						H1D h1 = new H1D((Histogram1D) obj);
+						 h1.setColor(randomColor);
+						frame.draw(h1);
+					} else if (name.indexOf("ICloud1D") > -1) {
+				
+						H1D h1 = new H1D((Cloud1D) obj, 100);
+						frame.draw(h1);
+					} else if (name.indexOf("IDataPointSet") > -1) {
+						
+						P1D h1 = new P1D((IDataPointSet) obj);
+						 h1.setColor(randomColor);
+						frame.draw(h1);
+					} else if (name.indexOf("ICloud2D") > -1) {
+					
+						P1D h1 = new P1D((Cloud2D) obj);
+						 h1.setColor(randomColor);
+						frame.draw(h1);
+					} else {
+						String a = "The object \"" + name
+								+ "\" cannot be drawn on HPlot canvas";
+						jhplot.utils.Util.ErrorMessage(a);
+
+					} // end 2D frame
+
+					if (gframe instanceof jhplot.HPlot3D) {
+						HPlot3D frame3d = (HPlot3D) gframe;
+						frame3d.setAutoRange();
+						
+						if (cb.isSelected() == false)
+							frame3d.clearAll();
+
+						if (name.indexOf("P2D") > -1) {
+							P2D a = (P2D) obj;
+							if (a.size() > 0) {
+								frame3d.draw(a);
+							}
+						} else if (name.indexOf("F2D") > -1) {
+							F2D a = (F2D) obj;
+							frame3d.draw(a);
+						} else if (name.indexOf("H2D") > -1) {
+							H2D a = (H2D) obj;
+						
+							frame3d.draw(a);
+						} else if (name.indexOf("TH2F") > -1
+								|| name.indexOf("TH2D") > -1) {
+							H2D h = new H2D((TH2) obj);
+					
+							frame3d.draw(h);
+
+						} else if (name.indexOf("IHistogram2D") > -1) {
+						
+							H2D h1 = new H2D((Histogram2D) obj);
+							frame3d.draw(h1);
+
+						} else {
+							String a = "The object \"" + name
+									+ "\" cannot be drawn on HPlot3D canvas";
+							jhplot.utils.Util.ErrorMessage(a);
+
+						} // end 2D frame
+
+					}
+				}
+			}
+		});
+
+		// actions
+		closeButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+				showIt(false);
+
+			}
+		});
+
+		// build a table with examples
+		UneditableTableModel model = new UneditableTableModel();
+		model.addColumn("No");
+		model.addColumn("Type");
+		model.addColumn("Object");
+
+		ImageIcon all = new ImageIcon(getClass().getResource(
+				"/images/graph.jpg"));
+		ImageIcon imageH1D = new ImageIcon(getClass().getResource(
+				"/images/plot2.jpg"));
+		ImageIcon imageF1D = new ImageIcon(getClass().getResource(
+				"/images/FunctionIcon.gif"));
+		ImageIcon imageCloud = new ImageIcon(getClass().getResource(
+				"/images/Cloud.gif"));
+
+		int n = 0;
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			String key = entry.getKey();
+			Object value = entry.getValue();
+			String name = value.getClass().getSimpleName();
+
+			ImageIcon img = all;
+			if (name.indexOf("H1D") > -1)
+				img = imageH1D;
+			if (name.indexOf("H2D") > -1)
+				img = imageH1D;
+			if (name.indexOf("F1D") > -1)
+				img = imageF1D;
+			if (name.indexOf("F2D") > -1)
+				img = imageF1D;
+			if (name.indexOf("Cloud") > -1)
+				img = imageCloud;
+			if (name.indexOf("Histogram") > -1)
+				img = imageH1D;
+
+			model.addRow(new Object[] { new Integer(n), img,
+					new String("(" + name + ") " + key) });
+
+			n++;
+		}
+
+		jTab = new JTable(model) {
+			private static final long serialVersionUID = 1L;
+
+			// Returning the Class of each column will allow different
+			// renderers to be used based on Class
+			public Class getColumnClass(int column) {
+				return getValueAt(0, column).getClass();
+
+			}
+
+		};
+
+		jTab.setShowHorizontalLines(true);
+		jTab.setShowVerticalLines(false);
+		jTab.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		for (int i = 0; i < 3; i++) {
+			TableColumn column = jTab.getColumnModel().getColumn(i);
+			if (i == 0)
+				column.setPreferredWidth(6);
+			if (i == 1)
+				column.setPreferredWidth(30);
+		}
+
+		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+		dtcr.setHorizontalAlignment(SwingConstants.LEFT);
+		jTab.getColumn("No").setCellRenderer(dtcr);
+
+		DefaultTableCellRenderer dtcr1 = new DefaultTableCellRenderer();
+		dtcr1.setHorizontalAlignment(SwingConstants.LEFT);
+		jTab.getColumn("Object").setCellRenderer(dtcr1);
+
+		rows = (String[]) map.keySet().toArray(new String[map.size()]);
+
+		lowerPanel.add(runButton, null);
+		lowerPanel.add(cb, null);
+		lowerPanel.add(tableButton, null);
+		lowerPanel.add(closeButton, null);
+
+		JScrollPane jCandScroll = new JScrollPane();
+		jCandScroll.setPreferredSize(new Dimension(1, 1));
+		jCandScroll.setMinimumSize(new java.awt.Dimension(0, 0));
+
+		getContentPane().add(jCandScroll, java.awt.BorderLayout.CENTER);
+		getContentPane().add(lowerPanel, java.awt.BorderLayout.SOUTH);
+
+		jCandScroll.getViewport().add(jTab);
+
+		showIt(ishow);
+
+	};
+
+	/**
+	 * Show the browser on the left of Canvas.
+	 */
+	public void showIt(boolean show) {
+
+		if (show == false) {
+			setVisible(false);
+			gframe = null;
+		} else {
+
+			JFrame jf = null;
+			if (gframe instanceof jhplot.HPlot3D) {
+				HPlot3D frame = (HPlot3D) gframe;
+				jf = frame.getFrame();
+			}
+
+			if (gframe instanceof jhplot.HPlot) {
+				HPlot frame = (HPlot) gframe;
+				jf = frame.getFrame();
+			}
+
+			// store mainframe dimensions
+			Dimension dim = jf.getSize();
+			int w = dim.width;
+			int h = dim.height;
+			// Get the system resolution
+			Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
+
+			// make sure the dialog is not too big
+			Dimension size = new Dimension(
+					Math.min((int) (0.36 * w), res.width), Math.min(
+							(int) (1.0 * h), res.height));
+			this.setSize(size);
+
+			// pack();
+			jhplot.utils.Util.rightWithin(jf, this);
+
+			// Util.centreWithin( Global.mainFrame, this );
+			setVisible(true);
+		}
+
+	}
+
+	private class UneditableTableModel extends DefaultTableModel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public boolean isEditable(int rowIndex, int columnIndex) {
+			return false;
+		}
+	}
+
+}

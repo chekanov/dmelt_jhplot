@@ -1,0 +1,148 @@
+<title>Bayesian Self-Organizing Map Simulation using Java Applet</title>
+<body bgcolor=#ddeeee>
+
+<h1>Bayesian Self-Organizing Map Simulation</h1>
+
+<p>
+The <i>Bayesian self-organizing map</i> (BSOM)
+is a method for estimating a probability distribution generating data points
+on the basis of a Bayesian stochastic model.
+It is also regarded as a learning method for a kind of neural network.
+The black dots in the below figure denote artificially generated data points.
+The blue circles denote the multiple centroids of a BSOM model, 
+which are parameters to specify the configuration of distributions.
+Initially the centroids are positioned randomly.
+The blue links between the centroids represent a predetermined topology of the model, 
+which gives a constraint into the estimation of the parameters.
+In the Bayesian framework, such a constraint is expressed as a prior probability for the parameters
+and used for the stabilization of the estimation.
+In the present simulation, a line-segment topology is used.
+<p>
+This applet searches for the maximum <i>a posteriori</i> (MAP) estimates of the centroid parameters
+using an <i>expectation-maximization</i> (EM) algorithm.
+You can start this algorithm by pressing the `learn' button.
+You can also initialize the centroids randomly by the `init' button.
+<p>
+The BSOM model has a pair of hyperparameters: alpha and beta, which represent
+`the strength of topological constraint' and `the estimate of noise level in data'
+respectively.
+You can vary them using the sliders.
+Observe the variation of the centroid configuration according to the values of the hyperparameters
+and grasp their meaning.
+Then try to find the optimal values of the hyperparameters giving the best centroid configuration.
+Remark that the configuration depends on not only the present values of hyperparameters
+but also their history.
+Poor moving of the hyperparameters
+will lead to a poor local optimal configuration.
+Actually the BSOM has an ability to search for the optimal values of the hyperparameters by itself.
+This ability is made active by pressing the `auto' button.
+<p>
+You can vary the distribution of artificial data
+using the sliders named `width', `height', `phase' and `noise level'.
+You can also vary the number of the centroids by entering the number in #unit
+and pressing the return key.
+
+<hr>
+<h2>Note</h2>
+<p>
+(1) The values displayed over the sliders are all relative.
+The sliders for hyperparameters are on log scales.
+<p>
+(2) You should start learning from a high value of alpha and
+a low value of beta, otherwise the BSOM will fall into an entangled configuration.
+When it falls into an entangled configuration,
+you can make the configuration simple by increasing alpha or decreasing beta.
+Alpha and 1/beta correspond to the temperature of physical systems.
+Strategy for avoiding poor local-optimum traps by slowly decreasing temperature
+from a high-temperature state is called <i>simulated annealing</i>.
+<p>
+(3) Automatic hyperparameter search may fail if alpha is too large
+or beta is too small at the start.
+In such a case, a little decreasing of alpha or increasing beta
+may lead to good search.
+However, when the noise level is too large,
+the BSOM gives up trying to detect a signal and
+makes its configuration simplest (i.e., a straight line segment).
+<p>
+(4) You can move a centroid directly by mouse dragging.
+<p>
+(5) By pressing `density' button, estimated density is displayed using the gray scale.
+<hr>
+
+
+<h2>Usage</h2>
+<h3>Input Data</h3>
+Initially, BSOM reads data from a file specified by the applet parameter `input'.
+See the source of the present page.
+A data file must have rows each of which represents the coordinates of a data point.
+See the contents of <a href="#sample">sample data files</a>.
+Moreover, data files must be under the directory where this HTML file exists.
+If you want to change data, enter a new file name in `Input File' and press the return key.
+If the new data have been read, the centroids and hyperparameters are initialized.
+<h3>Learn</h3>
+By pressing the `learn' button, the learning of BSOM is started.
+In this mode, hyperparameters are controlled manually using the sliders.
+By pressing the `init' button, the positions of the centroids are initialized randomly.
+<h3>Auto-Learn</h3>
+By pressing the 'auto' button, the auto-learning of BSOM is started.
+In this mode, hyperparameters are tuned by a hyperparameter search algorithm.
+By pressing the `init' button, the positions of the centroids are initialized randomly
+and the hyperparameters are also set to initial values.
+The auto-learning is suppressed while you grab a slider,
+<h3>View Density</h3>
+By pressing the 'density' button, estimated density for the data is calculated
+and displayed using the gray scale.
+In addition, the present values of hyperparameters are displayed.
+In this mode, the other processes are suspended.
+The suspended processes are restarted by making this mode off.
+The resolution of density calculation is
+specified by `dstep', which is the pixel size of a cell.
+Small dstep requires large calculation times.
+<h3>Change Unit Size</h3>
+If you want to change the number of units, enter the number to `#unit' and press the return key.
+This value must be larger than 1 and smaller than 100.
+Initial setting after changing the unit size takes somewhat of time.
+<h3>Output Results</h3>
+By pressing the `output' button, the present coordinates of the centroids are outputted.
+In case of Netscape Navigator, the results are outputted to the java console,
+if it is made usable in the `Options' menu.
+In case of Internet Explorer 3, the results are outputted to the java log file,
+if is is made usable in the option setting.
+Appletviewer in JDK is most usable since the results are outputted to the standard output.
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Related Models and Methods</h2>
+<p>
+When alpha is fixed to an infinitely large value, BSOM is similar to
+<i>principal component analysis</i> (PCA).
+On the other hand, when alpha is fixed to zero
+(i.e., topological constraint is ignored)
+BSOM is regarded as <i>clustering analysis</i> based on
+a spherical Gaussian mixture model. 
+Moreover, when beta is infinitely large, BSOM is almost same as
+the <i>k-means</i> algorithm, vector quantization (VQ) and competitive learning.
+Thus, BSOM is regarded as an intermediate method between PCA and clustering.
+The <i>elastic net</i> is also an estimation algorithm for BSOM
+by the gradient ascent method, 
+though I used an EM algorithm here.
+<h2>References</h2>
+A. Utsugi (1996) <a href="http://www.aist.go.jp/NIBH/~b0616/tssom.html">``Topology selection for self-organizing maps"</a>,
+Network: Computation in Neural Systems, vol. 7, no. 4 (in press)
+<br>
+A. Utsugi (1997) <a href="http://www.aist.go.jp/NIBH/~b0616/hssom.html">``Hyperparameter selection for self-organizing maps"</a>,
+Neural Computation, vol. 9, no. 3 (in press)
+<p>
+<hr>
+<br>
+
+</body>

@@ -1,0 +1,198 @@
+<project name="jhplot" default="dist" basedir=".">
+    <description>
+        jhplot build file of the DMelt project. 
+   </description>
+
+
+  <property file="abuild.properties"/>
+
+<!-- set global properties for this build -->
+  <property name="app.version" value="${build.version}"/>
+  <property name="app.author" value="${build.author}"/>
+  <property name="app.name" value="JHPlot"/>
+
+
+
+  <!-- set global properties for this build -->
+  <property name="src.dir" location="src" />
+  <property name="build.dir"    location="build"/>
+  <property name="dist"  location="dist" />
+  <property name="lib.dir"     value="lib"/>
+  <property name="javadoc.dir" value="doc/api" />
+  <property   name="prop.dir"     location="${src.dir}/properties"/>
+  <property   name="icons.dir"    location="${src.dir}/icons"/>
+  <property   name="resource.dir" location="${src.dir}/resources"/>
+
+
+  <path id="classpath">
+       <fileset dir="${lib.dir}" includes="**/*.jar"/>
+  </path>
+
+
+ <!-- Build the CLASSPATH -->
+ <path id="classpath_run">
+  <fileset dir="${lib.dir}" includes="**/*.jar"/>
+  <fileset dir="." includes="jhplot.jar"/>
+ </path>
+
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${javadoc.dir}" /> 
+    <delete file="${lib.dir}/system/jhplot.jar"/>
+  </target>
+    
+  <target name="copybeforecompile" depends="init">
+
+
+
+ <!-- make necessary manifest -->
+  <manifest file="${src.dir}/META-INF/MANIFEST.MF">
+   <attribute name="Built-By" value="${app.author}"/>
+   <attribute name="Main-Class" value="test.Main"/>
+   <attribute name="Class-Path" value=""/>
+   <attribute name="Built-Date" value="${DSTAMP}"/>
+   <attribute name="Version" value="${app.version}"/>
+  </manifest>
+
+
+    <copy todir="${build.dir}">
+      <fileset dir="${src.dir}">
+        <patternset>
+          <exclude name="**/*.java*" />
+          <exclude name="**/*.odg" />
+          <exclude name="**/*.odp" />
+          <exclude name="**/*.*~" />
+          <exclude name="**/*.bak" />
+          <exclude name="**/*.pdf" />
+          <exclude name="**/*_old" />
+    </patternset>
+     </fileset>
+    </copy>
+
+
+
+     <!-- jaxoDraw -->
+     <copy todir="${build.dir}">
+            <fileset dir="${prop.dir}">
+                <include name="*.properties"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.dir}">
+            <fileset dir="${resource.dir}"/>
+            <mapper>
+                <globmapper from="*" to="resources/*"/>
+            </mapper>
+        </copy>
+
+
+  </target>
+
+
+<target name="compile" depends="init,copybeforecompile"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src.dir}" destdir="${build.dir}"
+          debug="on"  deprecation="off"  optimize="on"
+          target="${build.targetversion}" source="${build.sourceversion}" 
+          classpathref="classpath">
+    </javac>
+  </target>
+
+
+
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="jhplot.jar" 
+         basedir="${build.dir}" 
+         index="true"
+         manifest="${build.dir}/META-INF/MANIFEST.MF"/>
+  </target>
+
+
+
+
+
+
+<target name="run" depends="dist">
+   <!-- run the class -->
+   <java classname="test.Main" 
+           fork="true" 
+           failonerror="true"
+           maxmemory="64m"
+           >
+         <!-- add a command line arg: <arg value="-h"/> -->
+          <arg value="-h"/>
+         <classpath>
+     <!-- use the value of the ${classpath} property in the classpath -->
+     <!--    <pathelement path="${classpath_run}"/> --> 
+     <!-- include all jar files  -->
+         <pathelement path="${java.class.path}"/>
+        <fileset dir=".">
+            <include name="jhplot.jar"/>
+        </fileset>
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+
+  </classpath>
+       </java>
+
+  </target>
+
+
+
+<target name="javadoc" depends="init,cleandoc">
+  <javadoc destdir="${javadoc.dir}"
+           author="true"
+           version="false"
+           use="true"
+           splitindex="true"
+           source="${build.sourceversion}" 
+           overview="doc/symbols.html"
+           link="http://download.oracle.com/javase/7/docs/api/"
+           windowtitle="DataMelt-${build.version} API - jHPlot" classpathref="classpath">
+
+<!--
+     <classpath>
+        <pathelement path="${java.class.path}/"/>
+      </classpath>
+-->
+
+    <packageset dir="${src.dir}" >
+      <include name="jhplot/**" />
+      <include name="carmetal/objects/**" />
+      <exclude name="jhplot/gui/**" />
+    </packageset>
+
+
+
+    <bottom><![CDATA[<i>&copy; Copyright 2005-2011 S.Chekanov. All Rights Reserved.
+      <br>jHPlot package, a part of <a href="http://jwork.org/dmelt/">DataMelt</a>:  is a full-featured multiplatform data-analysis framework</i>]]></bottom>
+  </javadoc>
+</target>
+
+
+ <target name="cleandoc"
+        description="clean up javadoc" >
+    <delete dir="doc/api"/>
+  </target>
+
+
+  <target name="clean"
+        description="clean up" >
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist}"/>
+    <delete file="jhplot.jar"/>
+    <delete dir="doc"/>
+  </target>
+</project>

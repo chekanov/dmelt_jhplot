@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>JKalman</title>
+<body>
+<h1>JKalman</h1>
+Java Kalman Filter
+
+i<p>
+
+The Kalman Filter was originally designed to represents information about a moving objects. Moving objects
+are modeled using a discrete time dynamic system. An object has spatio-temporal state x t . The spatio-
+temporal state is represented by location [x, y, t] and velocity [d x , d y ]. Here [x, y] is referred to as 2D position
+[x, y] of the object at the time t.
+Data is supposed to be uncertain – noisy, some states might be missing and other are biased. At the
+moment, the object state x t is characterized by a state vector x, containing position and velocity vector [x, y, d x , d y ]. In that way, the trajectory is constructed (in 2D). However it cannot be observed directly, because it is
+encumbered by hidden (Gaussian) noise w. The system produces visible output vector y that is a simple linear
+observation (x evolves first-order Markov process), encumbered by noise v.
+
+<p>
+
+<p>For more information see <a href="JKalman.pdf">JKalman.pdf</a>.
+</p>
+
+<pre>
+Copyright (C) 2007 Petr Chmelar
+
+By downloading, copying, installing or using the software you agree to 
+the license in licenseIntel.txt or in licenseGNU.txt
+</pre>
+
+</body>
+</html>

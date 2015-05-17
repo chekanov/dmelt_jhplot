@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>HPlot3DS</TITLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+
+
+<h2>HPlot3DS help</h2>
+
+
+<table border=1>
+<tr><th>Action</th><th>Keyboard</th><th>Mouse</th></tr>
+<tr>
+	<td>Move Camera Left, Right, Up, Down</td>
+	<td><kbd>Alt</kbd> + <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>Up</kbd>, <kbd>Down</kbd></td>
+	<td><kbd>Middle Button Drag</kbd></td>
+</tr>
+<tr>
+	<td>Move Camera Forward, Backward</td>
+	<td><kbd>A</kbd>, <kbd>Z</kbd></td>
+	<td><kbd>Right Button Drag</kbd><br><kbd>Mouse Wheel</kbd></td>
+</tr>
+<tr>
+	<td>Rotate Camera</td>
+	<td><kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>Up</kbd>, <kbd>Down</kbd></td>
+	<td><kbd>Ctrl</kbd> + <kbd>Left Button Drag</kbd></td>
+</tr>
+<tr>
+	<td>Rotate Camera Around Centre</td>
+	<td><kbd>Ctrl</kbd> + <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>Up</kbd>, <kbd>Down</kbd></td>
+	<td><kbd>Left Button Drag</kbd></td>
+</tr>
+<tr>
+	<td>Bank Camera Left, Right</td>
+	<td><kbd>Delete</kbd>, <kbd>Page Down</kbd></td>
+	<td><kbd>Shift</kbd> + <kbd>Left Button Drag</kbd></td>
+</tr>
+</table>
+
+
+<h1>Language Features</h1>
+<h2>System Variables</h2>
+Before evaluation, the following variables are automatically set.
+<table border=1>
+	<tr><th>Variable Name</th><th>Value</th></tr>
+	<tr><td><code>Pi</code></td><td>Mathematical constant pi = circumference/diameter.</td></tr>
+	<tr><td><code>E</code></td><td>Mathematical constant e = <code>lim<sub>h->0</sub>(1+h)<sup>1/h</sup></code>.</td></tr>
+	<tr><td><code>uSteps</code><br><code>vSteps</code><br><code>tSteps</code></td><td>Returns the steps as set in the scene editor dialog.</td></tr>
+</table>
+<p>Note: The variable names (as anything else) are case sensetive.
+<h2>Operators</h3>
+<table border=1>
+	<tr><th>Priority Level</th><th>Operator</th></tr>
+	<tr><td>Level 0</td><td><code>==</code>, <code>!=</code><br><code>&lt;</code>, <code>&gt;</code><br><code>&lt;=</code>, <code>&gt;=</code></td></tr>
+	<tr><td>Level 1</td><td><code>+</code>, <code>-</code></td></tr>
+	<tr><td>Level 2</td><td><code>*</code>, <code>/</code>, <code>%</code> (modulo)</td></tr>
+	<tr><td>Level 3</td><td><code>^</code> (power)</td></tr>
+</table>
+<h2>Functions</h3>
+<table border=1>
+	<tr><th>Class</th>
+	<th>Available Functions</th></tr>
+	<tr><td>Algebraic</td>
+	<td>sqrt, exp, ln, log10, log2</td></tr>
+	<tr><td>Trigonometric,<br>Inverse Trigonometric</td>
+	<td>sin, cos, tan, cosec, sec, cot,<br>arcsin, arccos, arctan, atan2, arccosec, arcsec, arccot</td></tr>
+	<tr><td>Hyperbolic,<br>Inverse Hyperbolic</td>
+	<td>sinh, cosh, tanh, cosech, sech, coth,<br>arcsinh, arccosh, arctanh arccosech, arcsech, arccoth</td></tr>
+	<tr><td>Others</td>
+	<td>abs, floor/box, ceil, sign, frac</td></tr>
+</table>
+
+  <hr>
+  <address>
+     based on Arnab's Graph Explorer 
+    <a href="http://www.desy.de/~chekanov">S.Chekanov</a> 
+  </address>
+
+</A>
+</BODY>
+</HTML>

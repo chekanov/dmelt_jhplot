@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+  <head><title>Mac OS X README - JaxoDraw</title></head>
+
+  <body>
+
+    <a name="Mac_OS_X_README"></a><h2>Mac OS X README</h2>
+      <p>
+        The application bundle <code>JaxoDraw.app</code>
+        was built on the following system:
+      </p>
+      <p>
+        OS name: Mac OS X<br>
+        OS architecture: ppc<br>
+        OS version: 10.3.4<br>
+        Java version: 1.4.2_03<br>
+        Java runtime version: 1.4.2_03-117.1<br>
+      </p>
+      <p>
+        It might not work on other systems! (Please let us know if it does).
+      </p>
+      <p>
+        It has been reported to work also on 10.2.8, it probably works
+        whenever there is a Java implementation &gt; 1.4.1 available.
+      </p>
+      <p>
+        (If it does not work, try to copy the JavaApplicationStub file from
+      </p>
+      <code class="indent">/System/Library/Frameworks/JavaVM.framework/Versions/Current/Resources/MacOS</code>
+      <p>
+        into
+      </p>
+      <code class="indent">JaxoDraw.app/Contents/MacOS/</code>
+      <p>
+        If that does not help, use the binary .jar file.)
+      </p>
+
+    <a name="GENERAL"></a><h3>GENERAL</h3>
+      <p>
+        If you are not sure if <strong>JaxoDraw</strong> is doing what it is supposed to do,
+        try to run the program from the command line
+        ("<code>open -a JaxoDraw.app</code>" or 
+        "<code>java -jar JaxoDraw.jar</code>"), if indeed there
+        is something wrong, you should get some (hopefully helpful) error
+        messages. Error messages also seem to be tracked in the system log,
+        as displayed in the program Console (in Applications/Utilities),
+        when there are any.
+      </p>
+
+    <a name="BUGS"></a><h3>BUGS</h3>
+      <p>
+        <font class="bigflash">NOTE:</font><br>
+        The axodraw.sty file has to be installed before running an internal
+        latex  compilation, otherwise the program will hang. 
+        The easiest way is to put it into
+      </p>
+      <code class="indent">$HOME/Library/texmf/tex/generic/</code>
+      <p>
+        where it should be found by latex (create this directory if it does
+        not exist).
+      </p>
+      <p>
+        Printing or exporting to postscript/EPS does not work if a 
+        postscript text is present in the graph.
+      </p>
+      <p>
+        The Watch-file mode does not seem to work 
+        (using "open" for default application).
+      </p>
+      <p>
+        The grid is somehow tilted on Macs: it always looks hexagonal. 
+        It is only the visible pattern of points on the
+        canvas that is not correct, if you switch on the grid,
+        the points you can draw on are correct.
+      </p>
+      <p>
+        Some funny things sometimes happen with postscript texts when they are 
+        edited/deleted. Refreshing the screen sometimes helps (but not always).
+      </p>
+
+    <a name="ISSUES"></a><h3>ISSUES</h3>
+      <p>
+        Issues with the one-button mouse (a/c = Apple/Command, alt = Option):
+      </p>
+      <p>
+        To group:
+      </p>
+      <ul>
+        <li>  with group button: mark objects to group, then press a/c
+              and mouse button
+        </li>
+        <li>  with grey-box: you have to be in an edit mode
+              (where red squares are visible on objects),
+              then press alt and drag the mouse, if you release the mouse
+              button before alt, the objects within the 
+              grey box will be grouped, if you release alt first,
+              the objects will be copied to the clipboard
+              (they can then be pasted into another tab with the
+              paste button or alt-V)
+        </li>
+      </ul>
+      <p>
+        To copy to clipboard: see above.
+      </p>
+      <p>
+        Right button pop-up windows: press a/c and click 
+        (for instance on vertex button, grid button, canvas tab).
+      </p>
+      <p>
+        The MacOSX native Aqua Look&amp;Feel has a few quirks,
+        two that we are aware of:
+      </p>
+      <ul>
+        <li>  The FileChooser does not present a text field. 
+              This is disturbing in the Save-as dialog, because the user
+              cannot enter a new file name (if a text file exists already
+              that can be overwritten, the user can click it and the graph
+              is saved correctly).
+        </li>
+        <li>  The edit menu for postscript text objects does not allow to
+              change the text size.
+        </li>
+      </ul>
+      <p>
+        Both issues (and possibly others) can be worked around by temporarily 
+        changing to another L&amp;F (Metal is recommended).
+      </p>
+      <p>
+        Internal latex compilation doesn't work if the z-shell or tcsh is
+        used as default shell. I'm not sure about the exact reason,
+        apparently the commands are executed in a shell that is not a log-in
+        shell, so that some environment variables are not initialized.
+        This does not happen with bash. If you are using z-shell or tcsh,
+        you must know what to do to make it work! :)
+        One workaround is to start the program from a login-in shell
+        ("<code>open -a JaxoDraw.app</code>" or 
+        "<code>java -jar JaxoDraw.jar</code>") 
+        instead of double-clicking the launcher.
+      </p>
+      <p>
+        David Sanders has privided the following information:
+      </p>
+      <ul>
+        <li>  The program behaves the same under
+              both Mac OS X 10.2.8 and 10.3.4.
+        </li>
+        <li>  From the command line, the LaTeX preview works fine and if
+              the path to "latex", "dvips", and "gv" is set in the window
+              that you launch it from, then just specifying "latex",
+              "dvips", and "gv" in the options is sufficient
+              (though you would need X11 running for "gv").
+        </li>
+        <li>
+          <p>
+            From the application launch mode, the only way I could get
+            the LaTeX preview to work is to use either
+          </p>
+          <code class="indent">open -a  /Applications/MacGhostView/MacGhostViewX</code>
+          <br>
+          <code class="indent">open -a  /Applications/iTeXMac</code>
+          <p>or</p>
+          <code class="indent">open /usr/local/bin/gs</code>
+          <p>
+            as my postscript (actually eps) viewer.
+            MacGhostViewX is Thomas Kiffe's shareware  version of
+            Ghostview, iTeXMac is a LaTeX GUI that is freeware under a
+            GPL license. Using "<code>open /usr/local/bin/gs</code>"
+            also launches "Preview" which converts the postscript to PDF
+            (it opens a file called Jaxo_tmp.pdf).
+            If one does not have, or want, X11 running then you could use
+          </p>
+          <code class="indent">open /usr/local/bin/gs-noX11</code>
+          <p>
+            which will launch "gs" in a "Terminal" window.<br>
+            All of these indicate that there is a difference in  the
+            login/profile used when opening a terminal (or Xterm)
+            window and just being an ordinary "user".
+          </p>
+        </li>
+      </ul>
+      <p>
+        Preferences:
+      </p>
+      <p>
+        For text editor and postscript previewer, you can just put "open", 
+        the default application will then be used.
+        If you want to use a specific application, use eg
+        "<code>open -a /Applications/TeXShop.app</code>" for the text editor. 
+        The html browser field should be left blank, so that the
+        java-internal browser is used (Safari does not support the jar protocol).
+      </p>
+      <p>
+        The paths to the latex and dvips executables are typically:
+      </p>
+      <code class="indent">/usr/local/teTeX/bin/powerpc-apple-darwin-current/latex</code>
+      <br>
+      <code class="indent">/usr/local/teTeX/bin/powerpc-apple-darwin-current/dvips</code>
+
+    <a name="Acknowledgment"></a><h3>Acknowledgment</h3>
+      <p>
+        Many thanks to the people who helped bringing
+        <strong>JaxoDraw</strong> closer to
+        Mac users, in particular (no specific order):
+      </p>
+      <p>
+        Byron Jennings<br>
+        Barry Davids<br>
+        Warren Siegel<br>
+        Mark Srednicki<br>
+        David Sanders<br>
+        Eric Swanson<br>
+      </p>
+
+  </body>
+</html>

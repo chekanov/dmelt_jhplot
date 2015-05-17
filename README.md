@@ -6,7 +6,7 @@ It links various components of the DataMelt libraries maintained by the jWork.OR
 
 <h2>How to compile</h2>
 
-To compile the jhplot package into jhplot.jar, you need to download DataMelt from the <a href="http://jwork.org/dmelt/">DataMelt</a> web site and extract the "lib" directory. Put this directory inside the jhplot directory (where abuild.properties is located). Make sure that the ant buid tool is installed.
+To compile the jhplot package into jhplot.jar, you need to download DataMelt from the <a href="http://jwork.org/dmelt/">DMelt</a> web site and extract the "lib" directory. Put this directory inside the jhplot directory (where abuild.properties is located). Make sure that the ant buid tool is installed.
 
 1) wget -O dmelt.zip http://sourceforge.net/projects/dmelt/files/latest/download
    unzip dmelt.zip;

@@ -46,7 +46,7 @@ for (int i=0; i<1000; i++)  {
   
 c1.draw(p2);
 
-// c1.export("test.eps");
+c1.export("test.png");
  
   }
 

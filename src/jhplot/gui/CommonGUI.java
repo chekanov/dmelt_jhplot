@@ -81,7 +81,7 @@ public class CommonGUI {
 	      fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Raster Images (*.jpg, *.jpeg)","jpg", "jpeg"));
 	      fileChooser.setAcceptAllFileFilterUsed(true);
 	      
-	      final File sFile = new File("scavis.pdf");
+	      final File sFile = new File("dmelt.pdf");
 	      fileChooser.setSelectedFile(sFile);
 	      
 	   // debug

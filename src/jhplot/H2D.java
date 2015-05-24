@@ -1360,32 +1360,96 @@ public class H2D extends DrawOptions implements Serializable {
 		return sum;
 	}
 
+
+
+         /**
+         * Compare the histogram with a function. The comparison tests  hypotheses that
+         * the histogram represent identical distribution with a function using Pearson's chi-squared test. 
+         * The number chi2/ndf gives the estimate (values close to 1 indicates
+         * similarity between 2 histograms.). the function and histogram are identical if chi2=0.
+         * Chi2/ndf and p-value probability is 1. Maken sure that  statistical errors are included correctly. 
+         * Data with zero errors will be ignored.  
+         * @param f1 
+         *            function to compare to.  
+         * @return map with the result. It gives Chi2, gives number
+         *         of degrees of freedom (ndf), probability
+         *         ("quality", or p-value).
+         */
+
+           public Map<String,Double> compareChi2(F2D f1) {
+
+                Map<String,Double> tmp= new  HashMap<String,Double>();
+
+                int bins1x = get().xAxis().bins();
+                int bins1y = get().yAxis().bins();
+
+                double sum1 = 0;
+                double nDf = 0;
+
+                 for (int i = 0; i < bins1x; i++) {
+                     double xx1=get().xAxis().binLowerEdge(i);
+                     double xx2=get().xAxis().binUpperEdge(i);
+                     double d1=xx2-xx1;
+                     double xx=xx1+0.5*d1;
+                        for (int j = 0; j < bins1y; j++) {
+                        double y1=get().yAxis().binLowerEdge(j);
+                        double y2=get().yAxis().binUpperEdge(j);
+                        double d2=y1-y2;
+                        double yy=y1+0.5*d2;
+
+                        double bin1 = binHeight(i,j);
+                        double e1 = binError(i,j);
+                        double ff=f1.eval(xx,yy);
+                        if (e1 != 0) {
+                               sum1=sum1+((ff-bin1)*(ff-bin1) / (e1*e1));
+                               nDf++;
+                        }
+                }}
+
+                double chi2=sum1;
+                tmp.put("chi2", chi2);
+                tmp.put("ndf", (double)nDf);
+
+                org.apache.commons.math3.distribution.ChiSquaredDistribution chi2Distribution = new org.apache.commons.math3.distribution.ChiSquaredDistribution(
+                                nDf);
+                double prob = chi2Distribution.cumulativeProbability(chi2);
+                tmp.put("p-value",  1.0-prob);
+                return tmp;
+
+         }
+
+
+
+
+
+
+
+
+
+
+
+
 	/**
 	 * Compare two 2D  histograms. Comparison of two histograms test hypotheses that
 	 * two histograms represent identical distributions. It calculates Chi2
 	 * between 2 histograms taking into account errors on the heights of the
 	 * bins. The number chi2/ndf gives the estimate (values close to 1 indicates
 	 * similarity between 2 histograms.) Two histograms are identical if chi2=0.
-	 * Chi2/ndf can be obtained as output[0]/output[1]. Probability (p-value) is
-	 * output[1]. Make sure that both histograms have error (or set them to
+	 * Chi2/ndf]. Probability (p-value) is
+	 * 1. Make sure that both histograms have error (or set them to
 	 * small values).
 	 * 
-	 * @param h1
-	 *            first histogram to compare
 	 * @param h2
 	 *            second histogram to compare
-	 * @return array with the result. array[0] gives Chi2, array[1] gives number
-	 *         of degrees of freedom (ndf), array[2] returns probability
+	 * @return results. It gives Chi2,  the  number
+	 *         of degrees of freedom (ndf), and probability
 	 *         ("quality", or p-value).
 	 */
-	public double[] compareChi2(H2D h1, H2D h2) {
+	 public Map<String,Double> compareChi2(H2D h2) {
 
-		double[] tmp = new double[3]; // -9999;
-		tmp[0] = -999;
-		tmp[1] = -999;
-		tmp[2] = -999;
+                 Map<String,Double> tmp= new  HashMap<String,Double>();
 
-		int bins1x = h1.get().xAxis().bins();
+		int bins1x = get().xAxis().bins();
 		int bins2x = h2.get().xAxis().bins();
 
 		if (bins1x != bins2x) {
@@ -1394,7 +1458,7 @@ public class H2D extends DrawOptions implements Serializable {
 			return tmp;
 		}
 
-		int bins1y = h1.get().yAxis().bins();
+		int bins1y = get().yAxis().bins();
 		int bins2y = h2.get().yAxis().bins();
 
 		if (bins1y != bins2y) {
@@ -1415,9 +1479,9 @@ public class H2D extends DrawOptions implements Serializable {
 		for (int i = 0; i < bins1x; i++) {
 			for (int j = 0; j < bins1y; j++) {
 						
-			double bin1 = h1.binHeight(i,j);
+			double bin1 = binHeight(i,j);
 			double bin2 = h2.binHeight(i,j);
-			double e1 = h1.binError(i,j);
+			double e1 = binError(i,j);
 			double e2 = h2.binError(i,j);
 
 			if (e1 > 0) {
@@ -1455,9 +1519,9 @@ public class H2D extends DrawOptions implements Serializable {
 
 		for (int i = 0; i < bins1x; i++) {
 			for (int j = 0; j < bins1y; j++) {
-			double bin1 = h1.binHeight(i,j);
+			double bin1 = binHeight(i,j);
 			double bin2 = h2.binHeight(i,j);
-			double e1 = h1.binError(i,j);
+			double e1 = binError(i,j);
 			double e2 = h2.binError(i,j);
 			
 			// System.out.println(Double.toString(bin1)+" - "+Double.toString(bin2));
@@ -1484,13 +1548,14 @@ public class H2D extends DrawOptions implements Serializable {
 		}}
 
 		chi2 /= (sum1 * sum2);
-		tmp[0] = chi2;
-		tmp[1] = nDf;
+                tmp.put("chi2", chi2);
+                tmp.put("ndf", (double)nDf);
+ 
+                org.apache.commons.math3.distribution.ChiSquaredDistribution chi2Distribution = new org.apache.commons.math3.distribution.ChiSquaredDistribution(
+                                nDf);
+                double prob = chi2Distribution.cumulativeProbability(chi2);
+                tmp.put("p-value",  1.0-prob);
 
-		org.apache.commons.math3.distribution.ChiSquaredDistribution chi2Distribution = new org.apache.commons.math3.distribution.ChiSquaredDistribution(
-				nDf);
-		double prob = chi2Distribution.cumulativeProbability(chi2);
-		tmp[2] = prob;
 
 		return tmp;
 

@@ -303,8 +303,8 @@ public class H1D extends DrawOptions implements Serializable {
 
 
 	
-	/**
-     * Fill histogram with random numbers.
+     /**
+     * Fill the histogram with random numbers.
      * Random generators are taken from cern.jet.random.*.
      * Examples: Beta, Binominal, Poisson, BreitWigner,ChiSquare,Empirical
      * Exponential, Gamma, Hyperbolic, Logarithmic, Normal, NegativeBinomial
@@ -317,6 +317,33 @@ public class H1D extends DrawOptions implements Serializable {
 
             for (int i = 0; i < TotNumber; i++)
                     h1.fill(random.nextDouble());
+
+    }
+
+     /** Fill the histogram with random numbers from Gaussian (Normal) distribution.
+     * Seed is taken from time. 
+     * @param TotNumber  number generated events
+     * @param mean mean of the gaussian
+     * @param sd   standard deviation 
+     */
+       public void fillGauss(int TotNumber, double mean, double sd) {
+            java.util.Random random = new  java.util.Random();
+            for (int i = 0; i < TotNumber; i++)
+                    h1.fill(sd*random.nextGaussian()+mean);
+
+    }
+
+     /** Fill the histogram with random numbers from fralt distribution.
+     * Seed is taken from time. 
+     * Using mean=0 and width=1 will give a flat distribution between 0 and 1.  
+     * @param TotNumber  number generated events
+     * @param mean mean of the distribution 
+     * @param width width of the distribution   
+     */
+       public void fillRnd(int TotNumber, double mean, double width) {
+             java.util.Random random = new  java.util.Random(); 
+            for (int i = 0; i < TotNumber; i++)
+                    h1.fill(width*random.nextDouble()+mean);
 
     }
 	

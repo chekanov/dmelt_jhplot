@@ -30,7 +30,7 @@ import hep.io.root.interfaces.TH2;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-
+import cern.jet.random.AbstractDistribution;
 import jhplot.gui.HelpBrowser;
 
 
@@ -405,6 +405,56 @@ public class H2D extends DrawOptions implements Serializable {
 		h1.fill(value1, value2);
 
 	}
+
+
+             /** Fill the histogram with random numbers from Gaussian (Normal) distribution.
+     * Seed is taken from time. 
+     * @param TotNumber  number generated events
+     * @param meanX mean of the gaussian in X 
+     * @param sdX   standard deviation in X 
+     * @param meanY mean of the gaussian in Y 
+     * @param sdY   standard deviation in Y 
+     */
+       public void fillGauss(int TotNumber, double meanX, double sdX,  double meanY, double sdY) {
+            java.util.Random random = new  java.util.Random();
+            for (int i = 0; i < TotNumber; i++)
+                    h1.fill(sdX*random.nextGaussian()+meanX, sdY*random.nextGaussian()+meanY);
+
+    }
+
+     /** Fill the histogram with random numbers from fralt distribution.
+     * Seed is taken from time. 
+     * Using mean=0 and width=1 will give a flat distribution between 0 and 1.  
+     * @param TotNumber  number generated events
+     * @param meanX mean of the distribution in X 
+     * @param widthX width of the distribution  in X
+     * @param meanY mean of the distribution in Y 
+     * @param widthY width of the distribution  in Y 
+     */
+       public void fillRnd(int TotNumber, double meanX, double widthX, double meanY, double widthY) {
+             java.util.Random random = new  java.util.Random();
+            for (int i = 0; i < TotNumber; i++)
+                    h1.fill(widthX*random.nextDouble()+meanX, widthY*random.nextDouble()+meanY);
+
+    }
+
+
+       /**
+     * Fill the histogram with random numbers.
+     * Random generators are taken from cern.jet.random.*.
+     * Examples: Beta, Binominal, Poisson, BreitWigner,ChiSquare,Empirical
+     * Exponential, Gamma, Hyperbolic, Logarithmic, Normal, NegativeBinomial
+     * 
+     * @param TotNumber  number generated events
+     * @param random1 generator for X
+     * @param random1 generator for Y
+     */
+
+    public void fill(int TotNumber, AbstractDistribution random1, AbstractDistribution random2) {
+            for (int i = 0; i < TotNumber; i++)
+                    h1.fill(random1.nextDouble(),random2.nextDouble());
+
+    }
 
 	/**
 	 * Set the error on this bin.

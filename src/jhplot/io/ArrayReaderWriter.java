@@ -6,7 +6,6 @@ import java.io.*;
  * Class for reading binary data from files to multidimensional arrays
  * and writing binary data to files from multidimensional arrays.
  *
- * <pre>
  * Copyright (C) 2005  Vincent Cheung (vincent@psi.toronto.edu, http://www.psi.toronto.edu/~vincent/)
  * 
  * This program is free software; you can redistribute it and/or
@@ -17,7 +16,7 @@ import java.io.*;
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.</pre>
+ * GNU General Public License for more details.
  * 
  * @author <a href="mailto:vincent@psi.toronto.edu">Vincent Cheung</a>
  * @version 1.3 11/23/05

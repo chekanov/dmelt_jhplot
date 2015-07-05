@@ -1,7 +1,7 @@
 package jhplot.math;
 
 
-import jhplot.math.ArrayMathUtils;
+import jhplot.math.ArrayMath;
 import jhplot.F1D;
 import jhplot.F2D;
 
@@ -398,7 +398,7 @@ public final class Numeric {
     System.arraycopy(x, 0, xminus, 0, x.length);
     xplus[0] += dx[0];
     xminus[0] -= dx[0];
-    double funcdiff[] = ArrayMathUtils.scalarMultiply(0.5 / dx[0], ArrayMathUtils.subtract(func.eval(xplus), func.eval(xminus)));
+    double funcdiff[] = ArrayMath.scalarMultiply(0.5 / dx[0], ArrayMath.subtract(func.eval(xplus), func.eval(xminus)));
     final double diff[][] = new double[funcdiff.length][x.length];
     for (int i = 0; i < funcdiff.length; i++)
       diff[i][0] = funcdiff[i];
@@ -407,7 +407,7 @@ public final class Numeric {
       System.arraycopy(x, 0, xminus, 0, x.length);
       xplus[j] += dx[j];
       xminus[j] -= dx[j];
-      funcdiff = ArrayMathUtils.scalarMultiply(0.5 / dx[j], ArrayMathUtils.subtract(func.eval(xplus), func.eval(xminus)));
+      funcdiff = ArrayMath.scalarMultiply(0.5 / dx[j], ArrayMath.subtract(func.eval(xplus), func.eval(xminus)));
       for (i = 0; i < funcdiff.length; i++)
         diff[i][j] = funcdiff[i];
     }

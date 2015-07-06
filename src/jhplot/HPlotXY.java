@@ -79,7 +79,7 @@ public class HPlotXY {
 	private Axis right_axis;
 	private JPlot2DComponent complot;
 	/**
-	 * Create canvas with several plots.
+	 * Create canvas with a certain size. 
 	 * 
 	 * @param title
 	 *            Title

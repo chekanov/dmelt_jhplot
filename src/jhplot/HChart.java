@@ -69,9 +69,11 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import jhplot.io.images.*;
+import jhplot.io.images.ImageType;
+import jhplot.io.images.Export;
 import jhplot.gui.GHFrame;
 import jhplot.gui.HelpBrowser;
+import org.freehep.graphicsbase.util.export.*;
 
 /**
  * Create various charts, such as pie, histograms, bar charts including 3D

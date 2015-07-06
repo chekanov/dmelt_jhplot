@@ -9,18 +9,14 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import java.io.*;
 import java.awt.event.*;
-
 import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import kcl.waterloo.swing.*;
 import kcl.waterloo.actions.ActionManager;
 import kcl.waterloo.export.ExportFactory;
@@ -28,14 +24,9 @@ import kcl.waterloo.logging.CommonLogger;
 import kcl.waterloo.swing.GCFrameInterface;
 import kcl.waterloo.swing.GCGridContainer;
 import kcl.waterloo.swing.GCGridContainerInterface;
-
-
 import java.awt.image.BufferedImage;
-
 import javax.imageio.ImageIO;
-
 import java.awt.Graphics2D;
-
 import kcl.waterloo.deploy.pde.PDEGraphics2D;
 import kcl.waterloo.export.*;
 import kcl.waterloo.gui.file.FileUtil;

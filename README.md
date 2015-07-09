@@ -14,24 +14,28 @@ To compile the jhplot package into jhplot.jar, you need to download DataMelt fro
    unzip master.zip
 
 1) Add additional third-party libraries from DMelt:
+   <pre>
    wget -O dmelt.zip http://sourceforge.net/projects/dmelt/files/latest/download
    unzip dmelt.zip;
-
+   </pre>
 2) Copy these libraries:
    
    cp -rf dmelt/lib dmelt_jhplot-master/
 
 2) Assuming you have the "lib" directory, build the project:
 
+   <pre>
    cd dmelt_jhplot-master/
    ant
    ant run
-
+   </pre>
 The last command  runs a simple Java example showing a log scale for a canvas filled with random numbers.
 
 3) Now you can move the created file under DMelt location:
 
+  <pre>
   cp jhplot.jar ../dmelt/lib/system/
+  </pre>
 
 and you can start the DMelt as dmelt.sh (or dmelt.bat) 
 

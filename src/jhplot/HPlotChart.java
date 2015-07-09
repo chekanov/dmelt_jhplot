@@ -24,8 +24,6 @@
 
 package jhplot;
 
-
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.io.File;
@@ -61,7 +59,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.io.*;
 import java.awt.image.BufferedImage;
-import jhplot.gui.GHFrame;
 import jhplot.gui.HelpBrowser;
 import jhplot.io.images.ImageType;
 import jhplot.io.images.Export;
@@ -99,7 +96,7 @@ public class HPlotChart {
 	/**
 	 * Create canvas that keeps JFreeChart panel. 
 	 * 
-	 * @param chart 
+	 * @param jchart 
 	 *           chart of JFreeChart. 
 	 * @param xsize
 	 *            size in x direction
@@ -107,15 +104,29 @@ public class HPlotChart {
 	 *            size in y direction
 	 */
 
-	public HPlotChart(JFreeChart chart, int xsize, int ysize) {
+	public HPlotChart(JFreeChart jchart, int xsize, int ysize) {
 
              this.xsize = xsize;
              this.ysize = ysize;
              frame=new JFrame("HPloatChart");
 
-              this.chart = chart;
+              chart = jchart;
               cp= new ChartPanel(chart);
-	      cp.setPreferredSize(new Dimension(xsize, ysize));
+              cp.setPreferredSize(new Dimension(xsize, ysize));
+              cp.setBackground(DEFAULT_BG_COLOR);
+              cp.setLayout(new BorderLayout());
+              cp.setDomainZoomable(true);
+              cp.setRangeZoomable(true);
+
+              
+              chart.setAntiAlias(true);
+              chart.setBorderPaint(DEFAULT_BG_COLOR);
+              chart.setBackgroundPaint(DEFAULT_BG_COLOR);
+              chart.setBorderVisible(false);
+
+              org.jfree.chart.plot.Plot pp = (org.jfree.chart.plot.Plot)chart.getPlot();
+              pp.setBackgroundPaint(DEFAULT_BG_COLOR);
+
               setTheme("LEGACY_THEME");
               frame.add(cp);
 
@@ -181,12 +192,12 @@ public class HPlotChart {
 	/**
 	 * Construct a HPlotXY canvas with a plot with the size 600x400.
 	 * 
-	 * @param chart 
+	 * @param jchart 
 	 *            Chart to be shown. 
 	 */
-	public HPlotChart(JFreeChart chart) {
+	public HPlotChart(JFreeChart jchart) {
 
-		this(chart, 600, 400);
+		this(jchart, 600, 400);
 
 	}
 

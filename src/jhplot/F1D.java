@@ -1,40 +1,33 @@
 /**
-*    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
-*    All rights reserved.
-*
-*    This program is free software; you can redistribute it and/or modify it under the terms
-*    of the GNU General Public License as published by the Free Software Foundation; either
-*    version 3 of the License, or any later version.
-*
-*    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-*    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*    See the GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License along with this program;
-*    if not, see <http://www.gnu.org/licenses>.
-*
-*    Additional permission under GNU GPL version 3 section 7:
-*    If you have received this program as a library with written permission from the DataMelt team,
-*    you can link or combine this library with your non-GPL project to convey the resulting work.
-*    In this case, this library should be considered as released under the terms of
-*    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
-*    provided you include this license notice and a URL through which recipients can access the
-*    Corresponding Source.
-**/
+ *    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
+ *    All rights reserved.
+ *
+ *    This program is free software; you can redistribute it and/or modify it under the terms
+ *    of the GNU General Public License as published by the Free Software Foundation; either
+ *    version 3 of the License, or any later version.
+ *
+ *    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *    See the GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License along with this program;
+ *    if not, see <http://www.gnu.org/licenses>.
+ *
+ *    Additional permission under GNU GPL version 3 section 7:
+ *    If you have received this program as a library with written permission from the DataMelt team,
+ *    you can link or combine this library with your non-GPL project to convey the resulting work.
+ *    In this case, this library should be considered as released under the terms of
+ *    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
+ *    provided you include this license notice and a URL through which recipients can access the
+ *    Corresponding Source.
+ **/
 package jhplot;
 
 import jplot.LinePars;
 import hep.aida.*;
-import jscl.math.Expression;
-import jscl.text.ParseException;
 import java.io.Serializable;
-
 import jhplot.gui.HelpBrowser;
-
-import de.congrace.exp4j.Calculable;
-import de.congrace.exp4j.ExpressionBuilder;
-import de.congrace.exp4j.UnknownFunctionException;
-import de.congrace.exp4j.UnparsableExpressionException;
+import jhplot.math.exp4j.*;
 
 /**
  * Create a function in one dimension using "x" as a variable. The function name
@@ -67,7 +60,8 @@ import de.congrace.exp4j.UnparsableExpressionException;
  * <li>cosh: hyperbolic cosine</li>
  * <li>exp: euler's number raised to the power (e^x)</li>
  * <li>floor: nearest lower integer</li>
- * <li>log: logarithmus naturalis (base e)</li>
+ * <li>log: logarithm natural (base e)</li>
+ * <li>log10: logarithm (base 10)</li>
  * <li>sin: sine</li>
  * <li>sinh: hyperbolic sine</li>
  * <li>sqrt: square root</li>
@@ -101,7 +95,7 @@ public class F1D extends DrawOptions implements Serializable {
 
 	private double[] y = null;
 
-	private Calculable calc = null;
+	private Expression calc = null;
 
 	private ExpressionBuilder function = null;
 
@@ -110,6 +104,8 @@ public class F1D extends DrawOptions implements Serializable {
 	private boolean isParsed = false;
 
 	private String lastException = "";
+
+	final int maxpoints = 500;
 
 	/**
 	 * Create a function in 1D. 500 points are used between Min and Max for
@@ -212,7 +208,8 @@ public class F1D extends DrawOptions implements Serializable {
 	 * <li>cosh: hyperbolic cosine</li>
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
-	 * <li>log: logarithmus naturalis (base e)</li>
+	 * <li>log: natural logarithm  (base e)</li>
+	 * <li>log10: logarithm  (base 10)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -272,6 +269,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
 	 * <li>log: logarithmus naturalis (base e)</li>
+	 * <li>log10: logarithmus 10 naturalis (base e)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -301,26 +299,24 @@ public class F1D extends DrawOptions implements Serializable {
 		this.name = this.name.replace("pi", "3.14159265");
 		this.name = this.name.replace("Pi", "3.14159265");
 
-		this.points = 500;
+		this.points = maxpoints;
 		this.min = min;
 		this.max = max;
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
 		function = new ExpressionBuilder(this.name);
-                isParsed = false;
+		isParsed = false;
 		if (parse == true) {
 			try {
-				calc = function.withVariableNames("x").build();
+				function.variables("x");
+				calc = function.build();
 				isParsed = true;
-			} catch (UnknownFunctionException e) {
+			} catch (IllegalArgumentException e) {
 				isParsed = false;
-                                jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-				// System.err.println("Failed to parse function " + this.name+" Error:"+e1.toString()); 
-                       } catch (UnparsableExpressionException e) {
-                                isParsed = false;
-                                jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-                                // System.err.println("Failed to parse function " + this.name+" Error:"+e2.toString());
-                        }
+				jhplot.utils.Util.ErrorMessage("Failed to parse function "
+						+ this.name + " Error:" + e.toString());
+
+			}
 
 		}
 
@@ -362,7 +358,7 @@ public class F1D extends DrawOptions implements Serializable {
 
 		}
 
-		this.points = 500;
+		this.points = maxpoints;
 		this.min = min;
 		this.max = max;
 		setTitle(title);
@@ -370,18 +366,16 @@ public class F1D extends DrawOptions implements Serializable {
 		if (parse == true) {
 			function = new ExpressionBuilder(this.name);
 			try {
-				calc = function.withVariableNames("x").build();
+				calc = (function.variables("x")).build();
 				isParsed = true;
-			} catch (UnknownFunctionException  e) {
+			} catch (IllegalArgumentException e) {
 				isParsed = false;
-                                // System.err.println("Failed to parse function " + this.name+" Error:"+e1.toString());
-                                 jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-                        } catch (UnparsableExpressionException e) {
-                                isParsed = false;
-                                // System.err.println("Failed to parse function " + this.name+" Error:"+e2.toString());
-                                 jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-                        }
+				// System.err.println("Failed to parse function " +
+				// this.name+" Error:"+e1.toString());
+				jhplot.utils.Util.ErrorMessage("Failed to parse function "
+						+ this.name + " Error:" + e.toString());
 
+			}
 
 		}
 
@@ -435,24 +429,21 @@ public class F1D extends DrawOptions implements Serializable {
 
 	/**
 	 * Parse the function.
-	 * @return true if parsed without problems. 
+	 * 
+	 * @return true if parsed without problems.
 	 **/
 	public boolean parse() {
 		try {
-			calc = function.withVariableNames("x").build();
+			calc = (function.variables("x")).build();
 			isParsed = true;
-		} catch (UnknownFunctionException e) {
+		} catch (IllegalArgumentException e) {
 			isParsed = false;
-		        //System.err.println("Failed to parse function " + this.name+" Error:"+e.toString());
-                        jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
+			// System.err.println("Failed to parse function " +
+			// this.name+" Error:"+e.toString());
+			jhplot.utils.Util.ErrorMessage("Failed to parse function "
+					+ this.name + " Error:" + e.toString());
 
 		}
-                catch (UnparsableExpressionException e) {
-                        isParsed = false;
-                        // System.err.println("Failed to parse function " + this.name+" Error:"+e.toString());
-                        jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-
-                }
 
 		return isParsed;
 
@@ -478,7 +469,7 @@ public class F1D extends DrawOptions implements Serializable {
 		this.iname = null;
 		this.title = title;
 		this.function = function;
-		this.points = 500;
+		this.points = maxpoints;
 		this.min = min;
 		this.max = max;
 		setTitle(name);
@@ -486,8 +477,51 @@ public class F1D extends DrawOptions implements Serializable {
 
 		isParsed = parse();
 		if (isParsed == false)
-			jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name);
+			jhplot.utils.Util.ErrorMessage("Failed to parse function "
+					+ this.name);
 
+	}
+
+	/**
+	 * Create a function in 1D. 500 points are used between Min and Max for
+	 * evaluation. The function may have x as independent variable.
+	 * 
+	 * 
+	 * @param title
+	 *            Title
+	 * @param function
+	 *            Expression after parsing and building
+	 * @param min
+	 *            Min value
+	 * @param max
+	 *            Max value
+	 */
+	public F1D(String title, Expression calc, double min, double max) {
+		this.iname = null;
+		this.name = name;
+		this.title = title;
+		this.calc = calc;
+		this.points = maxpoints;
+		this.min = min;
+		this.max = max;
+		setTitle(title);
+		lpp.setType(LinePars.F1D);
+		isParsed = true;
+	}
+
+	/**
+	 * Create a function in 1D. 500 points are used between Min and Max for
+	 * evaluation. The function may have x as independent variable.
+	 * 
+	 * @param function
+	 *            Expression after parsing and building
+	 * @param min
+	 *            Min value
+	 * @param max
+	 *            Max value
+	 */
+	public F1D(Expression calc, double min, double max) {
+		this("F1D", calc, min, max);
 	}
 
 	/**
@@ -535,21 +569,22 @@ public class F1D extends DrawOptions implements Serializable {
 		double y = 0;
 
 		// jPlot function first
-		if (iname == null && (function == null || isParsed == false)) {
+		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
 					.ErrorMessage("eval(): Function was not parsed correctly!");
 			return y;
 		}
 
 		// evaluate function
-		if (iname == null && function != null && isParsed == true) {
+		if (iname == null && calc != null && isParsed == true) {
 			try {
 				calc.setVariable("x", x);
-				y = calc.calculate();
+				y = calc.evaluate();
 			} catch (Exception e) {
 				lastException = e.getMessage().toString();
-                                String ss1 = Double.toString(x);
-                                System.err.println("Failed to evaluate function:" + name+" at x="+ss1+"\n"+e.toString());
+				String ss1 = Double.toString(x);
+				System.err.println("Failed to evaluate function:" + name
+						+ " at x=" + ss1 + "\n" + e.toString());
 
 			}
 
@@ -565,8 +600,9 @@ public class F1D extends DrawOptions implements Serializable {
 			} catch (Exception e) {
 				// System.out.println("Failed to evaluate function!");
 				lastException = e.getMessage().toString();
-                                String ss1 = Double.toString(x);
-				System.err.println("Failed to evaluate function:" + name+" at x="+ss1+"\n"+e.toString());
+				String ss1 = Double.toString(x);
+				System.err.println("Failed to evaluate function:" + name
+						+ " at x=" + ss1 + "\n" + e.toString());
 			}
 
 			return y;
@@ -588,29 +624,30 @@ public class F1D extends DrawOptions implements Serializable {
 		double[] y = new double[x.length];
 
 		// jPlot function first
-		if (iname == null && (function == null || isParsed == false)) {
+		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
 					.ErrorMessage("eval(): Function was not parsed correctly!");
 			return y;
 		}
 
 		// evaluate function
-		if (iname == null && function != null && isParsed == true) {
+		if (iname == null && calc != null && isParsed == true) {
 
 			for (int i = 0; i < x.length; i++) {
 
 				try {
 
 					calc.setVariable("x", x[i]);
-					y[i] = calc.calculate();
+					y[i] = calc.evaluate();
 
 				} catch (Exception e) {
 
 					String ss = Integer.toString(i);
 					lastException = e.getMessage().toString() + " at position="
 							+ ss;
-					jhplot.utils.Util.ErrorMessage("eval(): Failed to evaluate:"
-							+ name + " at position=" + ss);
+					jhplot.utils.Util
+							.ErrorMessage("eval(): Failed to evaluate:" + name
+									+ " at position=" + ss);
 					return null;
 
 				}
@@ -656,7 +693,7 @@ public class F1D extends DrawOptions implements Serializable {
 
 		this.min = min;
 		this.max = max;
-		this.points = 500;
+		this.points = maxpoints;
 		eval();
 
 	}
@@ -687,9 +724,9 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 	public void eval() {
 
-		if (iname == null && (function == null || isParsed == false)) {
+		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
-					.ErrorMessage("eval(): Function was not parsed correctly!");
+					.ErrorMessage("eval(): Function was not parsed correctly! Not parsed?");
 			return;
 		}
 
@@ -702,8 +739,9 @@ public class F1D extends DrawOptions implements Serializable {
 				try {
 
 					calc.setVariable("x", x[i]);
-					y[i] = calc.calculate();
-
+					y[i] = calc.evaluate();
+					// System.out.println(x[i]);
+					// System.out.println(y[i]);
 				} catch (Exception e) {
 					String ss = Double.toString(x[i]);
 					System.err.println("Failed to evaluate:" + name
@@ -729,8 +767,7 @@ public class F1D extends DrawOptions implements Serializable {
 					y[i] = iname.value(xx);
 				} catch (Exception e) {
 					String ss = Double.toString(x[i]);
-					System.err.println("Failed to evaluate at x="
-							+ ss);
+					System.err.println("Failed to evaluate at x=" + ss);
 					return;
 				}
 
@@ -830,7 +867,6 @@ public class F1D extends DrawOptions implements Serializable {
 
 	}
 
-	
 	/**
 	 * Replace abstract parameter with the value (double). Case sensitive!
 	 * 
@@ -843,7 +879,8 @@ public class F1D extends DrawOptions implements Serializable {
 	public void setPar(String parameter, double value) {
 		String s1 = Double.toString(value);
 		this.name = name.replaceAll(parameter, s1);
-                function.withExpression(this.name);
+		function = new ExpressionBuilder(this.name);
+		parse();
 	}
 
 	/**
@@ -977,8 +1014,6 @@ public class F1D extends DrawOptions implements Serializable {
 		return this.y[i];
 	}
 
-	
-
 	/**
 	 * Sets a name of the function, i.e. what will be used for evaluation
 	 * 
@@ -1007,7 +1042,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 * 
 	 * @return function
 	 **/
-	public Calculable getParse() {
+	public Expression getParse() {
 		return calc;
 	}
 
@@ -1192,8 +1227,8 @@ public class F1D extends DrawOptions implements Serializable {
 	public String toMathML() {
 
 		try {
-			return Expression.valueOf(name).toMathML();
-		} catch (ParseException e) {
+			return jscl.math.Expression.valueOf(name).toMathML();
+		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return "";
 		}
@@ -1209,8 +1244,8 @@ public class F1D extends DrawOptions implements Serializable {
 	public String toJava() {
 
 		try {
-			return Expression.valueOf(name).toJava();
-		} catch (ParseException e) {
+			return jscl.math.Expression.valueOf(name).toJava();
+		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return "";
 		}
@@ -1230,8 +1265,8 @@ public class F1D extends DrawOptions implements Serializable {
 	public boolean simplify() {
 
 		try {
-			name = Expression.valueOf(name).simplify().toString();
-		} catch (ParseException e) {
+			name = jscl.math.Expression.valueOf(name).simplify().toString();
+		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
 		}
@@ -1251,8 +1286,8 @@ public class F1D extends DrawOptions implements Serializable {
 	public boolean elementary() {
 
 		try {
-			name = Expression.valueOf(name).elementary().toString();
-		} catch (ParseException e) {
+			name = jscl.math.Expression.valueOf(name).elementary().toString();
+		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
 		}
@@ -1271,8 +1306,8 @@ public class F1D extends DrawOptions implements Serializable {
 	public boolean expand() {
 
 		try {
-			name = Expression.valueOf(name).expand().toString();
-		} catch (ParseException e) {
+			name = jscl.math.Expression.valueOf(name).expand().toString();
+		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
 		}
@@ -1291,8 +1326,8 @@ public class F1D extends DrawOptions implements Serializable {
 	public boolean factorize() {
 
 		try {
-			name = Expression.valueOf(name).factorize().toString();
-		} catch (ParseException e) {
+			name = jscl.math.Expression.valueOf(name).factorize().toString();
+		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
 		}
@@ -1312,8 +1347,8 @@ public class F1D extends DrawOptions implements Serializable {
 	public boolean numeric() {
 
 		try {
-			name = Expression.valueOf(name).numeric().toString();
-		} catch (ParseException e) {
+			name = jscl.math.Expression.valueOf(name).numeric().toString();
+		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
 		}

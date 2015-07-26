@@ -27,12 +27,8 @@ import hep.aida.IFunction;
 import java.io.Serializable;
 
 import jhplot.gui.HelpBrowser;
+import jhplot.math.exp4j.*;
 
-
-import de.congrace.exp4j.Calculable;
-import de.congrace.exp4j.ExpressionBuilder;
-import de.congrace.exp4j.UnknownFunctionException;
-import de.congrace.exp4j.UnparsableExpressionException;
 
 /**
  * Create 3D function  using 3 independent variables: x,y,z.
@@ -101,7 +97,7 @@ public class F3D extends DrawOptions implements Serializable {
 	
 	private String name;
 
-	private Calculable calc = null;
+	private Expression calc = null;
 
 	private ExpressionBuilder function = null;
 
@@ -231,17 +227,13 @@ public class F3D extends DrawOptions implements Serializable {
 
 		function = new ExpressionBuilder(this.name);
         try {
-                calc = function.withVariableNames("x","y","z").build();
+                calc = (function.variables("x","y","z")).build();
                 isParsed = true;
-	 } catch (UnknownFunctionException  e) {
+	 } catch (IllegalArgumentException  e) {
                                 isParsed = false;
                                 jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-                        } catch (UnparsableExpressionException e) {
-                                isParsed = false;
-                                jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-                        }
-	
-		
+                       
+	 }
 
 	}
 	
@@ -371,7 +363,7 @@ public class F3D extends DrawOptions implements Serializable {
 				calc.setVariable("x", x);
 				calc.setVariable("y", y);
 				calc.setVariable("z", z);
-				h = calc.calculate();
+				h = calc.evaluate();
 				
 				
 			} catch (Exception e) {
@@ -609,15 +601,32 @@ public class F3D extends DrawOptions implements Serializable {
 	}
 
 	/**
-	 * Return parsed function. Use the method "caculate()" to evaluate it.
+	 * Return parsed functional expression.
 	 * 
 	 * @return function
 	 * */
-	public Calculable getParse() {
+	public Expression getParse() {
 		return calc;
 	}
 
+	/**
+	 * Parse the function.
+	 * @return true if parsed without problems. 
+	 **/
+	public boolean parse() {
+		try {
+			calc=(function.variables("x","y","z")).build();
+			isParsed = true;
+		} catch (IllegalArgumentException e) {
+			isParsed = false;
+		        //System.err.println("Failed to parse function " + this.name+" Error:"+e.toString());
+                        jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
 
+		}
+              
+		return isParsed;
+
+	}
         /**
          * Replace abstract parameter with the value (double). Case sensitive!
          * 
@@ -630,7 +639,8 @@ public class F3D extends DrawOptions implements Serializable {
         public void setPar(String parameter, double value) {
                 String s1 = Double.toString(value);
                 this.name = name.replaceAll(parameter, s1);
-                function.withExpression(this.name);
+                function = new ExpressionBuilder(this.name);
+                parse();
         }
 
 	

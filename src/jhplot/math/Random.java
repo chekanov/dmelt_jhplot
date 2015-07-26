@@ -1,7 +1,7 @@
 package jhplot.math;
 
-import de.congrace.exp4j.Calculable;
-import de.congrace.exp4j.ExpressionBuilder;
+import jhplot.math.exp4j.Expression;
+import jhplot.math.exp4j.ExpressionBuilder;
 import edu.cornell.lassp.houle.RngPack.RandomSeedable;
 import edu.cornell.lassp.houle.RngPack.Ranmar;
 import graph.ParseFunction;
@@ -271,7 +271,7 @@ public class Random {
      *            Max of the random variable.
      * @return A double.
      */
-    public static double rejection(Calculable fun, double maxFun, double min, double max) {
+    public static double rejection(Expression fun, double maxFun, double min, double max) {
         double try_x;
         double try_y;
         do {
@@ -283,10 +283,11 @@ public class Random {
 
 
 
-   private static double  eval(Calculable fun, double x) {
+   private static double  eval(Expression fun, double x) {
          double d=0;
          try {
-                 d  = fun.calculate(x);
+        	     fun.setVariable("x", x);
+        	     d  = fun.evaluate();
                  } catch (Exception e) {
                     System.out.println("eval(): Failed to evaluate function");
 

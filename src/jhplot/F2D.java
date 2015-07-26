@@ -23,10 +23,7 @@
 **/
 package jhplot;
 
-import de.congrace.exp4j.Calculable;
-import de.congrace.exp4j.ExpressionBuilder;
-import de.congrace.exp4j.UnknownFunctionException;
-import de.congrace.exp4j.UnparsableExpressionException;
+import jhplot.math.exp4j.*;
 import hep.aida.IFunction;
 import java.io.Serializable;
 import jhplot.gui.HelpBrowser;
@@ -60,6 +57,7 @@ import jhplot.gui.HelpBrowser;
  * <li>exp: euler's number raised to the power (e^x)</li>
  * <li>floor: nearest lower integer</li>
  * <li>log: logarithmus naturalis (base e)</li>
+ * <li>log10: logarithmus (base 10)</li>
  * <li>sin: sine</li>
  * <li>sinh: hyperbolic sine</li>
  * <li>sqrt: square root</li>
@@ -94,13 +92,16 @@ public class F2D extends DrawOptions implements Serializable {
 
 	private String name;
 
-	private Calculable calc = null;
+	private Expression calc = null;
 
 	private ExpressionBuilder function = null;
 
 	private boolean isParsed = false;
 
 	private IFunction iname = null;
+
+        final int maxpoints=500;
+
 
 	/**
 	 * Create a function in 2D for evaluation.
@@ -234,16 +235,14 @@ public class F2D extends DrawOptions implements Serializable {
 		setTitle(this.title);
 		function = new ExpressionBuilder(this.name);
 		try {
-			calc = function.withVariableNames("x", "y").build();
+			function.variables("x", "y");
+			calc = function.build();
 			isParsed = true;
-                 } catch (UnknownFunctionException  e) {
+                 } catch (IllegalArgumentException  e) {
                                 isParsed = false;
                                 jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-                        } catch (UnparsableExpressionException e) {
-                                isParsed = false;
-                                 jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-                        }
-
+                    
+                 }
 
 	}
 
@@ -301,6 +300,80 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
+
+         /**
+         * Create a function in 2D. 500 points are used between Min and Max for
+         * evaluation.
+         * The function may have x as independent variable.
+         * Make sure that expression has 2 variables, x and y. 
+         * 
+         * @param title
+         *            Title
+         * @param function
+         *            Expression after parsing and building
+         * @param Xmin
+         *            Min X value
+         * @param Xmax
+         *            Max X value
+         * 
+         * @param Ymin
+         *            Min Y value
+         * @param Ymax
+         *            Max Y value
+
+         */
+        public F2D(String title, Expression calc, double Xmin, double Xmax,
+                        double Ymin, double Ymax) {
+                this.iname = null;
+                this.title = title;
+                this.calc = calc;
+                this.points = maxpoints;
+                this.Xmin = Xmin;
+                this.Xmax = Xmax;
+                this.Ymin = Ymin;
+                this.Ymax = Ymax;
+                this.name="F2D";
+                setTitle(title);
+                isParsed = true; 
+        }
+
+
+         /**
+         * Create a function in 2D. 500 points are used between Min and Max for
+         * evaluation.
+         * The function may have x as independent variable.
+         * Make sure that expression has 2 variables, x and y. 
+         * 
+         * @param title
+         *            Title
+         * @param function
+         *            Expression after parsing and building
+         * @param Xmin
+         *            Min X value
+         * @param Xmax
+         *            Max X value
+         * 
+         * @param Ymin
+         *            Min Y value
+         * @param Ymax
+         *            Max Y value
+
+         */
+        public F2D(Expression calc, double Xmin, double Xmax,
+                        double Ymin, double Ymax) {
+                this.iname = null;
+                this.title = "F2D";
+                this.calc = calc;
+                this.points = maxpoints;
+                this.Xmin = Xmin;
+                this.Xmax = Xmax;
+                this.Ymin = Ymin;
+                this.Ymax = Ymax;
+                setTitle("F2D");
+        }
+
+
+
 	/**
 	 * Create a F2D function from JAIDA IFunction. By default, 500 points for
 	 * evaluation are used.
@@ -313,6 +386,8 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
+	
+	
 	/**
 	 * Create a F2D function from JAIDA IFunction.
 	 * 
@@ -346,19 +421,19 @@ public class F2D extends DrawOptions implements Serializable {
 		double z = 0;
 
 		// jPlot function first
-		if (iname == null && (function == null || isParsed == false)) {
+		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
 					.ErrorMessage("eval(): Function was not parsed correctly!");
 			return z;
 		}
 
 		// evaluate function
-		if (iname == null && function != null && isParsed == true) {
+		if (iname == null && calc != null && isParsed == true) {
 			try {
 
 				calc.setVariable("x", x);
 				calc.setVariable("y", y);
-				z = calc.calculate();
+				z = calc.evaluate();
 
 			} catch (Exception e) {
 				String ss1 = Double.toString(x);
@@ -406,14 +481,14 @@ public class F2D extends DrawOptions implements Serializable {
 		String err = "";
 
 		// jPlot function first
-		if (iname == null && (function == null || isParsed == false)) {
+		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
 					.ErrorMessage("eval(): Function was not parsed correctly!");
 			return z;
 		}
 
 		// evaluate function
-		if (iname == null && function != null && isParsed == true) {
+		if (iname == null && calc != null && isParsed == true) {
 
 			for (int i = 0; i < x.length; i++)
 				for (int j = 0; j < y.length; j++) {
@@ -422,7 +497,7 @@ public class F2D extends DrawOptions implements Serializable {
 
 						calc.setVariable("x", x[i]);
 						calc.setVariable("y", y[i]);
-						z[i][j] = calc.calculate();
+						z[i][j] = calc.evaluate();
 
 					} catch (Exception e) {
 						String ss1 = Double.toString(x[i]);
@@ -483,7 +558,25 @@ public class F2D extends DrawOptions implements Serializable {
 		this.Xmin = min;
 
 	}
+	/**
+	 * Parse the function.
+	 * @return true if parsed without problems. 
+	 **/
+	public boolean parse() {
+		try {
+			calc=(function.variables("x","y")).build();
+			isParsed = true;
+		} catch (IllegalArgumentException e) {
+			isParsed = false;
+		        //System.err.println("Failed to parse function " + this.name+" Error:"+e.toString());
+                        jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
 
+		}
+              
+		return isParsed;
+
+	}
+	
 	/**
 	 * Get Min value in X
 	 * 
@@ -613,9 +706,10 @@ public class F2D extends DrawOptions implements Serializable {
         public void setPar(String parameter, double value) {
                 String s1 = Double.toString(value);
                 this.name = name.replaceAll(parameter, s1);
-                function.withExpression(this.name);
+               
+        function = new ExpressionBuilder(this.name);
+        parse();
         }
-
 
 	/**
 	 * Get the number of points for evaluation of a function
@@ -655,7 +749,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 * Return parsed function. One can evaluate it as "calculate()".
 	 * @return function
 	 **/
-	public Calculable getParse() {
+	public Expression getParse() {
 		return calc;
 	}
 

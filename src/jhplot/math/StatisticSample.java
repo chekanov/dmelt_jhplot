@@ -5,8 +5,7 @@ import jhplot.stat.Statistics;
 import cern.jet.random.*;
 import cern.colt.list.DoubleArrayList;
 import cern.colt.list.IntArrayList;
-import de.congrace.exp4j.Calculable;
-import de.congrace.exp4j.ExpressionBuilder;
+import jhplot.math.exp4j.*;
 
 import graph.ParseFunction;
 
@@ -420,7 +419,7 @@ public class StatisticSample {
  * @param max Max value in X 
  *
  * */
-    public static double[][] randomRejection(int m, int n, Calculable fun, double maxFun, double min, double max) {
+    public static double[][] randomRejection(int m, int n, Expression fun, double maxFun, double min, double max) {
         double[][] A = new double[m][n];
         for (int i = 0; i < A.length; i++)
             for (int j = 0; j < A[i].length; j++)
@@ -438,7 +437,7 @@ public class StatisticSample {
  *  @param max Max value in X 
  *  
  **/
-    public static double[] randomRejection(int m, Calculable fun, double maxFun, double min, double max) {
+    public static double[] randomRejection(int m, Expression fun, double maxFun, double min, double max) {
         double[] A = new double[m];
         for (int i = 0; i < A.length; i++)
             A[i] = Random.rejection(fun, maxFun, min, max);

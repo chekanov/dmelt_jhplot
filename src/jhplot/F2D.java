@@ -361,15 +361,7 @@ public class F2D extends DrawOptions implements Serializable {
          */
         public F2D(Expression calc, double Xmin, double Xmax,
                         double Ymin, double Ymax) {
-                this.iname = null;
-                this.title = "F2D";
-                this.calc = calc;
-                this.points = maxpoints;
-                this.Xmin = Xmin;
-                this.Xmax = Xmax;
-                this.Ymin = Ymin;
-                this.Ymax = Ymax;
-                setTitle("F2D");
+                this("F2D",calc,Xmin,Xmax,Ymin,Ymax); 
         }
 
 
@@ -423,7 +415,7 @@ public class F2D extends DrawOptions implements Serializable {
 		// jPlot function first
 		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
-					.ErrorMessage("eval(): Function was not parsed correctly!");
+					.ErrorMessage("eval(x,y): Function was not parsed correctly!");
 			return z;
 		}
 
@@ -483,7 +475,7 @@ public class F2D extends DrawOptions implements Serializable {
 		// jPlot function first
 		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
-					.ErrorMessage("eval(): Function was not parsed correctly!");
+					.ErrorMessage("eval(x[],y[]): Function was not parsed correctly!");
 			return z;
 		}
 

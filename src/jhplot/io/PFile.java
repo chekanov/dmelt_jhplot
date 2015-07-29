@@ -292,7 +292,7 @@ public class PFile {
 			    F1D f1d = (jhplot.F1D)ob;
 			    Record.F1D.Builder p = Record.F1D.newBuilder().setName(f1d.getTitle());
 			    p.setDefinition(f1d.getName() );
-			    p.setMax(f1d.getMax()); p.setMin(f1d.getMin());
+			    p.setMax(0); p.setMin(1);
 		            success=true;	
                   } else if (ob instanceof jhplot.FND) {
                             FND fnd = (jhplot.FND)ob;
@@ -304,8 +304,8 @@ public class PFile {
                             F2D f2d = (jhplot.F2D)ob;
                             Record.F2D.Builder p = Record.F2D.newBuilder().setName(f2d.getTitle());
                             p.setDefinition(f2d.getName() );
-                            p.setMaxX(f2d.getMaxX()); p.setMinX(f2d.getMinX());
-                            p.setMaxY(f2d.getMaxY()); p.setMinY(f2d.getMinY());
+                           // p.setMaxX(f2d.getMaxX()); p.setMinX(f2d.getMinX());
+                           // p.setMaxY(f2d.getMaxY()); p.setMinY(f2d.getMinY());
                             success=true;
                             
        } else if (ob instanceof jhplot.FPR) {
@@ -659,12 +659,11 @@ public class PFile {
 			return record.getName();
 		} else if (record.hasF1D()) {
 			Record.F1D f1d = record.getF1D();
-			F1D p = new F1D(f1d.getName(), f1d.getDefinition(), f1d.getMin(), f1d.getMax() );
+			F1D p = new F1D(f1d.getName(), f1d.getDefinition());
 			return p;	
                  } else if (record.hasF2D()) {
                         Record.F2D f2d = record.getF2D();
-                        F2D p = new F2D(f2d.getName(), f2d.getDefinition(),f2d.getMinX(), 
-                                        f2d.getMaxX(), f2d.getMinY(), f2d.getMaxY() );
+                        F2D p = new F2D(f2d.getName(), f2d.getDefinition());
                         return p;
                 } else if (record.hasFND()) {
                         Record.FND fnd = record.getFND();
@@ -672,7 +671,7 @@ public class PFile {
                         return p;
 		} else if (record.hasFPR()) {
 			Record.FPR f1d = record.getFPR();
-			F1D p = new F1D(f1d.getName(), f1d.getDefinition(), f1d.getDivU(), f1d.getDivV() );
+			F1D p = new F1D(f1d.getName(), f1d.getDefinition());
 			return p;	                     
 		} else if (record.hasP0I()) {
 			Record.P0I p0i = record.getP0I();

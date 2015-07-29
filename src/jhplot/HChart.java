@@ -971,16 +971,23 @@ public class HChart extends GHFrame {
 	/**
 	 * Add a F1D function to the canvas. Call update() to draw all functions.
 	 * Use the methods setColor() etc. of F1D function to change the style
+	 *  If You set range during F1D initialization, it will be used.
+	 * If not, canvas range is used.
 	 * 
 	 * @param f1d
 	 *            F1D function
 	 * 
 	 */
 	public void add(F1D f1) {
-
-		f1.eval(); // evaluate first
 		int Bin = f1.getPoints();
-
+		
+		
+		if (f1.getMin() == f1.getMax()) {
+		    f1.eval(Min,Max,Bin); 
+		} else {
+		   f1.eval(f1.getMin(), f1.getMax(), Bin); // evaluate
+		}
+		
 		XYSeriesCollection c = new XYSeriesCollection();
 		XYSeries SerData = new XYSeries(f1.getName());
 		for (int i = 0; i < Bin; i++)

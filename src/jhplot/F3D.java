@@ -58,7 +58,7 @@ import jhplot.math.exp4j.*;
  * <li>cosh: hyperbolic cosine</li>
  * <li>exp: euler's number raised to the power (e^x)</li>
  * <li>floor: nearest lower integer</li>
- * <li>log: logarithmus naturalis (base e)</li>
+ * <li>log: logarithm natural(base e)</li>
  * <li>sin: sine</li>
  * <li>sinh: hyperbolic sine</li>
  * <li>sqrt: square root</li>
@@ -79,17 +79,6 @@ public class F3D extends DrawOptions implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private double Xmin;
-
-	private double Xmax;
-
-	private double Ymin;
-
-	private double Ymax;
-
-	private double Zmin;
-
-	private double Zmax;
 
 	private int points;
 
@@ -109,6 +98,8 @@ public class F3D extends DrawOptions implements Serializable {
 	/**
 	 * Create a function in 3D for evaluation.
 	 * The function may have up to 3 independent variables: x,y,z.
+	 * Function is parsed.
+	 * 
 	 * <b>Operators and functions</b><br/>
 	 * <br/>
 	 * the following operators are supported:
@@ -133,7 +124,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 * <li>cosh: hyperbolic cosine</li>
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
-	 * <li>log: logarithmus naturalis (base e)</li>
+	 * <li>log: logarithm natural (base e)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -148,7 +139,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 *            String representing the function
 	 */
 	public F3D(String name) {
-		this(name,0.0,1.0,0.0,1.0,0.0,1.0);
+		this(name,name,true);
 	}
 
 	/**
@@ -180,7 +171,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 * <li>cosh: hyperbolic cosine</li>
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
-	 * <li>log: logarithmus naturalis (base e)</li>
+	 * <li>log: logarithm natural(base e)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -190,25 +181,18 @@ public class F3D extends DrawOptions implements Serializable {
 	 * <br/>
 	 * <br/>
 	 * 
-	 * 
+	 * @param title
+	 *            String representing the title
+	 *            
 	 * @param name
 	 *            String representing the function.
-	 * @param Xmin
-	 *            Min value in X
-	 * @param Xmax
-	 *            Max value in X
-	 * @param Ymin
-	 *            Min value in Y
-	 * @param Ymax
-	 *            Max value in Y
-	 * @param Zmin
-	 *            Min value in Z
-	 * @param Zmax
-	 *            Max value in Y
+	 *            
+	 *  @param isParsed
+	 *            parse this function or not.
+	 *                      
 	 * 
 	 */
-	public F3D(String title, String name, double Xmin, double Xmax, double Ymin, double Ymax,
-			double Zmin, double Zmax) {
+	public F3D(String title, String name, boolean isParsed) {
 
 		
 		this.name=name;
@@ -217,15 +201,12 @@ public class F3D extends DrawOptions implements Serializable {
 		this.name = this.name.replace("Pi", "3.14159265"); 
 		
 	    this.title = title;
-		this.points = 500;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
-		this.Zmin = Zmin;
-		this.Zmax = Zmax;
+		this.points = 200;
+		this.isParsed=isParsed;
 
 		function = new ExpressionBuilder(this.name);
+		
+		if (isParsed){
         try {
                 calc = (function.variables("x","y","z")).build();
                 isParsed = true;
@@ -235,24 +216,7 @@ public class F3D extends DrawOptions implements Serializable {
                        
 	 }
 
-	}
-	
-	
-	/**
-	 * Build a 3D function. Title set to its name.
-	 * 
-	 * @param name
-	 * @param Xmin
-	 * @param Xmax
-	 * @param Ymin
-	 * @param Ymax
-	 * @param Zmin
-	 * @param Zmax
-	 */
-	public F3D(String name, double Xmin, double Xmax, double Ymin, double Ymax,
-			double Zmin, double Zmax) {
-
-		this(name,name,Xmin,Xmax,Ymin,Ymax,Zmin,Zmax);
+		}
 		
 	}
 	
@@ -269,61 +233,26 @@ public class F3D extends DrawOptions implements Serializable {
 	 *            String representing the function.
 	 * @param iname
 	 *            input AIDA function
-	 * @param Xmin
-	 *            Min value in X
-	 * @param Xmax
-	 *            Max value in X
-	 * @param Ymin
-	 *            Min value in Y
-	 * @param Ymax
-	 *            Max value in Y
-	 * @param Zmin
-	 *            Min value in Z
-	 * @param Zmax
-	 *            Max value in Y
 	 * 
 	 */
-	public F3D(String title, String name, IFunction iname, double Xmin, double Xmax,
-			double Ymin, double Ymax, double Zmin, double Zmax) {
+	public F3D(String title, IFunction iname) {
 
 	     this.name = name.replace("**","^"); // preprocess power	
 		this.title = title;
 		this.iname = iname;
 		this.points = 500;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
-		this.Zmin = Zmin;
-		this.Zmax = Zmax;
+		
 	}
 	
-	public F3D(String name, IFunction iname, double Xmin, double Xmax,
-			double Ymin, double Ymax, double Zmin, double Zmax) {
-
-	}
 	/**
 	 * Create a function in 3D from a AIDA IFunction.
 	 * @param iname
 	 *            input AIDA function
-	 * @param Xmin
-	 *            Min value in X
-	 * @param Xmax
-	 *            Max value in X
-	 * @param Ymin
-	 *            Min value in Y
-	 * @param Ymax
-	 *            Max value in Y
-	 * @param Zmin
-	 *            Min value in Z
-	 * @param Zmax
-	 *            Max value in Y
+	
 	 * 
 	 */
-	public F3D(IFunction iname, double Xmin, double Xmax,
-			double Ymin, double Ymax, double Zmin, double Zmax) {
-		
-		this("IFunction",iname,Xmin,Xmax,Ymin,Ymax,Zmin,Zmax);
+	public F3D(IFunction iname) {
+		this("IFunction",iname);
 	
 		
 	}
@@ -412,80 +341,6 @@ public class F3D extends DrawOptions implements Serializable {
 
 	}
 
-	/**
-	 * Set Min in X
-	 * 
-	 * @param min
-	 *            Min value
-	 */
-	public void setMinX(double min) {
-		this.Xmin = min;
-
-	}
-
-	/**
-	 * Get Min value in X
-	 * 
-	 * @return Min value in X
-	 */
-	public double getMinX() {
-		return this.Xmin;
-	}
-
-	/**
-	 * Set Min value in Y
-	 * 
-	 * @param min
-	 *            Min value in Y
-	 */
-	public void setMinY(double min) {
-		this.Ymin = min;
-
-	}
-
-	/**
-	 * Set Min value in Z
-	 * 
-	 * @param min
-	 *            Min value in Z
-	 */
-	public void setMinZ(double min) {
-		this.Zmin = min;
-
-	}
-
-	/**
-	 * Get Min value in Y
-	 * 
-	 * @return Min value in Y
-	 */
-
-	public double getMinY() {
-		return this.Ymin;
-	}
-
-	/**
-	 * Get Min value in Z
-	 * 
-	 * @param Min
-	 *            value in Z
-	 */
-
-	public double getMinZ() {
-		return this.Zmin;
-	}
-
-	/**
-	 * Set Max value in X
-	 * 
-	 * @param max
-	 *            Max value in X
-	 */
-	public void setMaxX(double max) {
-		this.Xmax = max;
-
-	}
-
 	
 	
 	/**
@@ -504,17 +359,7 @@ public class F3D extends DrawOptions implements Serializable {
 	
 	
 	
-	/**
-	 * Set Max value in Z
-	 * 
-	 * @param max
-	 *            Max value in Z
-	 */
-	public void setMaxZ(double max) {
-		this.Zmax = max;
-
-	}
-
+	
 	/**
 	 * Sets a name of the function, i.e. what will be used for evaluation
 	 * 
@@ -537,47 +382,7 @@ public class F3D extends DrawOptions implements Serializable {
 
 	}
 
-	/**
-	 * Get Max value in X
-	 * 
-	 * @return Max value in X
-	 */
-	public double getMaxX() {
-		return this.Xmax;
-
-	}
-
-	/**
-	 * Set Max value in Z
-	 * 
-	 * @return max Max value in Z
-	 */
-	public double getMaxZ() {
-		return this.Zmax;
-
-	}
-
-	/**
-	 * Set Max value in Y
-	 * 
-	 * @param max
-	 *            Max value in Y
-	 */
-
-	public void setMaxY(double max) {
-		this.Ymax = max;
-
-	}
-
-	/**
-	 * Get Max value in Y
-	 * 
-	 * @return Max value in Y
-	 */
-	public double getMaxY() {
-		return this.Ymax;
-
-	}
+	
 
 	/**
 	 * Get the number of points
@@ -615,6 +420,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 **/
 	public boolean parse() {
 		try {
+                        function = new ExpressionBuilder(this.name);
 			calc=(function.variables("x","y","z")).build();
 			isParsed = true;
 		} catch (IllegalArgumentException e) {
@@ -639,8 +445,6 @@ public class F3D extends DrawOptions implements Serializable {
         public void setPar(String parameter, double value) {
                 String s1 = Double.toString(value);
                 this.name = name.replaceAll(parameter, s1);
-                function = new ExpressionBuilder(this.name);
-                parse();
         }
 
 	

@@ -823,14 +823,14 @@ public class OptionsDialog extends JDialog {
             
             if (name1 != null && name1.length() > 1 && name1.indexOf("H2D") < 0
                             && name1.indexOf("P2D") < 0 && name1.indexOf("P3D") < 0) {
-            	F2D fu1 = new F2D(name1, xmin, xmax, ymin, ymax);
+            	F2D fu1 = new F2D(name1);
             	parentFrame.setF2D(fu1);
             	sm.setPlotFunction2(false);
             } 
 
             if (name2 != null && name2.length() > 1 && name2.indexOf("H2D") < 0
                             && name2.indexOf("P2D") < 0 && name2.indexOf("P3D") < 0) {
-            	F2D fu2 = new F2D(name2, xmin, xmax, ymin, ymax);
+            	F2D fu2 = new F2D(name2);
             	parentFrame.setF2D(fu2);
             	sm.setPlotFunction2(true);
             }

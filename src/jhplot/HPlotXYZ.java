@@ -816,37 +816,40 @@ public void draw(AbstractDrawable[] shapes){
 	}
 	
 	
+	
 	/**
 	 * Add a F2D function (a function with 2 arguments, x and y). The function
 	 * will be shows as a surface. This function is plotted with 40 steps in X
 	 * and Y.
-	 * 
-	 * @param h1
-	 *            input function for drawing.
-	 *            
-	 * @param return surface which was just added.
-	 *            
+	 * @param h function to show
+	 * @param xmin
+	 * @param xmax
+	 * @param ymin
+	 * @param ymax
+	 * @return
 	 */
-	public AbstractDrawable add(final F2D h) {
+	public AbstractDrawable add(final F2D h, double xmin, double xmax, double ymin, double ymax) {
 		
 		
-		return add(h, 40, 40);
+		return add(h, 40, 40, xmin, xmax, ymin, ymax);
 
 	}
 
+	
+	
 	/**
-	 * Add a F2D function (a function with 2 arguments, x and y). The function
+	 *  Add a F2D function (a function with 2 arguments, x and y). The function
 	 * will be shows as a surface. Use "update()" method to draw it.
-	 * 
 	 * @param h1
-	 *            input function for drawing.
-	 * @param xsteps
-	 *            - steps in X (50 is optimal)
-	 * @param ysteps
-	 *            - steps in Y (50 is optimal)
-	 * @param return what was added.           
+	 * @param xsteps number of divisions in X
+	 * @param ysteps number of divisions in Y
+	 * @param xmin min X
+	 * @param xmax max X
+	 * @param ymin min Y
+	 * @param ymax max Y
+	 * @return
 	 */
-	public AbstractDrawable add(final F2D h1, int xsteps, int ysteps) {
+	public AbstractDrawable add(final F2D h1, int xsteps, int ysteps, double xmin, double xmax, double ymin, double ymax) {
 
 		
 		if (h1.getLabelX() != null)
@@ -860,8 +863,8 @@ public void draw(AbstractDrawable[] shapes){
 			}
 		};
 
-		Range xrange = new Range(h1.getMinX(), h1.getMaxX());
-		Range yrange = new Range(h1.getMinY(), h1.getMaxY());
+		Range xrange = new Range(xmin, xmax);
+		Range yrange = new Range(ymin, ymax);
 		Shape surface = (Shape) Builder.buildOrthonormal(new OrthonormalGrid(
 				xrange, xsteps, yrange, ysteps), mapper);
 		// ColorMapper myColorMapper = new ColorMapper(new ColorMapRainbow(),
@@ -898,95 +901,6 @@ public void draw(AbstractDrawable[] shapes){
 	
 	
 	
-	
-	/**
-	 * Draw  a F2D function (a function with 2 arguments, x and y). The function
-	 * will be shows as a surface. Use "update()" method to draw it.
-	 * 
-	 * @param h1
-	 *            input function for drawing.
-	 * @param xsteps
-	 *            - steps in X (50 is optimal)
-	 * @param ysteps
-	 *            - steps in Y (50 is optimal)          
-	 */
-	public void draw(final F2D h1, int xsteps, int ysteps) {
-		
-	
-
-		Mapper mapper = new Mapper() {
-			public double f(double x, double y) {
-				return h1.eval(x, y);
-			}
-		};
-		
-	Range xrange = new Range(h1.getMinX(), h1.getMaxX());
-	Range yrange = new Range(h1.getMinY(), h1.getMaxY());
-    
-
-     // Create the object to represent the function over the given range.
-     final Shape surface = (Shape)Builder.buildOrthonormal(new OrthonormalGrid(xrange, xsteps, yrange, ysteps), mapper);
-     ColorMapper myColorMapper=new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new Color(1,1,1,.5f));
-     surface.setColorMapper(myColorMapper);
-     surface.setFaceDisplayed(true);
-     surface.setWireframeDisplayed(true);
-     surface.setWireframeColor(Color.BLACK);
-
-     // Compute an image of the contour
-     MapperContourPictureGenerator contour = new MapperContourPictureGenerator(mapper, xrange, yrange);
-
-     Chart chart = jpp[N1][N2];
-    /*
-     // Create a chart with contour axe box, and attach the contour picture
-     JzyFactories.axe = new AxeFactory(){
-             @Override
-             public IAxe getInstance() {
-                     return new ContourAxeBox(box);
-             }
-     };
-     
-     Chart chart = jpp[N1][N2];
-     ContourAxeBox cab = (ContourAxeBox)chart.getView().getAxe();
-     cab.setContourImg( contour.getFilledContourImage(new DefaultContourColoringPolicy(myColorMapper), 400, 400, 10), xrange, yrange);
-     */
-     
-     // Add the surface and its colorbar
-     chart.addDrawable(surface);
-     surface.setLegend(new ColorbarLegend(surface,
-                     chart.getView().getAxe().getLayout().getZTickProvider(),
-                     chart.getView().getAxe().getLayout().getZTickRenderer()));
-     surface.setLegendDisplayed(true); // opens a colorbar on the right part of the display
-
-		
-	/*	
-		surface.setColor(currentFillColor);
-		surface.setWireframeDisplayed(currentWiredrame);
-		surface.setWireframeColor(currentWiredColor);	
-		surface.setWireframeWidth(currentWiredWidth);
-		
-		 ColorMapper myColorMapper=new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new Color(1,1,1,.5f)); 
-		 if (solidColor== false){
-		   surface.setColorMapper(myColorMapper);
-		 };
-		
-		
-
-		 // Compute an image of the contour
-        MapperContourPictureGenerator contour = new MapperContourPictureGenerator(mapper, xrange, yrange);  
-        // Create a chart with contour axe box, and attach the contour picture
-        JzyFactories.axe = new AxeFactory(){
-                @Override
-                public IAxe getInstance() {
-                        return new ContourAxeBox(box);
-                }
-        };
-
-        jpp[N1][N2].getScene().add(surface);
-        ContourAxeBox cab = (ContourAxeBox)jpp[N1][N2].getView().getAxe();
-        cab.setContourImg( contour.getFilledContourImage(new DefaultContourColoringPolicy(myColorMapper), 400, 400, 10), xrange, yrange);
- */
-		
-	}
 	
 	
 	

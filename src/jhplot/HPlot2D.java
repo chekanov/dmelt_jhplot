@@ -682,8 +682,8 @@ public class HPlot2D extends GHFrame {
                         nx = (int) ((Xmax - Xmin) / xA[N1][N2].delta);
                         dx = xA[N1][N2].delta;
                 } else {
-                        Xmin = h.getMinX();
-                        Xmax = h.getMaxX();
+                        Xmin =0;
+                        Xmax =1;
                         nx = 60;
                         dx = Math.abs(Xmax - Xmin) / nx;
                  }
@@ -696,8 +696,8 @@ public class HPlot2D extends GHFrame {
                         ny = (int) ((Ymax - Ymin) / yA[N1][N2].delta);
                         dy = yA[N1][N2].delta;
                 } else {
-                        Ymin = h.getMinY();
-                        Ymax = h.getMaxY();
+                        Ymin = 0;
+                        Ymax = 1;
                         ny = 60;
                         dy = Math.abs(Ymax - Ymin) / ny;
                 }

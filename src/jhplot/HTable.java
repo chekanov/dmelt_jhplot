@@ -156,16 +156,17 @@ public class HTable extends JFrame {
 		buildTable(vh.getTitle(), vh.getNames(), vh.getData());
 	}
 
-	/**
-	 * Show a function
-	 * 
+	
+	
+	/** 
+	 * Show a function.
 	 * @param function
-	 *            Input function
-	 * 
+	 * @param min
+	 * @param max
 	 */
-	public void show(F1D function) {
+	public void show(F1D function, double min, double max) {
 
-		VHolder vh = new VHolder(function);
+		VHolder vh = new VHolder(function, min, max);
 		buildTable(vh.getTitle(), vh.getNames(), vh.getData());
 
 	}
@@ -299,16 +300,17 @@ public class HTable extends JFrame {
 
 	}
 
+	
+	
 	/**
 	 * Build a table frame to display data of F1D function.
-	 * 
-	 * 
 	 * @param function
-	 *            Input function
+	 * @param min Min value
+	 * @param max Max value
 	 */
-	public HTable(F1D function) {
+	public HTable(F1D function, double min, double max) {
 
-		VHolder vh = new VHolder(function);
+		VHolder vh = new VHolder(function, min, max);
 		buildTable(vh.getTitle(), vh.getNames(), vh.getData());
 
 	}

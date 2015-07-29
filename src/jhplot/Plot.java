@@ -996,13 +996,16 @@ public class Plot extends JyplotVanilla implements Serializable {
 	}
 	
 	
+	
 	/**
 	 * Plot F1D function. Min and Max values should be defined
 	 * during the function initialisation.
-	 * @param f1 input function.
+	 * @param f1
+	 * @param min
+	 * @param max
 	 */
-	public void draw(F1D f1){
-		f1.eval(); // evaluate first.
+	public void draw(F1D f1, double min, double max){
+		f1.eval(min,max,f1.getPoints()); // evaluate first.
 		plot(f1.getArrayX(),f1.getArrayY());
 		
 	}

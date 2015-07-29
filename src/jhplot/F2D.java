@@ -80,14 +80,6 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private double Xmin;
-
-	private double Xmax;
-
-	private double Ymin;
-
-	private double Ymax;
-
 	private int points;
 
 	private String name;
@@ -100,7 +92,9 @@ public class F2D extends DrawOptions implements Serializable {
 
 	private IFunction iname = null;
 
-        final int maxpoints=500;
+        final int maxpoints=200;
+
+        private String lastException = "";
 
 
 	/**
@@ -133,7 +127,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 * <li>cosh: hyperbolic cosine</li>
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
-	 * <li>log: logarithmus naturalis (base e)</li>
+	 * <li>log: logarithm natural (base e)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -148,7 +142,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 *            String representing the function
 	 */
 	public F2D(String name) {
-		this(name, name, 0.0, 1.0, 0.0, 1.0);
+		this(name, name, true);
 	}
 
 
@@ -161,13 +155,13 @@ public class F2D extends DrawOptions implements Serializable {
          *            definition
          */
          public F2D(String title, String name) {
-                this(title, name, 0.0, 1.0, 0.0, 1.0);
+                this(title, name, true);
         }
 
 
 	/**
-	 * Create a function in 2D. Uses 500 points between min and max value for
-	 * evaluation. The function may have up to 2 independent variables in it
+	 * Create a function in 2D. 
+	 * The function may have up to 2 independent variables in it
 	 * (x,y).
 	 * 
 	 * <b>Operators and functions</b><br/>
@@ -194,7 +188,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 * <li>cosh: hyperbolic cosine</li>
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
-	 * <li>log: logarithmus naturalis (base e)</li>
+	 * <li>log: logarithm natural (base e)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -204,36 +198,31 @@ public class F2D extends DrawOptions implements Serializable {
 	 * <br/>
 	 * <br/>
 	 * 
-	 * 
+	 * @param title
+	 *            String representing the title.
 	 * 
 	 * @param name
 	 *            String representing the function.
-	 * @param Xmin
-	 *            Min value in X
-	 * @param Xmax
-	 *            Max value in X
-	 * @param Ymin
-	 *            Min value in Y
-	 * @param Ymax
-	 *            Max value in Y
+	 *            
+	 *  @param parsed
+	 *          if true, then parsed          
 	 */
-	public F2D(String title, String name, double Xmin, double Xmax,
-			double Ymin, double Ymax) {
+	public F2D(String title, String name, boolean parsed) {
 		
 		is3D=true;
 		this.name = name;
 		this.name = this.name.replace("**", "^"); // preprocess power
 		this.name = this.name.replace("pi", "3.14159265");
 		this.name = this.name.replace("Pi", "3.14159265");
-
+		this.isParsed=parsed;
+		
 		this.title = title;
 		this.points = 300;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
+		
 		setTitle(this.title);
 		function = new ExpressionBuilder(this.name);
+		
+		if (parsed) {
 		try {
 			function.variables("x", "y");
 			calc = function.build();
@@ -244,27 +233,9 @@ public class F2D extends DrawOptions implements Serializable {
                     
                  }
 
+		}
 	}
 
-	/**
-	 * Build a 2D function. Title is set to the name.
-	 * 
-	 * @param name
-	 *            Name
-	 * @param Xmin
-	 *            X-min
-	 * @param Xmax
-	 *            X-max
-	 * @param Ymin
-	 *            Y-min
-	 * @param Ymax
-	 *            Y-max
-	 */
-	public F2D(String name, double Xmin, double Xmax, double Ymin, double Ymax) {
-
-		this(name, name, Xmin, Xmax, Ymin, Ymax);
-
-	}
 
 	/**
 	 * Create a F2D function from JAIDA IFunction. By default, 500 points for
@@ -276,27 +247,15 @@ public class F2D extends DrawOptions implements Serializable {
 	 *            new function name
 	 * @param iname
 	 *            input IFunction
-	 * @param Xmin
-	 *            Min X value
-	 * @param Xmax
-	 *            Max X value
-	 * 
-	 * @param Ymin
-	 *            Min Y value
-	 * @param Ymax
-	 *            Max Y value
+
 	 */
-	public F2D(String title, IFunction iname, double Xmin, double Xmax,
-			double Ymin, double Ymax) {
+	public F2D(String title, IFunction iname) {
 
 		this.title = title;
 		this.name = title;
 		this.iname = iname;
-		this.points = 300;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
+		this.points = 200;
+	
 
 	}
 
@@ -311,27 +270,14 @@ public class F2D extends DrawOptions implements Serializable {
          *            Title
          * @param function
          *            Expression after parsing and building
-         * @param Xmin
-         *            Min X value
-         * @param Xmax
-         *            Max X value
-         * 
-         * @param Ymin
-         *            Min Y value
-         * @param Ymax
-         *            Max Y value
+    
 
          */
-        public F2D(String title, Expression calc, double Xmin, double Xmax,
-                        double Ymin, double Ymax) {
+        public F2D(String title, Expression calc) {
                 this.iname = null;
                 this.title = title;
                 this.calc = calc;
                 this.points = maxpoints;
-                this.Xmin = Xmin;
-                this.Xmax = Xmax;
-                this.Ymin = Ymin;
-                this.Ymax = Ymax;
                 this.name="F2D";
                 setTitle(title);
                 isParsed = true; 
@@ -348,20 +294,9 @@ public class F2D extends DrawOptions implements Serializable {
          *            Title
          * @param function
          *            Expression after parsing and building
-         * @param Xmin
-         *            Min X value
-         * @param Xmax
-         *            Max X value
-         * 
-         * @param Ymin
-         *            Min Y value
-         * @param Ymax
-         *            Max Y value
-
          */
-        public F2D(Expression calc, double Xmin, double Xmax,
-                        double Ymin, double Ymax) {
-                this("F2D",calc,Xmin,Xmax,Ymin,Ymax); 
+        public F2D(Expression calc) {
+                this("F2D",calc); 
         }
 
 
@@ -374,31 +309,12 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 	public F2D(IFunction iname) {
 
-		this("IFunction", iname, 0, 1, 0, 1);
+		this("IFunction", iname);
 
 	}
 
 	
 	
-	/**
-	 * Create a F2D function from JAIDA IFunction.
-	 * 
-	 * @param iname
-	 *            input IFunction
-	 * @param Xmin
-	 *            Min X value
-	 * @param Xmax
-	 *            Max X value
-	 * @param Ymin
-	 *            Min Y value
-	 * @param Ymax
-	 *            Max Y value
-	 */
-	public F2D(IFunction iname, double Xmin, double Xmax, double Ymin,
-			double Ymax) {
-		this(iname.title(), iname, Xmin, Xmax, Ymin, Ymax);
-	}
-
 	/**
 	 * Evaluate a function at a specific point in (x,y)
 	 * 
@@ -541,21 +457,13 @@ public class F2D extends DrawOptions implements Serializable {
 	
 
 	/**
-	 * Set Min in X
-	 * 
-	 * @param min
-	 *            Min value
-	 */
-	public void setMinX(double min) {
-		this.Xmin = min;
-
-	}
-	/**
 	 * Parse the function.
 	 * @return true if parsed without problems. 
 	 **/
 	public boolean parse() {
+                isParsed = false;
 		try {
+                        function = new ExpressionBuilder(name);
 			calc=(function.variables("x","y")).build();
 			isParsed = true;
 		} catch (IllegalArgumentException e) {
@@ -569,26 +477,7 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 	
-	/**
-	 * Get Min value in X
-	 * 
-	 * @return Min value in X
-	 */
-	public double getMinX() {
-		return this.Xmin;
-	}
-
-	/**
-	 * Set Min value in Y
-	 * 
-	 * @param min
-	 *            Min value in Y
-	 */
-	public void setMinY(double min) {
-		this.Ymin = min;
-
-	}
-
+	
 	/**
 	 * Show online documentation.
 	 */
@@ -600,26 +489,7 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
-	/**
-	 * Get Min value in Y
-	 * 
-	 * @return Min value in Y
-	 */
-
-	public double getMinY() {
-		return this.Ymin;
-	}
-
-	/**
-	 * Set Max value in X
-	 * 
-	 * @param max
-	 *            Max value in X
-	 */
-	public void setMaxX(double max) {
-		this.Xmax = max;
-
-	}
+	
 
 	/**
 	 * Sets a name of the function, i.e. what will be used for evaluation
@@ -643,37 +513,7 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
-	/**
-	 * Get Max value in X
-	 * 
-	 * @return Max value in X
-	 */
-	public double getMaxX() {
-		return this.Xmax;
-
-	}
-
-	/**
-	 * Set Max value in Y
-	 * 
-	 * @param max
-	 *            Max value in Y
-	 */
-
-	public void setMaxY(double max) {
-		this.Ymax = max;
-
-	}
-
-	/**
-	 * Get Max value in Y
-	 * 
-	 * @return Max value in Y
-	 */
-	public double getMaxY() {
-		return this.Ymax;
-
-	}
+	
 
 	/**
 	 * Get the number of points
@@ -698,9 +538,6 @@ public class F2D extends DrawOptions implements Serializable {
         public void setPar(String parameter, double value) {
                 String s1 = Double.toString(value);
                 this.name = name.replaceAll(parameter, s1);
-               
-        function = new ExpressionBuilder(this.name);
-        parse();
         }
 
 	/**
@@ -736,6 +573,118 @@ public class F2D extends DrawOptions implements Serializable {
 		return jhplot.math.Numeric.trapezium2D(N, this, minX, maxX, minY, maxY);
 
 	}
+
+         /**
+         * Integral using fastest trapezium rule method. It uses the default number of points (500).
+         * @param minX
+         *            the first ordinate in X.
+         * @param maxX
+         *            the last ordinate in X.
+         * @param minY
+         *            the first ordinate in X.
+         * @param maxY
+         *            the last ordinate in Y.
+         */
+         public double integral(double minX, final double maxX, double minY, final double maxY) {
+                 return integral(points, minX, maxX,minY, maxY);
+          }
+
+
+
+        /**
+         * Try to simplify this function. It is often useful to rewrite an
+         * expression in term of elementary functions (log, exp, frac, sqrt,
+         * implicit roots), using the "elementary()" before simplifying it. Retrieve
+         * the simplified name as a string using getName() method.
+         * 
+         * @return false if error occurs. Retrieve this error as a string using
+         *         getException().
+         */
+
+        public boolean simplify() {
+
+                try {
+                        name = jscl.math.Expression.valueOf(name).simplify().toString();
+                } catch (Exception e) {
+                        lastException = e.getMessage().toString();
+                        return false;
+                }
+                return true;
+
+        }
+
+        /**
+         * If error occurs at some step, this is the way to retrieve it.
+         * 
+         * @return last exception happened in any method of this class.
+         */
+        public String getException() {
+                return lastException;
+        }
+
+
+        /**
+         * Convert this function rewrite in term of elementary functions (log, exp,
+         * frac, sqrt, implicit roots) This is useful before simplifying function.
+         * Retrieve the simplified name as a string using getName() method.
+         * 
+         * @return false if error occurs. Retrieve this error as a string using
+         *         getException().
+         */
+
+        public boolean elementary() {
+
+                try {
+                        name = jscl.math.Expression.valueOf(name).elementary().toString();
+                } catch (Exception e) {
+                        lastException = e.getMessage().toString();
+                        return false;
+                }
+                return true;
+
+        }
+
+
+       /**
+         * Convert this function rewrite in expanded form. Retrieve the expanded
+         * name as a string using getName() method.
+         * 
+         * @return false if error occurs. Retrieve this error as a string using
+         *         getException().
+         */
+
+        public boolean expand() {
+
+                try {
+                        name = jscl.math.Expression.valueOf(name).expand().toString();
+                } catch (Exception e) {
+                        lastException = e.getMessage().toString();
+                        return false;
+                }
+                return true;
+
+        }
+
+        /**
+         * Convert this function rewrite in factorized form (if can). Retrieve the
+         * expanded name as a string using getName() method.
+         * 
+         * @return false if error occurs. Retrieve this error as a string using
+         *         getException().
+         */
+
+        public boolean factorize() {
+
+                try {
+                        name = jscl.math.Expression.valueOf(name).factorize().toString();
+                } catch (Exception e) {
+                        lastException = e.getMessage().toString();
+                        return false;
+                }
+                return true;
+
+        }
+
 
 	/**
 	 * Return parsed function. One can evaluate it as "calculate()".
@@ -839,5 +788,17 @@ public class F2D extends DrawOptions implements Serializable {
 
 		return isParsed;
 	}
+
+
+            /**
+         * Get this function as a string.
+         * 
+         * @return Convert to string. 
+         */
+        public String toString() {
+                String tmp=getName();
+                tmp = tmp+" (title="+getTitle()+", n="+Integer.toString(points)+", "+Boolean.toString(isParsed)+")";
+                return tmp;
+        }
 
 }

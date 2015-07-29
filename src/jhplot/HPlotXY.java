@@ -841,6 +841,8 @@ public class HPlotXY {
 
 	/**
 	 * Draw a function. F1D should be created from AIDA.
+	 * If You set range during F1D initialization, it will be used.
+	 * If not, canvas range is used.
 	 * 
 	 * @param f1d
 	 *            input function;
@@ -848,7 +850,17 @@ public class HPlotXY {
 	 */
 
 	public XYGraph draw(F1D f1d) {
-		f1d.eval(); // evaluate first
+		
+		
+		if (f1d.getMin() == f1d.getMax()) {
+		double x1=(xaxis.getTickManager().getAxisTransform()).getRange().getMin();
+		double x2=(xaxis.getTickManager().getAxisTransform()).getRange().getMax();
+		f1d.eval(x1,x2,f1d.getPoints()); // evaluate first
+		} else {	
+			f1d.eval(f1d.getMin(), f1d.getMax(), f1d.getPoints()); // evaluate
+		}
+		
+		
 		XYGraph xl = ef.createXYGraph(f1d.getArrayX(), f1d.getArrayY(),
 				f1d.getName());
 		xl.setLineVisible(true);

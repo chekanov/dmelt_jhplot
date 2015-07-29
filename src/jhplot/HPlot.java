@@ -1,31 +1,30 @@
 /**
-*    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
-*    All rights reserved.
-*
-*    This program is free software; you can redistribute it and/or modify it under the terms
-*    of the GNU General Public License as published by the Free Software Foundation; either
-*    version 3 of the License, or any later version.
-*
-*    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-*    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*    See the GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License along with this program;
-*    if not, see <http://www.gnu.org/licenses>.
-*
-*    Additional permission under GNU GPL version 3 section 7:
-*    If you have received this program as a library with written permission from the DataMelt team,
-*    you can link or combine this library with your non-GPL project to convey the resulting work.
-*    In this case, this library should be considered as released under the terms of
-*    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
-*    provided you include this license notice and a URL through which recipients can access the
-*    Corresponding Source.
-**/
+ *    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
+ *    All rights reserved.
+ *
+ *    This program is free software; you can redistribute it and/or modify it under the terms
+ *    of the GNU General Public License as published by the Free Software Foundation; either
+ *    version 3 of the License, or any later version.
+ *
+ *    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *    See the GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License along with this program;
+ *    if not, see <http://www.gnu.org/licenses>.
+ *
+ *    Additional permission under GNU GPL version 3 section 7:
+ *    If you have received this program as a library with written permission from the DataMelt team,
+ *    you can link or combine this library with your non-GPL project to convey the resulting work.
+ *    In this case, this library should be considered as released under the terms of
+ *    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
+ *    provided you include this license notice and a URL through which recipients can access the
+ *    Corresponding Source.
+ **/
 package jhplot;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 
 import java.io.*;
 import java.util.*;
@@ -49,10 +48,11 @@ import hep.aida.*;
 import hep.aida.ref.histogram.*;
 
 /**
- * HPlot class to create a canvas with several plots. 
- * This class is for a high-performance multi-threaded 2d plot library which produces publication quality plots.
- * It can be used for  scatter plot, line chart, staircase chart, linear axis and logarithmic axis, 
- * plot can contains subplots. All data types of DataMelt are supported. 
+ * HPlot class to create a canvas with several plots. This class is for a
+ * high-performance multi-threaded 2d plot library which produces publication
+ * quality plots. It can be used for scatter plot, line chart, staircase chart,
+ * linear axis and logarithmic axis, plot can contains subplots. All data types
+ * of DataMelt are supported.
  * 
  * @author S.Chekanov
  * 
@@ -66,21 +66,21 @@ public class HPlot extends GHFrame implements Serializable {
 
 	private static int IndexPlot = 0;
 
-	protected  GraphGeneral[][] graph;
+	protected GraphGeneral[][] graph;
 
-	protected  GraphSettings[][] gs;
+	protected GraphSettings[][] gs;
 
 	protected StyleChooser[][] sc;
 
-	protected  JFrame[][] frames;
+	protected JFrame[][] frames;
 
-	protected  JPlot[][] jp;
+	protected JPlot[][] jp;
 
 	protected int[][] plotType;
-	
+
 	protected int[][] hkeyCounter; // counts Hkeys for each pad
 
-	protected  Vector<DataArray>[][] data;
+	protected Vector<DataArray>[][] data;
 
 	private IAnalysisFactory m_IAnalysisFactory = null;
 
@@ -95,9 +95,8 @@ public class HPlot extends GHFrame implements Serializable {
 	private Thread1 m_Close;
 
 	final private String help_file = "hplot";
-	
-	
-	protected static int isOpen=0;
+
+	protected static int isOpen = 0;
 
 	/**
 	 * Create HPlot canvas with several plots.
@@ -170,7 +169,6 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
-	
 	/**
 	 * Open a dialog to read the file
 	 * 
@@ -297,7 +295,8 @@ public class HPlot extends GHFrame implements Serializable {
 	public void visible(boolean vs) {
 		updateAll();
 		mainFrame.setVisible(vs);
-                if (vs==false) mainFrame.validate(); 
+		if (vs == false)
+			mainFrame.validate();
 
 	}
 
@@ -312,20 +311,22 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
+	/**
+	 * Set the canvas frame visible. Also set its location.
+	 * 
+	 * @param posX
+	 *            - the x-coordinate of the new location's top-left corner in
+	 *            the parent's coordinate space;
+	 * @param posY
+	 *            - he y-coordinate of the new location's top-left corner in the
+	 *            parent's coordinate space
+	 */
+	public void visible(int posX, int posY) {
+		updateAll();
+		mainFrame.setLocation(posX, posY);
+		mainFrame.setVisible(true);
 
-        /**
-         * Set the canvas frame visible. Also set its location.
-         * @param posX -  the x-coordinate of the new location's top-left corner in the parent's coordinate space;
-         * @param posY - he y-coordinate of the new location's top-left corner in the parent's coordinate space 
-         */
-        public void visible(int posX, int posY) {
-                updateAll();
-                mainFrame.setLocation(posX, posY);
-                mainFrame.setVisible(true);
-
-        }
-
-
+	}
 
 	/**
 	 * Remove the canvas frame
@@ -455,7 +456,7 @@ public class HPlot extends GHFrame implements Serializable {
 						+ Integer.toString(i2 + 1) + ")");
 				frames[i1][i2].setSize(400, 400);
 				frames[i1][i2].setVisible(false);
-				hkeyCounter[i1][i2]=0;
+				hkeyCounter[i1][i2] = 0;
 				JMenuBar bar1 = new JMenuBar();
 				JMenu menu1 = new JMenu("Exit");
 				JMenuItem item1 = new JMenuItem(new NotShowAction());
@@ -476,7 +477,7 @@ public class HPlot extends GHFrame implements Serializable {
 				gs[i1][i2].setAutoRange(1, false);
 				gs[i1][i2].setDrawGrid(0, false);
 				gs[i1][i2].setDrawGrid(1, false);
-	                        gs[i1][i2].setLeftMargin(50);
+				gs[i1][i2].setLeftMargin(50);
 				Font fleg = new Font("Arial", Font.BOLD, 14);
 				gs[i1][i2].setLegendFont(fleg);
 
@@ -507,7 +508,7 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Construct a HPlot canvas with a single plot. 
+	 * Construct a HPlot canvas with a single plot.
 	 * 
 	 * @param title
 	 *            Title for the canvas
@@ -523,50 +524,56 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
-
-
-	    /**
-	     * Resize the current pad. It calculates the original pad sizes,
-	     * and then scale it by a given factor. In this case, the pad sizes
-	     * can be different.
-	     * 
-	     * @param widthScale scale factor applied to the width of the current pad
-	     * @param heightScale scale factor applied the  height of the current pad.
-	     */
-        public void resizePad(double widthScale, double heightScale) {
-                 Dimension dim=graph[N1][N2].getSize();
-                 double h=dim.getHeight();
-                 double w=dim.getWidth();
-                 graph[N1][N2].setPreferredSize(new Dimension((int)(w*widthScale), (int)(h*heightScale)));
-                 graph[N1][N2].setMinimumSize(new Dimension((int)(w*widthScale), (int)(h*heightScale)));
-                 graph[N1][N2].setSize(new Dimension((int)(w*widthScale), (int)(h*heightScale)));
-        }
-
-
-         /**
-             * Resize the pad given by the inxX and indxY. It calculates the original pad sizes,
-             * and then scale it by a given factor. In this case, the pad sizes
-             * can be different.
-             * @param n1
-             *            the location of the plot in x
-             * @param n2
-             *            the location of the plot in y
-             * 
-             * @param widthScale scale factor applied to the width of the current pad
-             * @param heightScale scale factor applied the  height of the current pad.
-             */
-        public void resizePad(int n1, int n2, double widthScale, double heightScale) {
-                 Dimension dim=graph[n1][n2].getSize();
-                 double h=dim.getHeight();
-                 double w=dim.getWidth();
-                 graph[n1][n2].setPreferredSize(new Dimension((int)(w*widthScale), (int)(h*heightScale)));
-                 graph[n1][n2].setMinimumSize(new Dimension((int)(w*widthScale), (int)(h*heightScale)));
-                 graph[n1][n2].setSize(new Dimension((int)(w*widthScale), (int)(h*heightScale)));
-        }
-
+	/**
+	 * Resize the current pad. It calculates the original pad sizes, and then
+	 * scale it by a given factor. In this case, the pad sizes can be different.
+	 * 
+	 * @param widthScale
+	 *            scale factor applied to the width of the current pad
+	 * @param heightScale
+	 *            scale factor applied the height of the current pad.
+	 */
+	public void resizePad(double widthScale, double heightScale) {
+		Dimension dim = graph[N1][N2].getSize();
+		double h = dim.getHeight();
+		double w = dim.getWidth();
+		graph[N1][N2].setPreferredSize(new Dimension((int) (w * widthScale),
+				(int) (h * heightScale)));
+		graph[N1][N2].setMinimumSize(new Dimension((int) (w * widthScale),
+				(int) (h * heightScale)));
+		graph[N1][N2].setSize(new Dimension((int) (w * widthScale),
+				(int) (h * heightScale)));
+	}
 
 	/**
-	 * Construct a HPlot canvas with a single plot. 
+	 * Resize the pad given by the inxX and indxY. It calculates the original
+	 * pad sizes, and then scale it by a given factor. In this case, the pad
+	 * sizes can be different.
+	 * 
+	 * @param n1
+	 *            the location of the plot in x
+	 * @param n2
+	 *            the location of the plot in y
+	 * 
+	 * @param widthScale
+	 *            scale factor applied to the width of the current pad
+	 * @param heightScale
+	 *            scale factor applied the height of the current pad.
+	 */
+	public void resizePad(int n1, int n2, double widthScale, double heightScale) {
+		Dimension dim = graph[n1][n2].getSize();
+		double h = dim.getHeight();
+		double w = dim.getWidth();
+		graph[n1][n2].setPreferredSize(new Dimension((int) (w * widthScale),
+				(int) (h * heightScale)));
+		graph[n1][n2].setMinimumSize(new Dimension((int) (w * widthScale),
+				(int) (h * heightScale)));
+		graph[n1][n2].setSize(new Dimension((int) (w * widthScale),
+				(int) (h * heightScale)));
+	}
+
+	/**
+	 * Construct a HPlot canvas with a single plot.
 	 * 
 	 * @param title
 	 *            Title for the canvas
@@ -584,7 +591,7 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Construct a HPlot canvas with a plot with the size  600x400. 
+	 * Construct a HPlot canvas with a plot with the size 600x400.
 	 * 
 	 * @param title
 	 *            Title
@@ -602,8 +609,6 @@ public class HPlot extends GHFrame implements Serializable {
 	public HPlot() {
 		this("Default", 600, 400, 1, 1, true);
 	}
-
-
 
 	/**
 	 * Refresh all the plots on the same canvas HPLOT
@@ -693,35 +698,35 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
+	/**
+	 * Set canvas attributes resizable (line widths, symbols, fonts) or not.
+	 * Applicable for the current pad only (navigated as cd(N1,N2)). The defaul
+	 * is resizable when you resize the canvas.
+	 * 
+	 * @param resizable
+	 *            set true if it should be resizable.
+	 */
+	public void setAttResizable(boolean resizable) {
+		gs[N1][N2].setAttResizable(resizable);
+	}
 
-         /**
-         * Set canvas attributes resizable (line widths, symbols, fonts) or not.
-         * Applicable for the current pad only (navigated as cd(N1,N2)).
-         * The defaul is  resizable when you resize the canvas.
-         * @param resizable
-         *                set true if it should be resizable. 
-         */
-        public void setAttResizable(boolean resizable) {
-                gs[N1][N2].setAttResizable(resizable);
-        }
+	/**
+	 * Set canvas attributes resizable (line widths, symbols, fonts) or not.
+	 * Applicable for all pads only. The defaul is resizable when you resize the
+	 * canvas.
+	 * 
+	 * @param resizable
+	 *            set true if it should be resizable.
+	 */
+	public void setAttResizableAll(boolean resizable) {
+		for (int i1 = 0; i1 < N1final; i1++) {
+			for (int i2 = 0; i2 < N2final; i2++) {
+				gs[i1][i2].setAttResizable(resizable);
 
-        /**
-         * Set canvas attributes resizable (line widths, symbols, fonts) or not.
-         * Applicable for all pads only.
-         * The defaul is  resizable when you resize the canvas.
-         * @param resizable
-         *                set true if it should be resizable. 
-         */
-        public void setAttResizableAll(boolean resizable) {
-               for (int i1 = 0; i1 < N1final; i1++) {
-                        for (int i2 = 0; i2 < N2final; i2++) {
-                                gs[i1][i2].setAttResizable(resizable);
+			}
+		}
 
-                        }
-                }
- 
-        }
-
+	}
 
 	/**
 	 * Print the current graph settings to System.out
@@ -881,22 +886,18 @@ public class HPlot extends GHFrame implements Serializable {
 		gs[N1][N2].setLegendFont(font);
 	}
 
-     /** Set the label font, which is used for axis labels and legend labels.
-     *  The font names understood are those understood by
-     *  java.awt.Font.decode().
-     *  @param name A font name.
-     */
-    public void setLegendFont(String name) {
-  
-    	gs[N1][N2].setLegendFont(Font.decode(name));   
-    }
-    	
-	
-	
-	
-	
-	
-	
+	/**
+	 * Set the label font, which is used for axis labels and legend labels. The
+	 * font names understood are those understood by java.awt.Font.decode().
+	 * 
+	 * @param name
+	 *            A font name.
+	 */
+	public void setLegendFont(String name) {
+
+		gs[N1][N2].setLegendFont(Font.decode(name));
+	}
+
 	/**
 	 * Sets the distance between the left-border of the panel and the left
 	 * Y-axis.
@@ -1048,23 +1049,23 @@ public class HPlot extends GHFrame implements Serializable {
 	 * Get the number of subticks for a given axis
 	 * 
 	 * @param axis
-	 *            Axis value (0 or 1) 
+	 *            Axis value (0 or 1)
 	 */
 	public void getSubTicNumber(int axis) {
 		gs[N1][N2].getSubTicNumber(axis);
 	}
 
 	/**
-	 * Sets the length of the ticks. In fact, the actual tick length is the value
-	 * you set here multiplied by the axis length. By default, the tick-length is
-	 * exactly 0.012 times the axis length. Using a value proportional to the
-	 * axes system leads to reasonable proportions even if the graph is blown up
-	 * to full screen (which users often do, trust me).
+	 * Sets the length of the ticks. In fact, the actual tick length is the
+	 * value you set here multiplied by the axis length. By default, the
+	 * tick-length is exactly 0.012 times the axis length. Using a value
+	 * proportional to the axes system leads to reasonable proportions even if
+	 * the graph is blown up to full screen (which users often do, trust me).
 	 * 
 	 * @param axis
 	 *            defines to which axis this function applies, generally
 	 *            something like <a href="#X_AXIS">X_AXIS</a> or <a
-	 *            href="#Y_AXIS">Y_AXIS</a>. axis=0 for X and axis=1 for Y 
+	 *            href="#Y_AXIS">Y_AXIS</a>. axis=0 for X and axis=1 for Y
 	 * @param length
 	 *            tick length relative to the axis length
 	 */
@@ -1082,7 +1083,7 @@ public class HPlot extends GHFrame implements Serializable {
 	 * @param axis
 	 *            defines to which axis this function applies, generally
 	 *            something like <a href="#X_AXIS">X_AXIS</a> or <a
-	 *            href="#Y_AXIS">Y_AXIS</a>. axis=0 for X and axis=1 for Y 
+	 *            href="#Y_AXIS">Y_AXIS</a>. axis=0 for X and axis=1 for Y
 	 * @param length
 	 *            subtic length relative to the axis length
 	 */
@@ -1169,7 +1170,7 @@ public class HPlot extends GHFrame implements Serializable {
 	 * Sets the ratio between X- and Y-axes lengths. This ratio must be greater
 	 * than 0.0, a value of 0.0 means that the ratio will be calculated
 	 * automatically as a function of the size of the graph panel.
-
+	 * 
 	 * @param r
 	 *            the ratio Y-axisLength/X-axisLength
 	 */
@@ -1177,33 +1178,30 @@ public class HPlot extends GHFrame implements Serializable {
 		gs[N1][N2].setAxesRatio(r);
 	}
 
-         /**
-         * Sets axes arrows.
-         * Arrows are not drawn on mirror axes.
-         * Arrows are only drawn if one first remove all
-         * axes (removeAxes() method) and then use setAxis()
-         * or setAxisY() methods to draw X or Y axis shown by arrows.    
-         * @param type 
-         *           0: no arrows, just lines <br> 
-         *           1: not filled arrows <br> 
-         *           2: nice filled arrows 
-         */
-        public void setAxisArrow(int type) {
-                gs[N1][N2].setAxesArrow(type);
-        }
+	/**
+	 * Sets axes arrows. Arrows are not drawn on mirror axes. Arrows are only
+	 * drawn if one first remove all axes (removeAxes() method) and then use
+	 * setAxis() or setAxisY() methods to draw X or Y axis shown by arrows.
+	 * 
+	 * @param type
+	 *            0: no arrows, just lines <br>
+	 *            1: not filled arrows <br>
+	 *            2: nice filled arrows
+	 */
+	public void setAxisArrow(int type) {
+		gs[N1][N2].setAxesArrow(type);
+	}
 
-
-       /**
-         * Gets axis arrows.
-         * @return   type
-         *          0: no arrows, just lines <br>
-         *          1: not filled arrows <br>
-         *          2: nice filled arrows
-         */
-        public int getAxisArrow() {
-                return gs[N1][N2].getAxesArrow();
-        }
-
+	/**
+	 * Gets axis arrows.
+	 * 
+	 * @return type 0: no arrows, just lines <br>
+	 *         1: not filled arrows <br>
+	 *         2: nice filled arrows
+	 */
+	public int getAxisArrow() {
+		return gs[N1][N2].getAxesArrow();
+	}
 
 	/**
 	 * Says whether the user fixes the number of ticks for a specific axis. If
@@ -1212,7 +1210,7 @@ public class HPlot extends GHFrame implements Serializable {
 	 * @param axis
 	 *            defines to which axis this function applies, generally
 	 *            something like <a href="#X_AXIS">X_AXIS</a> or <a
-	 *            href="#Y_AXIS">Y_AXIS</a>. Use 0 for X and 1 for Y. 
+	 *            href="#Y_AXIS">Y_AXIS</a>. Use 0 for X and 1 for Y.
 	 * @param b
 	 *            true if you want to fix the number of ticks.
 	 */
@@ -1251,12 +1249,12 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Returns the number of ticks for the specified axis. 
+	 * Returns the number of ticks for the specified axis.
 	 * 
 	 * @param axis
 	 *            defines to which axis this function applies, generally
 	 *            something like <a href="#X_AXIS">X_AXIS</a> or <a
-	 *            href="#Y_AXIS">Y_AXIS</a>. Use 0 for X and 1 for Y.  
+	 *            href="#Y_AXIS">Y_AXIS</a>. Use 0 for X and 1 for Y.
 	 * @return the number of ticks for the specified axis.
 	 */
 	public int getNumberOfTics(int axis) {
@@ -1264,11 +1262,12 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Sets the number of ticks for the specified axis. If not fixed, JHPlot will
-	 * try to calculate a convenient number of ticks.
+	 * Sets the number of ticks for the specified axis. If not fixed, JHPlot
+	 * will try to calculate a convenient number of ticks.
 	 * 
 	 * @param axis
-	 *            Defines to which axis this function applies. Use 0 for X and 1 for Y. 
+	 *            Defines to which axis this function applies. Use 0 for X and 1
+	 *            for Y.
 	 * @param n
 	 *            Number of ticks
 	 */
@@ -1277,8 +1276,8 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Returns the maximum number of subticks for log scale (default is 10). This
-	 * number applies to all axes, and 10 ticks is right number for you
+	 * Returns the maximum number of subticks for log scale (default is 10).
+	 * This number applies to all axes, and 10 ticks is right number for you
 	 * 
 	 * @return Maximum number of subticks allowed for log scale
 	 */
@@ -1387,30 +1386,30 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Sets the x and y coordinates of the legend. 
-	 *
+	 * Sets the x and y coordinates of the legend.
+	 * 
 	 * 
 	 * @param x
 	 *            the x coordinate of the legend.
 	 * @param y
 	 *            the y coordinate of the legend.
-         * @param system
-         *            coordinate system (USER or NDC)
+	 * @param system
+	 *            coordinate system (USER or NDC)
 	 */
 	public void setLegendPos(double x, double y, String system) {
 
-                Dimension panel = gs[N1][N2].getPanelSize();
-                double w = panel.width;
-                double h = panel.height;
-                double ix = (w * x);
-                double iy = (h * (1 - y));
+		Dimension panel = gs[N1][N2].getPanelSize();
+		double w = panel.width;
+		double h = panel.height;
+		double ix = (w * x);
+		double iy = (h * (1 - y));
 
-                if (system.equals("USER")) {
-                        ix =  toX(x);
-                        iy =  toY(y);
-                }
-                gs[N1][N2].setUseLegendPosition(true); 
-		gs[N1][N2].setLegendPosition((double)ix, (double)iy);
+		if (system.equals("USER")) {
+			ix = toX(x);
+			iy = toY(y);
+		}
+		gs[N1][N2].setUseLegendPosition(true);
+		gs[N1][N2].setLegendPosition((double) ix, (double) iy);
 	}
 
 	/**
@@ -1477,7 +1476,8 @@ public class HPlot extends GHFrame implements Serializable {
 	 * @param axis
 	 *            defines to which axis this function applies, generally
 	 *            something like <a href="#X_AXIS">X_AXIS</a> or <a
-	 *            href="#Y_AXIS">Y_AXIS</a>. Usually, 0 means X axis, 1 means Y axis. 
+	 *            href="#Y_AXIS">Y_AXIS</a>. Usually, 0 means X axis, 1 means Y
+	 *            axis.
 	 * @param b
 	 *            toggle, true if the scaling is logarithmic
 	 */
@@ -1499,19 +1499,17 @@ public class HPlot extends GHFrame implements Serializable {
 		gs[N1][N2].setDrawMirrorTics(axis, b);
 	}
 
-         /**
-         * Sets true or false to draw mirror ticks 
-         * for X and Y 
-         * 
-         * @param b
-         *            toggle, true if the we should draw mirror ticks
-         */
-        public void setTicsMirror(boolean b) {
-                gs[N1][N2].setDrawMirrorTics(0, b);
-                gs[N1][N2].setDrawMirrorTics(1, b);
+	/**
+	 * Sets true or false to draw mirror ticks for X and Y
+	 * 
+	 * @param b
+	 *            toggle, true if the we should draw mirror ticks
+	 */
+	public void setTicsMirror(boolean b) {
+		gs[N1][N2].setDrawMirrorTics(0, b);
+		gs[N1][N2].setDrawMirrorTics(1, b);
 
-        }
-
+	}
 
 	/**
 	 * Returns whether or not we should draw ticks on the mirror axis.
@@ -1527,8 +1525,8 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Defines whether we should rotate ticks. By default the are pointing to the
-	 * inside of the graph: setting it to false will draw them towards the
+	 * Defines whether we should rotate ticks. By default the are pointing to
+	 * the inside of the graph: setting it to false will draw them towards the
 	 * outside.
 	 * 
 	 * @param axis
@@ -1543,8 +1541,8 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Returns whether or not we should rotate the ticks. Rotated ticks are drawn
-	 * at the outer-side of the axes.
+	 * Returns whether or not we should rotate the ticks. Rotated ticks are
+	 * drawn at the outer-side of the axes.
 	 * 
 	 * @param axis
 	 *            defines to which axis this function applies, generally
@@ -1578,8 +1576,8 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Sets whether or not using grid lines. Grid lines are lines drawn from tick
-	 * to tick. They can be enabled/disabled per axis.
+	 * Sets whether or not using grid lines. Grid lines are lines drawn from
+	 * tick to tick. They can be enabled/disabled per axis.
 	 * 
 	 * @param axis
 	 *            defines to which axis this function applies, generally
@@ -1592,20 +1590,18 @@ public class HPlot extends GHFrame implements Serializable {
 		gs[N1][N2].setDrawGrid(axis, b);
 	}
 
-	
 	/**
-	 * Sets whether or not using grid lines. Grid lines are lines drawn from tick
-	 * to tick. They can be enabled/disabled per axis.
-	
+	 * Sets whether or not using grid lines. Grid lines are lines drawn from
+	 * tick to tick. They can be enabled/disabled per axis.
+	 * 
 	 * @param b
 	 *            true if shown
 	 */
-	public void setGrid( boolean b) {
+	public void setGrid(boolean b) {
 		gs[N1][N2].setDrawGrid(0, b);
 		gs[N1][N2].setDrawGrid(1, b);
 	}
 
-	
 	/**
 	 * Sets or not the grid lines for all plots on the same canvas
 	 * 
@@ -1672,8 +1668,8 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Setting the flag to true, this will draw the grid <em>after</em>
-	 * drawing all the lines and point stuff, hence on the foreground.
+	 * Setting the flag to true, this will draw the grid <em>after</em> drawing
+	 * all the lines and point stuff, hence on the foreground.
 	 * 
 	 * @param b
 	 *            true if the grid will be moved to the front
@@ -1682,42 +1678,39 @@ public class HPlot extends GHFrame implements Serializable {
 		gs[N1][N2].setGridToFront(b);
 	}
 
-        /**
-        * Flag, saying whether the grid should be drawn at the foreground or not.
-        * @see #setGridToFront(boolean)
-        * @return whether or not to draw the grid at the front.
-         */
-           public boolean isGridToFront() {
-             return gs[N1][N2].gridToFront();
-            }
-
-
-
-        /**
-         * Setting the flag to true, this will draw all primitives <em>after</em>
-         * drawing all the lines and point stuff, hence on the foreground.
-         *
-         * @param b
-         *            true if primitives will be moved to the front
-         */
-        public void setPrimitivesToFront(boolean b) {
-                gs[N1][N2].setPrimitivesToFront(b);
-        }
-
-         /**
-        * Flag, saying whether primitives  should be drawn at the foreground or not.
-        * @return whether or not to draw the primitives  at the front.
-         */
-           public boolean isPrimitivesToFront() {
-             return gs[N1][N2].primitivesToFront();
-            }
-
-
-       
+	/**
+	 * Flag, saying whether the grid should be drawn at the foreground or not.
+	 * 
+	 * @see #setGridToFront(boolean)
+	 * @return whether or not to draw the grid at the front.
+	 */
+	public boolean isGridToFront() {
+		return gs[N1][N2].gridToFront();
+	}
 
 	/**
-	 * Sets whether or not to draw the bounding box around the graph. Note:
-	 * this box can be filled with any color.
+	 * Setting the flag to true, this will draw all primitives <em>after</em>
+	 * drawing all the lines and point stuff, hence on the foreground.
+	 * 
+	 * @param b
+	 *            true if primitives will be moved to the front
+	 */
+	public void setPrimitivesToFront(boolean b) {
+		gs[N1][N2].setPrimitivesToFront(b);
+	}
+
+	/**
+	 * Flag, saying whether primitives should be drawn at the foreground or not.
+	 * 
+	 * @return whether or not to draw the primitives at the front.
+	 */
+	public boolean isPrimitivesToFront() {
+		return gs[N1][N2].primitivesToFront();
+	}
+
+	/**
+	 * Sets whether or not to draw the bounding box around the graph. Note: this
+	 * box can be filled with any color.
 	 * 
 	 * @param b
 	 *            true if the filled triangles should be drawn.
@@ -1802,7 +1795,7 @@ public class HPlot extends GHFrame implements Serializable {
 	 */
 	public void setBackgColor(Color color) {
 		gs[N1][N2].setBackgroundColor(color);
-	//	setMarginBackground(color);
+		// setMarginBackground(color);
 	}
 
 	/**
@@ -1858,20 +1851,18 @@ public class HPlot extends GHFrame implements Serializable {
 		return gs[n1][n2];
 	}
 
-	
 	/**
 	 * Set a new graph settings for the current plot
-	 * @param ggs new graph settings
+	 * 
+	 * @param ggs
+	 *            new graph settings
 	 */
 	public void setGraphSettings(GraphSettings ggs) {
-		gs[N1][N2]=ggs;
+		gs[N1][N2] = ggs;
 		jp[N1][N2].setGraphSettings(ggs);
-	
+
 	}
 
-	
-	
-	
 	/**
 	 * Get graph settings for current plot
 	 * 
@@ -2166,28 +2157,26 @@ public class HPlot extends GHFrame implements Serializable {
 		gs[N1][N2].removeLabels();
 	}
 
+	/**
+	 * Remove X and Y axes, ticks, axis labels on the current plot.
+	 * 
+	 */
+	public void removeAxes() {
+		setAxisAll(false);
 
-        /**
-         * Remove X and Y axes, ticks, axis labels on the current plot.  
-         *
-         */
-        public void removeAxes() {
-               setAxisAll(false);
+		setTics(0, false);
+		setTics(1, false);
 
-               setTics(0,false);
-               setTics(1,false);
+		setTicLabels(0, false);
+		setTicLabels(1, false);
 
-               setTicLabels(0,false);
-               setTicLabels(1,false);
- 
-               setAxisMirror(0,false);
-               setAxisMirror(1,false);
-               
-               setTicsMirror(0,false);
-               setTicsMirror(1,false);
+		setAxisMirror(0, false);
+		setAxisMirror(1, false);
 
-        }
+		setTicsMirror(0, false);
+		setTicsMirror(1, false);
 
+	}
 
 	/**
 	 * remove i-th HLabel or HMLabel on the current plot
@@ -2259,116 +2248,120 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
-       
-
-       /**
-       * Length of X axis in pixels.  
-       * @return Length of X axis 
-       **/
-        public double axisLengthX() {
-          Dimension panel = gs[N1][N2].getPanelSize();
-          double tmp=panel.width - gs[N1][N2].getLeftMargin()  - gs[N1][N2].getRightMargin();
-          // System.out.println(tmp);  
-          return tmp; 
-         }
-
-
-       /**
-       * Length of Y axis in pixels.   
-       * @return Length of Y axis
-       **/
-        public double axisLengthY() {
-          Dimension panel = gs[N1][N2].getPanelSize();
-          double tmp=panel.height - gs[N1][N2].getTopMargin()  - gs[N1][N2].getBottomMargin();
-          return tmp; 
-         }
-
-
-       /**
-       * Convert the user coordinate X to the pixel coordinate  
-       * @param x user coordiinate X for conversion   
-       **/
-        public int toX(double x) {
-                double d;
-                if (gs[N1][N2].useLogScale(0))
-                        d = Math.log10(x / gs[N1][N2].getMinValue(0));
-                else
-                        d = x - gs[N1][N2].getMinValue(0);
-
-             
-                double min= gs[N1][N2].getMinValue(0); 
-                double max= gs[N1][N2].getMaxValue(0);
-
-                  if (gs[N1][N2].useLogScale(0)){
-                       min = Math.log10(min);
-                       max = Math.log10(max);
-                  }
-
-
-                 // if (gs[N1][N2].useLogScale(0)){
-                 //       min = Math.pow(10, min);
-                 //       max = Math.pow(10, max);
-                 // }
-
-                double diff = Math.abs(min - max);
-                double inv = (min < max) ? 1.0 : -1.0;
-                int tmp= (int) (gs[N1][N2].getLeftMargin()+ inv * d * axisLengthX() / diff);
-                // int tmp= (int) (gs[N1][N2].getLeftMargin()+getMarginSizeLeft() + getMarginSizeRight() + inv * d * axisLengthX() / diff);
-                // int tmp= (int) (inv * d * axisLengthX() / diff);
- 
-                return tmp;
-        }
-
-      
-        /**
-       * Convert the user coordinate Y to the pixel coordinate
-       * @param y user coordiinate Y for conversion
-       **/
-        public int toY(double y) {
-
-                double d;
-                if (gs[N1][N2].useLogScale(1))
-                        d = Math.log10(y / gs[N1][N2].getMinValue(1) );
-                else
-                        d = y - gs[N1][N2].getMinValue(1);
-
-                double min= gs[N1][N2].getMinValue(1);
-                double max= gs[N1][N2].getMaxValue(1);
-             //    if (gs[N1][N2].useLogScale(1)){
-             //          min = Math.pow(10, min);
-             //          max = Math.pow(10, max);
-             //     }
-                if (gs[N1][N2].useLogScale(1)){
-                       min = Math.log10(min);
-                       max = Math.log10(max);
-                  }
-
-
-                double diff = Math.abs(min - max);
-                double inv = (min < max) ? 1.0 : -1.0;
-
-                // System.out.println(min);
-                // System.out.println(max);
-                // System.out.println(diff);
-
-
-               int tmp=(int) ( gs[N1][N2].getTopMargin()+axisLengthY() * (1.0 - inv * d / diff));
-
-               // System.out.println(tmp);
-
-               // double tt=(getMarginSizeTop()+getMarginSizeBottom())* getSizeY();
-               // System.out.println(tt); 
-               // int tmp=(int) (-tt-gs[N1][N2].getTopMargin()+axisLengthY()*(1.0 - inv * d / diff));
-               // int tmp=(int) (gs[N1][N2].getTopMargin()+axisLengthY()*(1.0 - inv * d / diff));
-
-                return tmp;
-
-        }
-
+	/**
+	 * Length of X axis in pixels.
+	 * 
+	 * @return Length of X axis
+	 **/
+	public double axisLengthX() {
+		Dimension panel = gs[N1][N2].getPanelSize();
+		double tmp = panel.width - gs[N1][N2].getLeftMargin()
+				- gs[N1][N2].getRightMargin();
+		// System.out.println(tmp);
+		return tmp;
+	}
 
 	/**
-	 * Add a label to the Canvas. Note: Call update() method to draw it
-	 * The label can be added in NDC or USER (axis-dependent) coordinates.
+	 * Length of Y axis in pixels.
+	 * 
+	 * @return Length of Y axis
+	 **/
+	public double axisLengthY() {
+		Dimension panel = gs[N1][N2].getPanelSize();
+		double tmp = panel.height - gs[N1][N2].getTopMargin()
+				- gs[N1][N2].getBottomMargin();
+		return tmp;
+	}
+
+	/**
+	 * Convert the user coordinate X to the pixel coordinate
+	 * 
+	 * @param x
+	 *            user coordiinate X for conversion
+	 **/
+	public int toX(double x) {
+		double d;
+		if (gs[N1][N2].useLogScale(0))
+			d = Math.log10(x / gs[N1][N2].getMinValue(0));
+		else
+			d = x - gs[N1][N2].getMinValue(0);
+
+		double min = gs[N1][N2].getMinValue(0);
+		double max = gs[N1][N2].getMaxValue(0);
+
+		if (gs[N1][N2].useLogScale(0)) {
+			min = Math.log10(min);
+			max = Math.log10(max);
+		}
+
+		// if (gs[N1][N2].useLogScale(0)){
+		// min = Math.pow(10, min);
+		// max = Math.pow(10, max);
+		// }
+
+		double diff = Math.abs(min - max);
+		double inv = (min < max) ? 1.0 : -1.0;
+		int tmp = (int) (gs[N1][N2].getLeftMargin() + inv * d * axisLengthX()
+				/ diff);
+		// int tmp= (int) (gs[N1][N2].getLeftMargin()+getMarginSizeLeft() +
+		// getMarginSizeRight() + inv * d * axisLengthX() / diff);
+		// int tmp= (int) (inv * d * axisLengthX() / diff);
+
+		return tmp;
+	}
+
+	/**
+	 * Convert the user coordinate Y to the pixel coordinate
+	 * 
+	 * @param y
+	 *            user coordiinate Y for conversion
+	 **/
+	public int toY(double y) {
+
+		double d;
+		if (gs[N1][N2].useLogScale(1))
+			d = Math.log10(y / gs[N1][N2].getMinValue(1));
+		else
+			d = y - gs[N1][N2].getMinValue(1);
+
+		double min = gs[N1][N2].getMinValue(1);
+		double max = gs[N1][N2].getMaxValue(1);
+		// if (gs[N1][N2].useLogScale(1)){
+		// min = Math.pow(10, min);
+		// max = Math.pow(10, max);
+		// }
+		if (gs[N1][N2].useLogScale(1)) {
+			min = Math.log10(min);
+			max = Math.log10(max);
+		}
+
+		double diff = Math.abs(min - max);
+		double inv = (min < max) ? 1.0 : -1.0;
+
+		// System.out.println(min);
+		// System.out.println(max);
+		// System.out.println(diff);
+
+		int tmp = (int) (gs[N1][N2].getTopMargin() + axisLengthY()
+				* (1.0 - inv * d / diff));
+
+		// System.out.println(tmp);
+
+		// double tt=(getMarginSizeTop()+getMarginSizeBottom())* getSizeY();
+		// System.out.println(tt);
+		// int tmp=(int) (-tt-gs[N1][N2].getTopMargin()+axisLengthY()*(1.0 - inv
+		// * d / diff));
+		// int tmp=(int) (gs[N1][N2].getTopMargin()+axisLengthY()*(1.0 - inv * d
+		// / diff));
+
+		return tmp;
+
+	}
+
+	/**
+	 * Add a label to the Canvas. Note: Call update() method to draw it The
+	 * label can be added in NDC or USER (axis-dependent) coordinates.
+	 * 
 	 * @param label
 	 *            Label to be added
 	 */
@@ -2381,12 +2374,14 @@ public class HPlot extends GHFrame implements Serializable {
 		if (label.getPositionCoordinate() == 2) {
 			double x = label.getX();
 			double y = label.getY();
-			glabel.setLocation(toX(x)+glabel.getTextHeight(), toY(y)-glabel.getTextHeight());
-                        // System.out.println("from JHplot="+label.getText()+" "+Integer.toString(toX(x))+" "+Integer.toString(toY(y)) );
-                        // glabel.setDataLocation(toX(x), toY(y)); 
-                        // glabel.setDataLocation(x, y); 
+			glabel.setLocation(toX(x) + glabel.getTextHeight(),
+					toY(y) - glabel.getTextHeight());
+			// System.out.println("from JHplot="+label.getText()+" "+Integer.toString(toX(x))+" "+Integer.toString(toY(y))
+			// );
+			// glabel.setDataLocation(toX(x), toY(y));
+			// glabel.setDataLocation(x, y);
 			glabel.setUsePosition(true);
-                        glabel.setUseDataPosition(true); 
+			glabel.setUseDataPosition(true);
 		}
 		// in the NDC coordinnates
 		if (label.getPositionCoordinate() == 1) {
@@ -2399,60 +2394,58 @@ public class HPlot extends GHFrame implements Serializable {
 			double h = panel.height;
 			int ix = (int) (w * x);
 			int iy = (int) (h * (1 - y));
-                        glabel.setLocation(ix+glabel.getTextHeight(), iy-glabel.getTextHeight());
+			glabel.setLocation(ix + glabel.getTextHeight(),
+					iy - glabel.getTextHeight());
 			glabel.setUsePosition(true);
-                        glabel.setUseDataPosition(false); 
+			glabel.setUseDataPosition(false);
 		}
 
 		gs[N1][N2].addLabel(glabel);
 	}
 
+	/**
+	 * Add a key to the Canvas. Note: Call update() method to draw it Normally,
+	 * unlike Legend, it is not associated to any data set.
+	 * 
+	 * @param label
+	 *            key to be added
+	 */
+	public void add(HKey label) {
 
+		GraphLabel glabel = label.getGraphLabel();
 
- /**
-         * Add a key to the Canvas. Note: Call update() method to draw it
-         * Normally, unlike Legend, it is not associated to any data set. 
-         * @param label
-         *            key  to be added
-         */
-        public void add(HKey label) {
+		glabel.setUsePosition(false);
+		double x = label.getX();
+		double y = label.getY();
 
-                GraphLabel glabel = label.getGraphLabel();
+		// in the user coordinnates
+		if (label.getPositionCoordinate() == 2) {
+			glabel.setLocation(toX(x) + glabel.getTextHeight(),
+					toY(y) - glabel.getTextHeight());
+			glabel.setUsePosition(true);
+		}
+		// in the NDC coordinnates
+		if (label.getPositionCoordinate() == 1) {
 
-                glabel.setUsePosition(false);
-                double x = label.getX();
-                double y = label.getY();
-               
+			if (label.isDefaultPosition())
+				y = y - label.getSeparation() * hkeyCounter[N1][N2]; // increment
+																		// for
+																		// next
+																		// key
 
-                // in the user coordinnates
-                if (label.getPositionCoordinate() == 2) {
-                        glabel.setLocation(toX(x)+glabel.getTextHeight(), toY(y)-glabel.getTextHeight());
-                        glabel.setUsePosition(true);
-                }
-                // in the NDC coordinnates
-                if (label.getPositionCoordinate() == 1) {
+			Dimension panel = gs[N1][N2].getPanelSize();
+			double w = panel.width;
+			double h = panel.height;
+			int ix = (int) (w * x);
+			int iy = (int) (h * (1 - y));
+			glabel.setLocation(ix + glabel.getTextHeight(),
+					iy - glabel.getTextHeight());
+			glabel.setUsePosition(true);
+		}
 
-                	if (label.isDefaultPosition())  y=y-label.getSeparation()*hkeyCounter[N1][N2]; // increment for next key
-                    	
-                    
-                        Dimension panel = gs[N1][N2].getPanelSize();
-                        double w = panel.width;
-                        double h = panel.height;
-                        int ix = (int) (w * x);
-                        int iy = (int) (h * (1 - y));
-                        glabel.setLocation(ix+glabel.getTextHeight(), iy-glabel.getTextHeight());
-                        glabel.setUsePosition(true);
-                }
-
-                gs[N1][N2].addLabel(glabel);
-                hkeyCounter[N1][N2]++;
-        }
-
-
-
-
-
-
+		gs[N1][N2].addLabel(glabel);
+		hkeyCounter[N1][N2]++;
+	}
 
 	/**
 	 * Add a multiline label to the Canvas. Note: Call update() method to draw
@@ -2470,9 +2463,9 @@ public class HPlot extends GHFrame implements Serializable {
 		if (label.getPositionCoordinate() == 2) {
 			double x = label.getX();
 			double y = label.getY();
-                        glabel.setLocation(toX(x)+glabel.getTextHeight(), toY(y));
+			glabel.setLocation(toX(x) + glabel.getTextHeight(), toY(y));
 			glabel.setUsePosition(true);
-                     
+
 		}
 		// in the NDC coordinnates
 		if (label.getPositionCoordinate() == 1) {
@@ -2484,7 +2477,7 @@ public class HPlot extends GHFrame implements Serializable {
 			double h = panel.height;
 			int ix = (int) (w * x);
 			int iy = (int) (h * (1 - y));
-		        glabel.setLocation(ix+glabel.getTextHeight(), iy);	
+			glabel.setLocation(ix + glabel.getTextHeight(), iy);
 			glabel.setUsePosition(true);
 		}
 
@@ -2506,49 +2499,41 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
- /**
-         * Draw a key. Note: it is smilar to add(HKey), only update() is called
-         * automatically. 
-         *
-         * @param label
-         *            a key to be drawn
-         */
+	/**
+	 * Draw a key. Note: it is smilar to add(HKey), only update() is called
+	 * automatically.
+	 * 
+	 * @param label
+	 *            a key to be drawn
+	 */
 
-        public void draw(HKey label) {
-                add(label);
-                update();
+	public void draw(HKey label) {
+		add(label);
+		update();
 
-        }
+	}
 
-        
-        
-        
-        /**
-    	 * Add a LaTeX equation to the canvas.
-    	 */
-    	public void add(HLabelEq ob) {
+	/**
+	 * Add a LaTeX equation to the canvas.
+	 */
+	public void add(HLabelEq ob) {
 
-    		
-    		    Image img = ob.getImage();
-    		    Picture p= new Picture(ob.getX(), ob.getY(),img );
-    	     	p.setPositionCoordinate( ob.getPositionCoordinate() );
-    		    gs[N1][N2].addPrimitive(p);
-    	} 
-        
-        
-        
-    	/**
-    	 * Draw a LaTeX rquation on the Canvas. It is similar to add(HShape), only
-    	 * update() method is called authomatically
-    	 */
-    	public void draw(HLabelEq ob) {
-    		add(ob);
-    		update();
+		Image img = ob.getImage();
+		Picture p = new Picture(ob.getX(), ob.getY(), img);
+		p.setPositionCoordinate(ob.getPositionCoordinate());
+		gs[N1][N2].addPrimitive(p);
+	}
 
-    	}
-        
-        
-        
+	/**
+	 * Draw a LaTeX rquation on the Canvas. It is similar to add(HShape), only
+	 * update() method is called authomatically
+	 */
+	public void draw(HLabelEq ob) {
+		add(ob);
+		update();
+
+	}
+
 	/**
 	 * Add a shape primitive to the Canvas. Note: Primitives will be shown after
 	 * the update() method
@@ -2568,17 +2553,14 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
-        /**
-         * Draw a multiline label. 
-         * The update() method is called authomatically
-         */
-        public void draw(HMLabel ob) {
-                add(ob);
-                update();
+	/**
+	 * Draw a multiline label. The update() method is called authomatically
+	 */
+	public void draw(HMLabel ob) {
+		add(ob);
+		update();
 
-        }
-
-
+	}
 
 	/**
 	 * Returns the actual color of the axes of the graph.
@@ -2612,7 +2594,6 @@ public class HPlot extends GHFrame implements Serializable {
 		return gs[N1][N2].getTicFont(axis);
 	}
 
-	
 	/**
 	 * Sets the font used by the labels drawn at each tick.
 	 * 
@@ -2701,8 +2682,9 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Sets whether an axis line will be drawn or not.
-	 * This does not affect ticks and labels. 
+	 * Sets whether an axis line will be drawn or not. This does not affect
+	 * ticks and labels.
+	 * 
 	 * @param axis
 	 *            defines to which axis this function applies, generally
 	 *            something like <a href="#X_AXIS">X_AXIS</a> or <a
@@ -2714,76 +2696,68 @@ public class HPlot extends GHFrame implements Serializable {
 		gs[N1][N2].setDrawAxis(axis, b);
 	}
 
+	/**
+	 * Sets X-axis (bottom). First remove all axes using removeAxes() method. Do
+	 * not draw miror axis, but all tcs and labels will be drawn.
+	 */
+	public void setAxisX() {
+		setAxis(0, true);
+		setAxisMirror(0, false);
 
-        /**
-         * Sets X-axis (bottom).
-         * First remove all axes using removeAxes() method.  
-         * Do not  draw miror axis, but all tcs and labels will be drawn.  
-         */
-        public void setAxisX() {
-                setAxis(0,true);
-                setAxisMirror(0,false);
+		setTicLabels(0, true);
+		setTicsMirror(0, false);
 
-               setTicLabels(0,true);
-               setTicsMirror(0,false);
+		setTics(0, true);
+		setTicsMirror(0, false);
+	}
 
-               setTics(0,true);
-               setTicsMirror(0,false);
-        }
+	/**
+	 * Sets Y-axis (left). First remove all axes using removeAxes() method. Do
+	 * not draw miror axis, but all tcs and labels will be drawn.
+	 */
+	public void setAxisY() {
+		setAxis(1, true);
+		setAxisMirror(1, false);
 
-   
-         /**
-         *  Sets Y-axis (left).
-         *  First remove all axes using removeAxes() method.
-         *  Do not  draw miror axis, but all tcs and labels will be drawn. 
-         */
-        public void setAxisY() {
-               setAxis(1,true);
-               setAxisMirror(1,false);
+		setTicLabels(1, true);
+		setTicsMirror(1, false);
 
-               setTicLabels(1,true);
-               setTicsMirror(1,false);
+		setTics(1, true);
+		setTicsMirror(1, false);
+	}
 
-               setTics(1,true);
-               setTicsMirror(1,false);
-        }
- 
+	/**
+	 * Sets whether all axis lines will be drawn or not.
+	 * 
+	 * @param b
+	 *            toggle, true if the axis should be drawn.
+	 */
+	public void setAxisAll(boolean b) {
+		gs[N1][N2].setDrawAxis(0, b);
+		gs[N1][N2].setDrawAxis(1, b);
 
+	}
 
-/**
-         * Sets whether all axis lines will be drawn or not.
-         *
-         * @param b
-         *            toggle, true if the axis should be drawn.
-         */
-        public void setAxisAll(boolean b) {
-                gs[N1][N2].setDrawAxis(0, b);
-                gs[N1][N2].setDrawAxis(1, b);
+	/**
+	 * Sets the pen width to draw tick axes.
+	 * 
+	 * @param penWidth
+	 *            pen width to draw the tick axes lines
+	 */
+	public void setAxisPenTicWidth(int penWidth) {
+		gs[N1][N2].setAxesPenTicWidth((float) penWidth);
 
-        }
+	}
 
-/**
-         * Sets the pen width to draw tick axes. 
-         *
-         * @param penWidth 
-         *          pen width to draw the tick axes lines 
-         */
-        public void setAxisPenTicWidth(int penWidth) {
-                gs[N1][N2].setAxesPenTicWidth((float)penWidth);
+	/**
+	 * Get the pen width to draw tick axes
+	 * 
+	 * @return pen width to draw the tick axes lines
+	 */
+	public int getAxisPenTicWidth() {
+		return (int) gs[N1][N2].getAxesPenTicWidth();
 
-        }
-
-/**
-         * Get the pen width to draw tick axes
-         *
-         * @return  
-         *          pen width to draw the tick axes lines
-         */
-        public int getAxisPenTicWidth() {
-                return (int)gs[N1][N2].getAxesPenTicWidth();
-
-        }
-
+	}
 
 	/**
 	 * Returns whether the mirror of an axis will be drawn or not.
@@ -2794,7 +2768,7 @@ public class HPlot extends GHFrame implements Serializable {
 	 *            href="#Y_AXIS">Y_AXIS</a>.
 	 * @return true if the mirror axis will be drawn.
 	 */
-	public boolean  isMirrorAxisShown(int axis) {
+	public boolean isMirrorAxisShown(int axis) {
 		return gs[N1][N2].drawMirrorAxis(axis);
 	}
 
@@ -2907,7 +2881,7 @@ public class HPlot extends GHFrame implements Serializable {
 		data[i1][i2].clear();
 		// set empty data
 		// gs[i1][i2].setDrawLegend(false);
-		//  DataArray jplot3d = new DataArray(0, 1, 1, lp);
+		// DataArray jplot3d = new DataArray(0, 1, 1, lp);
 		// jplot3d.addPoint(0, 0);
 		// jp[i1][i2].insertData(0, jplot3d);
 		// now resert
@@ -2922,28 +2896,24 @@ public class HPlot extends GHFrame implements Serializable {
 	/**
 	 * Clear the current graph from the input data. Graph settings do not
 	 * change. If graph is showing, it will be updated. Note: the current graph
-	 * is given by the cd() method. All labels stay the same. 
+	 * is given by the cd() method. All labels stay the same.
 	 */
 
 	public void clearData() {
 		clearData(N1, N2);
 	}
 
-	
 	/**
-	 * Clear graph  labels for the curent graph. This is likely a good practice
+	 * Clear graph labels for the curent graph. This is likely a good practice
 	 * to improve performance. Can be called after clearData().
 	 */
 	public void clearLabels() {
-		clearLabels(N1,N2);
+		clearLabels(N1, N2);
 	}
-	
 
-	
-	
 	/**
-	 * Clear Graph settings including labels. This is likely a good practice
-	 * to improve performance. Can be called after clearData().
+	 * Clear Graph settings including labels. This is likely a good practice to
+	 * improve performance. Can be called after clearData().
 	 * 
 	 * @param i1
 	 *            location of the graph in X
@@ -2952,16 +2922,15 @@ public class HPlot extends GHFrame implements Serializable {
 	 */
 
 	public void clearLabels(int i1, int i2) {
-                gs[i1][i2].getLabels().clear();
+		gs[i1][i2].getLabels().clear();
 		jp[i1][i2].updateGraphIfShowing();
 		updateFrame();
 	}
-	
-	
+
 	/**
 	 * Clear data of the graph characterised by an index in X and Y. Graph
-	 * settings do not change. If the graph is showed, data will be removed but all
-	 * setting (labels) stay the same
+	 * settings do not change. If the graph is showed, data will be removed but
+	 * all setting (labels) stay the same
 	 * 
 	 * @param i1
 	 *            location of the graph in X
@@ -2971,12 +2940,12 @@ public class HPlot extends GHFrame implements Serializable {
 
 	public void clearData(int i1, int i2) {
 		IndexPlot = 0;
-                // gs[i1][i2].setDrawLegend(false);
+		// gs[i1][i2].setDrawLegend(false);
 		data[i1][i2].clear();
 		jp[i1][i2].clearData();
 		jp[i1][i2].updateGraphIfShowing();
 		updateFrame();
-		// System.gc(); // speed up! 
+		// System.gc(); // speed up!
 
 	}
 
@@ -2992,7 +2961,6 @@ public class HPlot extends GHFrame implements Serializable {
 		}
 	}
 
-	
 	/**
 	 * Clear all graph labels
 	 */
@@ -3004,9 +2972,7 @@ public class HPlot extends GHFrame implements Serializable {
 			}
 		}
 	}
-	
-	
-	
+
 	/**
 	 * Clear all graphs from data and settings.
 	 */
@@ -3034,17 +3000,18 @@ public class HPlot extends GHFrame implements Serializable {
 		gs[N1][N2].setDrawTics(axis, b);
 	}
 
-        /**
-         * Sets whether or not to draw ticks (little lines on the axes) for all axis.
-         *
-         * @param b
-         *            toggle, true if the ticks should be drawn.
-         */
-        public void setTics(boolean b) {
-                gs[N1][N2].setDrawTics(0, b);
-                gs[N1][N2].setDrawTics(1, b);
+	/**
+	 * Sets whether or not to draw ticks (little lines on the axes) for all
+	 * axis.
+	 * 
+	 * @param b
+	 *            toggle, true if the ticks should be drawn.
+	 */
+	public void setTics(boolean b) {
+		gs[N1][N2].setDrawTics(0, b);
+		gs[N1][N2].setDrawTics(1, b);
 
-        }
+	}
 
 	/**
 	 * Sets the range (min-max) displayed on the axis.
@@ -3052,7 +3019,7 @@ public class HPlot extends GHFrame implements Serializable {
 	 * @param axis
 	 *            defines to which axis this function applies, generally
 	 *            something like <a href="#X_AXIS">X_AXIS</a> or <a
-	 *            href="#Y_AXIS">Y_AXIS</a>. Usually, 0  means X, 1 means Y. 
+	 *            href="#Y_AXIS">Y_AXIS</a>. Usually, 0 means X, 1 means Y.
 	 * @param min
 	 *            minimum value on the axis
 	 * @param max
@@ -3061,11 +3028,12 @@ public class HPlot extends GHFrame implements Serializable {
 	public void setRange(int axis, double min, double max) {
 		gs[N1][N2].setRange(axis, min, max);
 		gs[N1][N2].setAutoRange(axis, false);
+		if (axis==0) gs[N1][N2].setAutoRange(1, true);
 	}
 
-	
 	/**
-	 * Sets the range (min-max) displayed on X
+	 * Sets the range (min-max) displayed on X. Y is set to autorange.
+	 * 
 	 * @param min
 	 *            minimum value on the axis
 	 * @param max
@@ -3074,10 +3042,12 @@ public class HPlot extends GHFrame implements Serializable {
 	public void setRangeX(double min, double max) {
 		gs[N1][N2].setRange(0, min, max);
 		gs[N1][N2].setAutoRange(0, false);
+		gs[N1][N2].setAutoRange(1, true);
 	}
-	
+
 	/**
 	 * Sets the range (min-max) displayed on Y
+	 * 
 	 * @param min
 	 *            minimum value on the axis
 	 * @param max
@@ -3086,10 +3056,9 @@ public class HPlot extends GHFrame implements Serializable {
 	public void setRangeY(double min, double max) {
 		gs[N1][N2].setRange(1, min, max);
 		gs[N1][N2].setAutoRange(1, false);
+		gs[N1][N2].setAutoRange(0, true);
 	}
-	
-	
-	
+
 	/**
 	 * Sets the range (min-max) displayed on all axises.
 	 * 
@@ -3244,8 +3213,6 @@ public class HPlot extends GHFrame implements Serializable {
 		}
 	}
 
-	
-	
 	/**
 	 * Draw a statistical box (mean, RMS, number of entries)
 	 * 
@@ -3253,33 +3220,33 @@ public class HPlot extends GHFrame implements Serializable {
 	 *            histogram H1D
 	 */
 	public void drawStatBox(H1D h1) {
-	   
-        String name = h1.getTitle();
-        Dimension panel = gs[N1][N2].getPanelSize();
-        double w = panel.width;
-        double h = panel.height;
 
-        GraphLabel label0 = new GraphLabel(GraphLabel.STATBOX, name);
-        label0.setUsePosition(true);
-        label0.setText( h1.getStatParameters());
+		String name = h1.getTitle();
+		Dimension panel = gs[N1][N2].getPanelSize();
+		double w = panel.width;
+		double h = panel.height;
 
-        double xtop = gs[N1][N2].getTopMargin() + 0.5 * label0.getHeight();
-        label0.setLocation(w - gs[N1][N2].getRightMargin()-label0.getWidth(), xtop);
-        gs[N1][N2].addLabel(label0);
+		GraphLabel label0 = new GraphLabel(GraphLabel.STATBOX, name);
+		label0.setUsePosition(true);
+		label0.setText(h1.getStatParameters());
 
-		
+		double xtop = gs[N1][N2].getTopMargin() + 0.5 * label0.getHeight();
+		label0.setLocation(w - gs[N1][N2].getRightMargin() - label0.getWidth(),
+				xtop);
+		gs[N1][N2].addLabel(label0);
+
 	}
 
-	
-	
 	/**
-	 * Draw a statistical box (mean, RMS, number of entries) at a specific position.
-	 * Use the standard AWT coordinates.
+	 * Draw a statistical box (mean, RMS, number of entries) at a specific
+	 * position. Use the standard AWT coordinates.
 	 * 
 	 * @param h1
 	 *            histogram H1D
-	 * @param x position in X
-	 *  @param y position in Y           
+	 * @param x
+	 *            position in X
+	 * @param y
+	 *            position in Y
 	 */
 	public void drawStatBox(H1D h1, int x, int y) {
 
@@ -3295,52 +3262,42 @@ public class HPlot extends GHFrame implements Serializable {
 		label0.setUsePosition(true);
 		String[] s = { name, sentries, smean, srms, extra };
 		label0.setText(s);
-		label0.setLocation(x,y);
+		label0.setLocation(x, y);
 		gs[N1][N2].addLabel(label0);
 	}
 
-	
-	
 	/**
-	 * Draw a statistical box (mean, RMS, number of entries) at a specific position.
-	 * Use the "USR" or "NDC" coordinates.
+	 * Draw a statistical box (mean, RMS, number of entries) at a specific
+	 * position. Use the "USR" or "NDC" coordinates.
 	 * 
 	 * @param h1
 	 *            histogram H1D
-	 * @param x position in X
-	 * @param y position in Y
-	 * @param howToSet use "NDC" or "USER" (coordinate dependent)            
+	 * @param x
+	 *            position in X
+	 * @param y
+	 *            position in Y
+	 * @param howToSet
+	 *            use "NDC" or "USER" (coordinate dependent)
 	 */
-	public void drawStatBox(H1D h1, double  x, double  y, String howToSet) {
+	public void drawStatBox(H1D h1, double x, double y, String howToSet) {
 
-	  if (howToSet.equalsIgnoreCase("USER")) {
-            
-			drawStatBox(h1, toX(x),toY(y));
+		if (howToSet.equalsIgnoreCase("USER")) {
 
-       } 
-	  else if (howToSet.equalsIgnoreCase("NDC")) {
+			drawStatBox(h1, toX(x), toY(y));
 
-    	   Dimension panel = gs[N1][N2].getPanelSize();
-           double w = panel.width;
-           double h = panel.height;
-           int ix = (int) (w * x);
-           int iy = (int) (h * (1 - y));
-           drawStatBox(h1,ix,iy);
+		} else if (howToSet.equalsIgnoreCase("NDC")) {
 
-       }
-		
+			Dimension panel = gs[N1][N2].getPanelSize();
+			double w = panel.width;
+			double h = panel.height;
+			int ix = (int) (w * x);
+			int iy = (int) (h * (1 - y));
+			drawStatBox(h1, ix, iy);
+
+		}
+
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Draw a text box with some information
 	 * 
@@ -3356,8 +3313,8 @@ public class HPlot extends GHFrame implements Serializable {
 		label0.setText(lines);
 
 		double xtop = gs[N1][N2].getTopMargin() + 0.5 * label0.getHeight();
-		label0.setLocation(w - 2 * gs[N1][N2].getRightMargin()
-				- label0.getWidth(), xtop);
+		label0.setLocation(
+				w - 2 * gs[N1][N2].getRightMargin() - label0.getWidth(), xtop);
 		gs[N1][N2].addLabel(label0);
 	}
 
@@ -3428,9 +3385,8 @@ public class HPlot extends GHFrame implements Serializable {
 	 * FileWriter(fname)); out.write("# column 1: X"); out.newLine();
 	 * out.write("# column 2: "); out.write(name); out.newLine(); for (int i=0;
 	 * i<data.size(); i++) { out.write(Double.toString(data.getX(i)));
-	 * out.write(" "); out.write(Double.toString(data.getY(i))); out.newLine(); }
-	 * out.close(); } catch (IOException e) { } }
-	 * 
+	 * out.write(" "); out.write(Double.toString(data.getY(i))); out.newLine();
+	 * } out.close(); } catch (IOException e) { } }
 	 */
 
 	/*
@@ -3454,7 +3410,6 @@ public class HPlot extends GHFrame implements Serializable {
 	 * public void dismissGraph() {
 	 * 
 	 * jp.dismissGraph(); }
-	 * 
 	 */
 
 	/**
@@ -3472,38 +3427,32 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
-	
-	
 	/**
 	 * Plot cloud in 1D. Assume 100 bins.
 	 * 
-	 * @param  c1d
+	 * @param c1d
 	 *            Input Cloud1D
 	 */
 
 	public void draw(Cloud1D c1d) {
 
-		draw( new H1D(c1d,100) );
-		
+		draw(new H1D(c1d, 100));
+
 	}
-	
-	
-	
+
 	/**
 	 * Plot Aida datapointset.
 	 * 
-	 * @param  ds
+	 * @param ds
 	 *            Input dataPoint set
 	 */
 
 	public void draw(DataPointSet ds) {
 
-		draw( new P1D(ds) );
-		
+		draw(new P1D(ds));
+
 	}
-	
-	
-	
+
 	/**
 	 * Plot cloud 2D
 	 * 
@@ -3513,22 +3462,23 @@ public class HPlot extends GHFrame implements Serializable {
 
 	public void draw(Cloud2D c2d) {
 
-		draw(  new P1D(c2d)  );
-		
-	}
-	
-	
-	/**
-	 * Draw 1D histogram 
-	 * @param h1d input istogram1D 
-	 */
-	public void draw(Histogram1D  h1d) {
+		draw(new P1D(c2d));
 
-		H1D h1= new H1D(h1d);
-		draw(h1);
-		
 	}
-	
+
+	/**
+	 * Draw 1D histogram
+	 * 
+	 * @param h1d
+	 *            input istogram1D
+	 */
+	public void draw(Histogram1D h1d) {
+
+		H1D h1 = new H1D(h1d);
+		draw(h1);
+
+	}
+
 	/**
 	 * Plot 1D histogram.
 	 * 
@@ -3538,12 +3488,13 @@ public class HPlot extends GHFrame implements Serializable {
 
 	public void draw(H1D h1) {
 
-		
 		if (h1.getLabelX() != null)
-			if (h1.getLabelX().length()>0) setNameX(h1.getLabelX() );
+			if (h1.getLabelX().length() > 0)
+				setNameX(h1.getLabelX());
 		if (h1.getLabelY() != null)
-			if (h1.getLabelY().length()>0) setNameY(h1.getLabelY() );
-		
+			if (h1.getLabelY().length() > 0)
+				setNameY(h1.getLabelY());
+
 		h1.setType(LinePars.H1D);
 
 		// System.out.println(N1);
@@ -3600,8 +3551,8 @@ public class HPlot extends GHFrame implements Serializable {
 	 * IndexPlot++; DataArray data1 = new DataArray(IndexPlot, 1, Bin,
 	 * h1.getDrawOption());
 	 * 
-	 * for (int i = 0; i < Bin; i++) { double dd = Min + BinWidth * i; double hh =
-	 * h1.binEntries(i); double errX = 0.5 * BinWidth; double errY =
+	 * for (int i = 0; i < Bin; i++) { double dd = Min + BinWidth * i; double hh
+	 * = h1.binEntries(i); double errX = 0.5 * BinWidth; double errY =
 	 * Math.sqrt(hh); // supress 0 // also, add some systematical error for
 	 * checks // if (hh != 0) data.addPoint(dd,hh,errX,errX,errY,errY);
 	 * data1.addPoint(dd + 0.5 * BinWidth, hh, errX, errX, errY, errY); }
@@ -3687,15 +3638,74 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Draw an one-dimensional function.
-	 * 
+	 * Draw an one-dimensional function. Range is determined by the setRange()
+	 * method.
+	 * If You set range during F1D initialization, it will be used.
+	 * If not, canvas range is used.
 	 * @param f1
 	 *            F1D function
-	 * @param
-	 *        return true if success
+	 * @param return true if success
 	 */
 	public boolean draw(F1D f1) {
 		return draw(f1, false);
+	}
+
+	
+	
+
+	/**
+	 * Draw a function in a range. Y range is set by autorange.
+	 * 
+	 * 
+	 * @param f1
+	 * @param min
+	 *            min X value
+	 * @param max
+	 *            max Y value
+	 * @return
+	 */
+	public boolean draw(F1D f1, double min, double max) {
+
+		if (f1.getLabelX() != null)
+			if (f1.getLabelX().length() > 0)
+				setNameX(f1.getLabelX());
+		if (f1.getLabelY() != null)
+			if (f1.getLabelY().length() > 0)
+				setNameY(f1.getLabelY());
+
+		f1.setType(LinePars.F1D);
+		
+		f1.setMin(min);
+		f1.setMax(max);
+		gs[N1][N2].setRange(0, min, max);
+		gs[N1][N2].setAutoRange(0, false);
+		gs[N1][N2].setAutoRange(1, true);
+		f1.eval(getMinValue(0), getMaxValue(0), f1.getPoints()); // evaluate
+																	// first
+
+		gs[N1][N2].setGraphType(GraphSettings.GRAPHTYPE_2D);
+		gs[N1][N2].set2DType(0); // this is a function type
+
+		int Bin = f1.getPoints();
+		IndexPlot++;
+
+		f1.setGraphStyle(0);
+		f1.setDrawSymbol(false);
+		// f1.setSymbol(4);
+		f1.setDrawLine(true);
+		DataArray data1 = new DataArray(IndexPlot, 1, Bin, f1.getDrawOption());
+
+		for (int i = 0; i < Bin; i++) {
+			data1.addPoint(f1.getX(i), f1.getY(i));
+		}
+
+		data1.setDimension(2);
+		data1.setName(f1.getTitle());
+		JHPlot.ReadFile = false;
+		data[N1][N2].add(data1);
+		jp[N1][N2].insertData(IndexPlot, data1);
+		return true;
+
 	}
 
 	/**
@@ -3703,36 +3713,45 @@ public class HPlot extends GHFrame implements Serializable {
 	 * 
 	 * @param f1
 	 *            FND function
-	 * @param
-	 *        return true if success
+	 * @param return true if success
 	 */
 	public boolean draw(FND f1) {
 		return draw(f1, false);
 	}
 
-
 	/**
 	 * Draw an one-dimensional function. Suppress negative values (useful for
-	 * showing together with a histogram). 
+	 * showing together with a histogram).
+	 * If You set range during F1D initialization, it will be used.
+	 * If not, canvas range is used.
 	 * 
 	 * @param f1
 	 *            F1D function
 	 * @param startZero
 	 *            if true, start from 0 on Y
-	 *  @return
-	 *             true if success
+	 * @return true if success
 	 */
-	public boolean  draw(F1D f1, boolean startZero) {
+	public boolean draw(F1D f1, boolean startZero) {
 
-		
 		if (f1.getLabelX() != null)
-			if (f1.getLabelX().length()>0) setNameX(f1.getLabelX() );
+			if (f1.getLabelX().length() > 0)
+				setNameX(f1.getLabelX());
 		if (f1.getLabelY() != null)
-			if (f1.getLabelY().length()>0) setNameY(f1.getLabelY() );
-		
-			
+			if (f1.getLabelY().length() > 0)
+				setNameY(f1.getLabelY());
+
 		f1.setType(LinePars.F1D);
-		f1.eval(); // evaluate first
+		
+		if (f1.getMin() == f1.getMax()) {
+			
+		   f1.eval(getMinValue(0), getMaxValue(0), f1.getPoints()); // evaluate
+		} else {
+			// if restricted range is set, use it
+			f1.eval(f1.getMin(), f1.getMax(), f1.getPoints()); // evaluate
+			
+		}
+		
+		// first
 
 		gs[N1][N2].set2DType(1);
 
@@ -3760,35 +3779,34 @@ public class HPlot extends GHFrame implements Serializable {
 		JHPlot.ReadFile = false;
 		data[N1][N2].add(data1);
 		jp[N1][N2].insertData(IndexPlot, data1);
-        return true;
+		return true;
 	}
-	
+
 	/**
-	 * Draw an one-dimensional function from FND.  Suppress negative values (useful for
-	 * showing together with a histogram).
+	 * Draw an one-dimensional function from FND. Suppress negative values
+	 * (useful for showing together with a histogram).
 	 * 
 	 * @param f1
 	 *            FND function
 	 * @param startZero
 	 *            if true, start from 0 on Y
-	 * @return
-	 *         true if success
+	 * @return true if success
 	 */
-	public boolean  draw(FND f1, boolean startZero) {
+	public boolean draw(FND f1, boolean startZero) {
 
-		
 		if (f1.getLabelX() != null)
-			if (f1.getLabelX().length()>0) setNameX(f1.getLabelX() );
+			if (f1.getLabelX().length() > 0)
+				setNameX(f1.getLabelX());
 		if (f1.getLabelY() != null)
-			if (f1.getLabelY().length()>0) setNameY(f1.getLabelY() );
-    
-        if (f1.isEvaluated() == false) {
-        	System.out.println("The function is not avaluated yet!");
-        	return false;
+			if (f1.getLabelY().length() > 0)
+				setNameY(f1.getLabelY());
+
+		if (f1.isEvaluated() == false) {
+			System.out.println("The function is not avaluated yet!");
+			return false;
 		}
-             
+
 		f1.setType(LinePars.F1D);
-		
 
 		gs[N1][N2].set2DType(1);
 
@@ -3812,26 +3830,13 @@ public class HPlot extends GHFrame implements Serializable {
 		}
 
 		data1.setDimension(2);
-		data1.setName(f1.getTitle()+"; "+f1.getFixedVars());
+		data1.setName(f1.getTitle() + "; " + f1.getFixedVars());
 		JHPlot.ReadFile = false;
 		data[N1][N2].add(data1);
 		jp[N1][N2].insertData(IndexPlot, data1);
 
-        return true;
+		return true;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * Get the vector which keeps all the data
@@ -3844,11 +3849,11 @@ public class HPlot extends GHFrame implements Serializable {
 	}
 
 	/**
-	 * Close the canvas (and dispose all components). 
+	 * Close the canvas (and dispose all components).
 	 */
 	public void close() {
 
-                isOpen=0;
+		isOpen = 0;
 		mainFrame.setVisible(false);
 		m_Close = new Thread1("Closing softly");
 		if (!m_Close.Alive())
@@ -3856,22 +3861,18 @@ public class HPlot extends GHFrame implements Serializable {
 
 	}
 
-
- /**
-         *  Shows how many time the canvas was open. 
-         *
-         *  @return shows how many time was open 
-         */
-        protected int isOpen() {
-                return isOpen;
-        }
-
-
-
+	/**
+	 * Shows how many time the canvas was open.
+	 * 
+	 * @return shows how many time was open
+	 */
+	protected int isOpen() {
+		return isOpen;
+	}
 
 	/**
-	 * Quit the canvas (and dispose all components) Note: a memory leak is found -
-	 * no time to study  it. set to null all the stuff
+	 * Quit the canvas (and dispose all components) Note: a memory leak is found
+	 * - no time to study it. set to null all the stuff
 	 */
 
 	public void quit() {
@@ -3983,11 +3984,12 @@ public class HPlot extends GHFrame implements Serializable {
 		IndexPlot++;
 		JHPlot.ReadFile = false;
 		if (d.getLabelX() != null)
-			if (d.getLabelX().length()>0) setNameX(d.getLabelX() );
+			if (d.getLabelX().length() > 0)
+				setNameX(d.getLabelX());
 		if (d.getLabelY() != null)
-			if (d.getLabelY().length()>0) setNameY(d.getLabelY() );
-		
-		
+			if (d.getLabelY().length() > 0)
+				setNameY(d.getLabelY());
+
 		d.setType(LinePars.P1D);
 		// for contous
 		d.setGraphStyle(LinePars.LINES);
@@ -4039,10 +4041,12 @@ public class HPlot extends GHFrame implements Serializable {
 
 		private Thread t = null;
 		private String mess;
+
 		Thread1(String s1) {
 			mess = s1;
 
 		}
+
 		public boolean Alive() {
 			boolean tt = false;
 			if (t != null) {
@@ -4051,6 +4055,7 @@ public class HPlot extends GHFrame implements Serializable {
 			}
 			return tt;
 		}
+
 		public boolean Joint() {
 			boolean tt = false;
 			try {
@@ -4062,11 +4067,13 @@ public class HPlot extends GHFrame implements Serializable {
 			}
 			return tt;
 		}
+
 		public void Start() {
 			t = new Thread(this, mess);
 			t.start();
 
 		}
+
 		public void Stop() {
 			t = null;
 		}
@@ -4076,14 +4083,6 @@ public class HPlot extends GHFrame implements Serializable {
 		}
 	}
 
-	
-
-
-	
-	
-	
-	
-	
 	/**
 	 * Implemented abstract function to close the frame from the menu
 	 */
@@ -4093,91 +4092,79 @@ public class HPlot extends GHFrame implements Serializable {
 
 	@Override
 	protected void showHelp() {
-		
-		new HelpDialog(this.getFrame(), help_file+".html");
+
+		new HelpDialog(this.getFrame(), help_file + ".html");
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	/**
+	 * Show online documentation.
+	 */
+	public void doc() {
 
-	
+		String a = this.getClass().getName();
+		a = a.replace(".", "/") + ".html";
+		new HelpBrowser(HelpBrowser.JHPLOT_HTTP + a);
+
+	}
 
 	/**
-	    * Show online documentation.
-	    */
-	      public void doc() {
-	        	 
-	    	  String a=this.getClass().getName();
-	    	  a=a.replace(".", "/")+".html"; 
-			  new HelpBrowser(  HelpBrowser.JHPLOT_HTTP+a);
-	    	 
-			  
-			  
-	      }
-	
-	
-	
-	      /**
-	       * Open a dialog to read adat file.
-	       */
-	  	protected void openReadDataDialog() {
-	  			
-	  		
-	  	  JFileChooser fileChooser = jhplot.gui.CommonGUI.openDataFileChooser(getFrame());
-              int ret = fileChooser.showDialog(getFrame(), "Open Data file");
-	      if (ret == JFileChooser.APPROVE_OPTION) {	  
-	    	  new BrowserData(fileChooser.getSelectedFile().getAbsolutePath(),this );
-	      }
-	   }
+	 * Open a dialog to read adat file.
+	 */
+	protected void openReadDataDialog() {
 
-		
-	
-	  	 /**
-         * Open a dialog to write the file
-         * 
-         */
+		JFileChooser fileChooser = jhplot.gui.CommonGUI
+				.openDataFileChooser(getFrame());
+		int ret = fileChooser.showDialog(getFrame(), "Open Data file");
+		if (ret == JFileChooser.APPROVE_OPTION) {
+			new BrowserData(fileChooser.getSelectedFile().getAbsolutePath(),
+					this);
+		}
+	}
 
-        protected void openWriteDialog() {
+	/**
+	 * Open a dialog to write the file
+	 * 
+	 */
 
+	protected void openWriteDialog() {
 
-                final JFrame frm = getFrame();
-                // File scriptFile;
+		final JFrame frm = getFrame();
+		// File scriptFile;
 
-                JFileChooser chooser = new JFileChooser(new File("."));
+		JFileChooser chooser = new JFileChooser(new File("."));
 
-                FilenameFilter ff = new FilenameFilter() {
-                        public boolean accept(File dir, String name) {
-                                return !name.endsWith(".jhp");
-                        }
-                };
+		FilenameFilter ff = new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return !name.endsWith(".jhp");
+			}
+		};
 
-                if (chooser.showDialog(frm, "Save As") == 0) {
+		if (chooser.showDialog(frm, "Save As") == 0) {
 
-                        final File scriptFile = chooser.getSelectedFile();
-                        if (scriptFile == null)
-                                return;
-                        else if (scriptFile.exists()) {
-                                int res = JOptionPane.showConfirmDialog(frm,
-                                                "The file exist: do you want to overwrite the file?",
-                                                "", JOptionPane.YES_NO_OPTION);
+			final File scriptFile = chooser.getSelectedFile();
+			if (scriptFile == null)
+				return;
+			else if (scriptFile.exists()) {
+				int res = JOptionPane.showConfirmDialog(frm,
+						"The file exist: do you want to overwrite the file?",
+						"", JOptionPane.YES_NO_OPTION);
 
-                                if (res == JOptionPane.NO_OPTION)
-                                        return;
-                        }
+				if (res == JOptionPane.NO_OPTION)
+					return;
+			}
 
-                        String mess = "write JHPlot XML file";
-                        JHPlot.showStatusBarText(mess);
-                        Thread t = new Thread(mess) {
-                                public void run() {
-                                        boolean res = writeScript(scriptFile);
-                                };
-                        };
-                        t.start();
-                }
+			String mess = "write JHPlot XML file";
+			JHPlot.showStatusBarText(mess);
+			Thread t = new Thread(mess) {
+				public void run() {
+					boolean res = writeScript(scriptFile);
+				};
+			};
+			t.start();
+		}
 
-        }
+	}
 
-	
-	
-	
 }

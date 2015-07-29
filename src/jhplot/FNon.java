@@ -48,13 +48,11 @@ public class FNon extends AbstractIFunction {
     
     
     /**
-     * If dimension is 1, you can return F1D for plotting
-     * @param min Min min value for plotting
-     * @param max Max max value for plotting
+     * If dimension is 1, you can return F1D for plotting.
      * @return F1D function
      */
-    public F1D getF1D(double min, double max){
-      if 	(dimension()==1) return new F1D(this,min,max);
+    public F1D getF1D(){
+      if 	(dimension()==1) return new F1D(this);
       else System.err.println("Cannot return F1D since dimension is not 1");
       return null;
     }
@@ -68,8 +66,8 @@ public class FNon extends AbstractIFunction {
      * 
      * @return F2D function
      */
-    public F2D getF2D(double minX, double maxX,double minY, double maxY){
-      if 	(dimension()==2) return new F2D(this,minX,maxX,minY,maxY);
+    public F2D getF2D(){
+      if 	(dimension()==2) return new F2D(this);
       else System.err.println("Cannot return F2D since dimension is not 2");
       return null;
     }

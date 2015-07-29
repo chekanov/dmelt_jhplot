@@ -524,7 +524,7 @@ public class LinReg {
 	 */
 
 	public F1D getResult() {
-		F1D tmp = new F1D("p0+(p1*x)","p0+(p1*x)", xRangeLow, xRangeHigh,false);
+		F1D tmp = new F1D("p0+(p1*x)","p0+(p1*x)",false);
 		tmp.setColor(Color.blue);
 		tmp.setTitle("p0+(p1*x)");
 		tmp.setPar("p0", getIntercept());

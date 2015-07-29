@@ -49,12 +49,12 @@ import jplot.LinePars;
 import jplot.Translate;
 
 /**
- * A canvas to display all graphical DataMelt objects. Can be
- * used for drawing Feynman diagrams  and plot  H1D, P1D, F1D  and H2D objects.
- * It is analogies to HPlot canvas but all plotted objects are much more interactive.
- * It also include interactive editor to edit plots or show some graphics.
- *  
- * @see jhplot.HPlot 
+ * A canvas to display all graphical DataMelt objects. Can be used for drawing
+ * Feynman diagrams and plot H1D, P1D, F1D and H2D objects. It is analogies to
+ * HPlot canvas but all plotted objects are much more interactive. It also
+ * include interactive editor to edit plots or show some graphics.
+ * 
+ * @see jhplot.HPlot
  * 
  * @author S.Chekanov (ANL)
  * 
@@ -321,10 +321,6 @@ public class HPlotJa extends JComponent {
 
 	}
 
-	
-	
-	
-	
 	/**
 	 * Navigate to a selected plot. This is necessary if there are a several
 	 * plots on the same canvas.
@@ -400,9 +396,8 @@ public class HPlotJa extends JComponent {
 
 	}
 
-	
 	/**
-	 * Construct a  canvas with a single plot region. 
+	 * Construct a canvas with a single plot region.
 	 * 
 	 * @param title
 	 *            Title for the canvas
@@ -417,19 +412,17 @@ public class HPlotJa extends JComponent {
 		this(title, xs, ys, 1, 1, true);
 
 	}
-	
 
-         /**
-         * Construct a japlot.jaxodraw canvas with a plot with the default
-         * parameters 600 by 400, and 10% space for the global title
-         * 
-         */
-        public HPlotJa() {
+	/**
+	 * Construct a japlot.jaxodraw canvas with a plot with the default
+	 * parameters 600 by 400, and 10% space for the global title
+	 * 
+	 */
+	public HPlotJa() {
 
-                this("HPlotJa", 600, 400, 1, 1,true);
+		this("HPlotJa", 600, 400, 1, 1, true);
 
-        }
-	
+	}
 
 	/**
 	 * Construct a japlot.jaxodraw canvas with a plot with the default
@@ -488,7 +481,7 @@ public class HPlotJa extends JComponent {
 				ja[i1][i2].setRelWH(cwidth, chight, "NDC");
 				ja[i1][i2].setColor(Color.black);
 				ja[i1][i2].setFillColor(Color.white);
-                                // ja[i1][i2].setBackgroundColor(Color.white);
+				// ja[i1][i2].setBackgroundColor(Color.white);
 				ja[i1][i2].setStroke(2.0f);
 
 				// remember pad locations
@@ -540,7 +533,6 @@ public class HPlotJa extends JComponent {
 		}
 
 	}
-
 
 	/**
 	 * Get the current JaAxes frame
@@ -1010,8 +1002,6 @@ public class HPlotJa extends JComponent {
 		update();
 	}
 
-	
-
 	/**
 	 * Remove a particular object
 	 * 
@@ -1281,116 +1271,131 @@ public class HPlotJa extends JComponent {
 
 	}
 
-	
-	
-	
 	/**
-	 * Set label (or update it) for the current pad selected with the cd(i1,i2) method.
-	 * After setting a new label, use "update()" method to apply changes
+	 * Set label (or update it) for the current pad selected with the cd(i1,i2)
+	 * method. After setting a new label, use "update()" method to apply changes
 	 * 
-	 * @param axis axis. 0 means X, 1 means Y
-	 * @param x    X-position in the NDC
-	 * @param y    Y-position in NDC
-	 * @param text text 
-	 * @param f    font of this label
-	 * @param c    Color of this label
-	 * @param howToSet    How to set. Use "NDC" (coordinate independent, between 0 and 1) or USER (depends on the plotted coordinates)
+	 * @param axis
+	 *            axis. 0 means X, 1 means Y
+	 * @param x
+	 *            X-position in the NDC
+	 * @param y
+	 *            Y-position in NDC
+	 * @param text
+	 *            text
+	 * @param f
+	 *            font of this label
+	 * @param c
+	 *            Color of this label
+	 * @param howToSet
+	 *            How to set. Use "NDC" (coordinate independent, between 0 and
+	 *            1) or USER (depends on the plotted coordinates)
 	 */
-	
-	public void setLabel(int axis, double x, double y, String text, Font f, Color c, String howToSet) {
-		
-		if (axis==0){
-		labelX[N1][N2].setText(text);
-		labelX[N1][N2].setLocation(x, y, howToSet);
-		labelX[N1][N2].setColor(c);
-		labelX[N1][N2].setFont(f);
+
+	public void setLabel(int axis, double x, double y, String text, Font f,
+			Color c, String howToSet) {
+
+		if (axis == 0) {
+			labelX[N1][N2].setText(text);
+			labelX[N1][N2].setLocation(x, y, howToSet);
+			labelX[N1][N2].setColor(c);
+			labelX[N1][N2].setFont(f);
 		}
-		
-		if (axis==1){
+
+		if (axis == 1) {
 			labelY[N1][N2].setText(text);
 			labelY[N1][N2].setLocation(x, y, howToSet);
 			labelY[N1][N2].setColor(c);
 			labelY[N1][N2].setFont(f);
-			}
-		
+		}
+
 	}
-	
-	
 
 	/**
-	 * Set label (or update it) for the current pad selected with the cd(i1,i2) method. This method uses NDC as the default frame
-	 * for label position.
+	 * Set label (or update it) for the current pad selected with the cd(i1,i2)
+	 * method. This method uses NDC as the default frame for label position.
 	 * After setting a new label, use "update()" method to apply changes
 	 * 
-	 * @param axis axis. 0 means X, 1 means Y
-	 * @param x    X-position in the NDC
-	 * @param y    Y-position in NDC
-	 * @param text text 
-	 * @param f    font of this label
-	 * @param c    Color of this label
+	 * @param axis
+	 *            axis. 0 means X, 1 means Y
+	 * @param x
+	 *            X-position in the NDC
+	 * @param y
+	 *            Y-position in NDC
+	 * @param text
+	 *            text
+	 * @param f
+	 *            font of this label
+	 * @param c
+	 *            Color of this label
 	 */
-	
-	public void setLabel(int axis, double x, double y, String text, Font f, Color c) {	
-		setLabel(axis,x,y,text,f,c,"NDC");
-		
+
+	public void setLabel(int axis, double x, double y, String text, Font f,
+			Color c) {
+		setLabel(axis, x, y, text, f, c, "NDC");
+
 	}
 
-	
-	
 	/**
-	 * Set label (or update it) for the current pad selected with the cd(i1,i2) method. This method uses NDC as the default frame
-	 * for label position.
+	 * Set label (or update it) for the current pad selected with the cd(i1,i2)
+	 * method. This method uses NDC as the default frame for label position.
 	 * After setting a new label, use "update()" method to apply changes
 	 * 
-	 * @param axis axis. 0 means X, 1 means Y
-	 * @param x    X-position in the NDC
-	 * @param y    Y-position in NDC
-	 * @param text text 
-	 * @param f    font of this label
+	 * @param axis
+	 *            axis. 0 means X, 1 means Y
+	 * @param x
+	 *            X-position in the NDC
+	 * @param y
+	 *            Y-position in NDC
+	 * @param text
+	 *            text
+	 * @param f
+	 *            font of this label
 	 */
-	
-	public void setLabel(int axis, double x, double y, String text, Font f) {	
-		setLabel(axis,x,y,text,f,Color.black,"NDC");
-		
+
+	public void setLabel(int axis, double x, double y, String text, Font f) {
+		setLabel(axis, x, y, text, f, Color.black, "NDC");
+
 	}
-	
-	
+
 	/**
-	 * Set label (or update it) for the current pad selected with the cd(i1,i2) method. This method uses NDC as the default frame
-	 * for label position.
+	 * Set label (or update it) for the current pad selected with the cd(i1,i2)
+	 * method. This method uses NDC as the default frame for label position.
 	 * After setting a new label, use "update()" method to apply changes
 	 * 
-	 * @param axis axis. 0 means X, 1 means Y
-	 * @param x    X-position in the NDC
-	 * @param y    Y-position in NDC
-	 * @param text text 
+	 * @param axis
+	 *            axis. 0 means X, 1 means Y
+	 * @param x
+	 *            X-position in the NDC
+	 * @param y
+	 *            Y-position in NDC
+	 * @param text
+	 *            text
 	 */
-	
-	public void setLabel(int axis, double x, double y, String text) {	
-		
-		setLabel(axis,x,y,text,fontLabel,Color.black,"NDC");
-		
+
+	public void setLabel(int axis, double x, double y, String text) {
+
+		setLabel(axis, x, y, text, fontLabel, Color.black, "NDC");
+
 	}
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * Return the current lable
-	 * @param axis if 0 then for X-axis, if 1 then Y-axis
+	 * 
+	 * @param axis
+	 *            if 0 then for X-axis, if 1 then Y-axis
 	 * @return object representing this label
 	 */
-	public  JaText getLabel(int axis){
-		
-		if (axis==0) return labelX[N1][N2];
-		if (axis==1) return labelY[N1][N2];
+	public JaText getLabel(int axis) {
+
+		if (axis == 0)
+			return labelX[N1][N2];
+		if (axis == 1)
+			return labelY[N1][N2];
 		return null;
-		
+
 	}
-	
-	
+
 	/**
 	 * Shift position of a label with respect to the axis by about defined in
 	 * NDC (0-1). Applied for the current pad. To trigger redraw, call update()
@@ -1514,8 +1519,8 @@ public class HPlotJa extends JComponent {
 
 		double dx = ja[n1][n2].getLabelSpace(X);
 		labelY[n1][n2].setRotAngle(-90);
-                double xpos=x-dx-gy;
- 		labelY[n1][n2].setLocation(xpos, y + gx, "NDC");
+		double xpos = x - dx - gy;
+		labelY[n1][n2].setLocation(xpos, y + gx, "NDC");
 
 	}
 
@@ -1855,7 +1860,6 @@ public class HPlotJa extends JComponent {
 		ja[N1][N2].setLabelFont(font);
 	}
 
-
 	/**
 	 * Show object editor on the left of the canvas.
 	 */
@@ -1880,8 +1884,8 @@ public class HPlotJa extends JComponent {
 
 	/**
 	 * Fast export of the canvas to an image file (depends on the extension,
-	 * i.e. PNG, JPG, EPS, PS, SVG). No questions will be asked, an existing file
-	 * will be rewritten
+	 * i.e. PNG, JPG, EPS, PS, SVG). No questions will be asked, an existing
+	 * file will be rewritten
 	 * 
 	 * @param file
 	 *            Output file with the proper extension. If no extension, PNG
@@ -1893,42 +1897,41 @@ public class HPlotJa extends JComponent {
 
 	}
 
+	/**
+	 * Export SVG to various image formats. Supported output: JPEG<br>
+	 * PNG <br>
+	 * PS <br>
+	 * EPS <br>
+	 * PDF <br>
+	 * SVGZ <br>
+	 * 
+	 * @param source
+	 *            Input file in SVG format
+	 * @param target
+	 *            Output file in designed format.
+	 */
+	public void convertSVG(String source, String target) {
+		jhplot.io.images.ConvertSVG.SVGTo(source, target);
+	}
 
-
-         /**
-         * Export SVG to various image formats. Supported output: 
-         * JPEG<br> 
-         * PNG <br> 
-         * PS <br> 
-         * EPS <br> 
-         * PDF <br> 
-         * SVGZ <br>
-         * @param source Input file in SVG format
-         * @param target Output file in designed format. 
-         */
-        public void convertSVG(String source, String target){
-                    jhplot.io.images.ConvertSVG.SVGTo(source,target);
-        }
-
-        /**
-         * Export SVG to various image formats. Supported output: 
-         * JPEG<br> 
-         * PNG <br> 
-         * PS <br> 
-         * EPS <br> 
-         * PDF <br> 
-         * SVGZ <br>
-         * @param source Input file in SVG format
-         * @param target Output file in designed format.
-         * @param isRemove true if the source should be removed. 
-         */
-        public void convertSVG(String source, String target, boolean isRemove){
-                    jhplot.io.images.ConvertSVG.SVGTo(source,target,isRemove);
-        }
-
-
-
-
+	/**
+	 * Export SVG to various image formats. Supported output: JPEG<br>
+	 * PNG <br>
+	 * PS <br>
+	 * EPS <br>
+	 * PDF <br>
+	 * SVGZ <br>
+	 * 
+	 * @param source
+	 *            Input file in SVG format
+	 * @param target
+	 *            Output file in designed format.
+	 * @param isRemove
+	 *            true if the source should be removed.
+	 */
+	public void convertSVG(String source, String target, boolean isRemove) {
+		jhplot.io.images.ConvertSVG.SVGTo(source, target, isRemove);
+	}
 
 	/**
 	 * Get current pad object
@@ -2097,77 +2100,66 @@ public class HPlotJa extends JComponent {
 		}
 	}
 
-	
 	/**
 	 * Return all the keys used for data annotation
+	 * 
 	 * @return array with legends
 	 */
-	public ArrayList<JaKey>  getLegends() {
-		
-		ArrayList<JaKey> s= new ArrayList<JaKey>();
-		
+	public ArrayList<JaKey> getLegends() {
+
+		ArrayList<JaKey> s = new ArrayList<JaKey>();
+
 		for (int i = 0; i < (feyn.getGraph()).listSize(); i++) {
 			JaObject jaxoOb = (JaObject) ((feyn.getGraph()).listElementAt(i));
 			if (jaxoOb instanceof JaKey) {
-				 s.add( (JaKey)jaxoOb);
+				s.add((JaKey) jaxoOb);
 			}
-		 
+
 		}
-		
+
 		return s;
 	}
-	
-	
+
 	/**
 	 * Set new list of legends (old legends are removed).
 	 * 
-	 * @param  new legends
+	 * @param new legends
 	 */
-	public void  setLegends(ArrayList<JaKey> legends) {
-		
-		
-		
-		
+	public void setLegends(ArrayList<JaKey> legends) {
+
 		for (int i = 0; i < (feyn.getGraph()).listSize(); i++) {
 			JaObject jaxoOb = (JaObject) ((feyn.getGraph()).listElementAt(i));
 			if (jaxoOb instanceof JaKey) {
-				(feyn.getGraph()).delete( jaxoOb);
+				(feyn.getGraph()).delete(jaxoOb);
 			}
 		}
-		
+
 		for (int i = 0; i < legends.size(); i++) {
-			(feyn.getGraph()).addObject(legends.get(i) );
+			(feyn.getGraph()).addObject(legends.get(i));
 		}
-		
+
 	}
-	
-	
 
 	/**
 	 * Do we need to show legends?
-	 * @param isSet false, then legends are removed.
+	 * 
+	 * @param isSet
+	 *            false, then legends are removed.
 	 */
-	public void  setLegendAll(boolean isSet) {
-		
-		
-		
-		if ( isSet == false){
-		for (int i = 0; i < (feyn.getGraph()).listSize(); i++) {
-			JaObject jaxoOb = (JaObject) ((feyn.getGraph()).listElementAt(i));
-			if (jaxoOb instanceof JaKey) {
-				(feyn.getGraph()).delete( jaxoOb);
+	public void setLegendAll(boolean isSet) {
+
+		if (isSet == false) {
+			for (int i = 0; i < (feyn.getGraph()).listSize(); i++) {
+				JaObject jaxoOb = (JaObject) ((feyn.getGraph())
+						.listElementAt(i));
+				if (jaxoOb instanceof JaKey) {
+					(feyn.getGraph()).delete(jaxoOb);
+				}
 			}
 		}
-		}
-		
-		
+
 	}
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * Set the label font, which is used for axis labels and legend labels. The
 	 * font names understood are those understood by java.awt.Font.decode().
@@ -2203,16 +2195,6 @@ public class HPlotJa extends JComponent {
 
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Set width and height of the pad in NDC
 	 * 
@@ -2307,41 +2289,32 @@ public class HPlotJa extends JComponent {
 		return MarginY;
 	}
 
-	
-
-	
-	
 	/**
 	 * Get labels from all pads.
 	 * 
-	 * @param axis 0 for X, 1 for Y
+	 * @param axis
+	 *            0 for X, 1 for Y
 	 * @return labels
 	 */
-	public JaText[][] getLabelsAll(int axis ) {
-		if (axis==0) return labelX;
-		if (axis==1) return labelY;
-		
+	public JaText[][] getLabelsAll(int axis) {
+		if (axis == 0)
+			return labelX;
+		if (axis == 1)
+			return labelY;
+
 		return null;
 	}
 
-	
-	
-	
-	
 	/*
-	private void mess(String s, double d) {
-		System.out.println("Debug: " + s + Double.toString(d));
-	}
+	 * private void mess(String s, double d) { System.out.println("Debug: " + s
+	 * + Double.toString(d)); }
+	 * 
+	 * private void mess(String s, int d) { System.out.println("Debug: " + s +
+	 * Integer.toString(d)); }
+	 * 
+	 * private void mess(String s) { System.out.println("Debug: " + s); }
+	 */
 
-	private void mess(String s, int d) {
-		System.out.println("Debug: " + s + Integer.toString(d));
-	}
-
-	private void mess(String s) {
-		System.out.println("Debug: " + s);
-	}
-   */
-	
 	/**
 	 * Draw H1D histogram on pad X and pad Y
 	 * 
@@ -2362,12 +2335,13 @@ public class HPlotJa extends JComponent {
 			return;
 		}
 
-		
 		if (h1.getLabelX() != null)
-			if (h1.getLabelX().length()>0) setNameX(h1.getLabelX() );
+			if (h1.getLabelX().length() > 0)
+				setNameX(h1.getLabelX());
 		if (h1.getLabelY() != null)
-			if (h1.getLabelY().length()>0) setNameY(h1.getLabelY() );
-		
+			if (h1.getLabelY().length() > 0)
+				setNameY(h1.getLabelY());
+
 		h1.setType(LinePars.H1D);
 		Histogram1D h = h1.get();
 		IAxis ax = h.axis();
@@ -2392,7 +2366,7 @@ public class HPlotJa extends JComponent {
 		addKey(data1, padx, pady);
 		ja[padx - 1][pady - 1].setStatistics(getStatistics(h1));
 		addStatBox(padx, pady);
-                // feyn.update();
+		// feyn.update();
 	}
 
 	/**
@@ -2702,48 +2676,43 @@ public class HPlotJa extends JComponent {
 		setNameY(s, new Font("Arial", Font.BOLD, 16), Color.black);
 	}
 
+	/**
+	 * Sets the fill color of the bounding box drawn around a graph.
+	 * 
+	 * @param c
+	 *            Color for the fill
+	 */
+	public void setBoxFillColor(Color c) {
+		ja[N1][N2].setBackgroundColor(c);
+	}
 
+	/**
+	 * Returns the fill-color of the eventual bounding box arround the graph
+	 * 
+	 * @return the fill color of the bounding box.
+	 */
+	public Color getBoxFillColor() {
+		return ja[N1][N2].getBackgroundColor();
+	}
 
-/**
-         * Sets the fill color of the bounding box drawn around a graph.
-         * 
-         * @param c
-         *            Color for the fill
-         */
-        public void setBoxFillColor(Color c) {
-                ja[N1][N2].setBackgroundColor(c);
-        }
+	/**
+	 * Returns the color used to draw the bounding box.
+	 * 
+	 * @return the color of the bounding box.
+	 */
+	public Color getBoxColor() {
+		return ja[N1][N2].getFillColor();
+	}
 
-        /**
-         * Returns the fill-color of the eventual bounding box arround the graph
-         * 
-         * @return the fill color of the bounding box.
-         */
-        public Color getBoxFillColor() {
-                return ja[N1][N2].getBackgroundColor();
-        }
-
-
- /**
-         * Returns the color used to draw the bounding box.
-         * 
-         * @return the color of the bounding box.
-         */
-        public Color getBoxColor() {
-                return ja[N1][N2].getFillColor();
-        }
-
-        /**
-         * Sets the color of the bounding box drawn around a graph.
-         * 
-         * @param c
-         *            drawing color.
-         */
-        public void setBoxColor(Color c) {
-                ja[N1][N2].setFillColor(c);
-        }
-
-
+	/**
+	 * Sets the color of the bounding box drawn around a graph.
+	 * 
+	 * @param c
+	 *            drawing color.
+	 */
+	public void setBoxColor(Color c) {
+		ja[N1][N2].setFillColor(c);
+	}
 
 	/**
 	 * Sets the name for Y axis. The color is black, the font is ("Arial",
@@ -3029,7 +2998,8 @@ public class HPlotJa extends JComponent {
 	}
 
 	/**
-	 * Draw an one-dimensional function on the current pad.
+	 * Draw an one-dimensional function on the current pad. * If You set range
+	 * during F1D initialization, it will be used. If not, canvas range is used.
 	 * 
 	 * @param f1
 	 *            input function
@@ -3040,8 +3010,6 @@ public class HPlotJa extends JComponent {
 	 */
 	public void draw(F1D f1, int padx, int pady) {
 
-		
-		
 		setContour(false);
 		if (padx > N1final || pady > N2final) {
 			ErrorMessage("Wrong number of canvas in cd() method\n  ");
@@ -3051,13 +3019,22 @@ public class HPlotJa extends JComponent {
 		}
 
 		if (f1.getLabelX() != null)
-			if (f1.getLabelX().length()>0) setNameX(f1.getLabelX() );
+			if (f1.getLabelX().length() > 0)
+				setNameX(f1.getLabelX());
 		if (f1.getLabelY() != null)
-			if (f1.getLabelY().length()>0) setNameY(f1.getLabelY() );
-		
-		
+			if (f1.getLabelY().length() > 0)
+				setNameY(f1.getLabelY());
+
 		f1.setType(LinePars.F1D);
-		f1.eval(); // evaluate first
+
+		// use canvas range
+		if (f1.getMin() == f1.getMax()) {
+			double x1 = ja[N1][N2].getMin(0);
+			double x2 = ja[N1][N2].getMax(0);
+			f1.eval(x1, x2, f1.getPoints()); // evaluate first
+		} else {
+			f1.eval(f1.getMin(), f1.getMax(), f1.getPoints()); // evaluate
+		}
 
 		int Bin = f1.getPoints();
 
@@ -3075,7 +3052,7 @@ public class HPlotJa extends JComponent {
 		data1.setName(f1.getTitle());
 		ja[padx - 1][pady - 1].addData(data1, LinePars.F1D);
 		addKey(data1, padx, pady);
-                 // feyn.update();
+		// feyn.update();
 	}
 
 	/**
@@ -3091,12 +3068,13 @@ public class HPlotJa extends JComponent {
 
 	public void draw(FND f1, int padx, int pady) {
 
-		
 		if (f1.getLabelX() != null)
-			if (f1.getLabelX().length()>0) setNameX(f1.getLabelX() );
+			if (f1.getLabelX().length() > 0)
+				setNameX(f1.getLabelX());
 		if (f1.getLabelY() != null)
-			if (f1.getLabelY().length()>0) setNameY(f1.getLabelY() );
-		
+			if (f1.getLabelY().length() > 0)
+				setNameY(f1.getLabelY());
+
 		setContour(false);
 		if (padx > N1final || pady > N2final) {
 			ErrorMessage("Wrong number of canvas in cd() method\n  ");
@@ -3128,7 +3106,7 @@ public class HPlotJa extends JComponent {
 		data1.setName(f1.getTitle() + "; " + f1.getFixedVars());
 		ja[padx - 1][pady - 1].addData(data1, LinePars.F1D);
 		addKey(data1, padx, pady);
-                 // feyn.update();
+		// feyn.update();
 	}
 
 	/**
@@ -3170,12 +3148,14 @@ public class HPlotJa extends JComponent {
 			N2 = 0;
 			return;
 		}
-		
+
 		if (p1d.getLabelX() != null)
-			if (p1d.getLabelX().length()>0) setNameX(p1d.getLabelX() );
+			if (p1d.getLabelX().length() > 0)
+				setNameX(p1d.getLabelX());
 		if (p1d.getLabelY() != null)
-			if (p1d.getLabelY().length()>0) setNameY(p1d.getLabelY() );
-		
+			if (p1d.getLabelY().length() > 0)
+				setNameY(p1d.getLabelY());
+
 		p1d.setType(LinePars.P1D);
 		p1d.setGraphStyle(LinePars.LINES);
 
@@ -3198,7 +3178,7 @@ public class HPlotJa extends JComponent {
 		}
 
 		addStatBox(padx, pady);
-                // feyn.update();
+		// feyn.update();
 	}
 
 	/**
@@ -3335,18 +3315,21 @@ public class HPlotJa extends JComponent {
 
 	}
 
+	/**
+	 * Set the canvas frame visible. Also set its location.
+	 * 
+	 * @param posX
+	 *            - the x-coordinate of the new location's top-left corner in
+	 *            the parent's coordinate space;
+	 * @param posY
+	 *            - he y-coordinate of the new location's top-left corner in the
+	 *            parent's coordinate space
+	 */
+	public void visible(int posX, int posY) {
+		feyn.setLocation(posX, posY);
+		feyn.setVisible(true);
 
-        /**
-         * Set the canvas frame visible. Also set its location.
-         * @param posX -  the x-coordinate of the new location's top-left corner in the parent's coordinate space;
-         * @param posY - he y-coordinate of the new location's top-left corner in the parent's coordinate space 
-         */
-        public void visible(int posX, int posY) {
-                feyn.setLocation(posX, posY);
-                feyn.setVisible(true);
-
-        }
-
+	}
 
 	/**
 	 * Generate error message

@@ -31,8 +31,10 @@ import jhplot.math.exp4j.*;
 
 /**
  * Create a function in one dimension using "x" as a variable. The function name
- * could have parameters named in unique way as P0, P1, P2 ... They have to be
- * replaced with values using setPar() method for evaluation.
+ * could have parameters named in unique way as P0, P1, P2. In this case, the
+ * function should not be parsed. Parameters have to be replaced with values
+ * using setPar(x) method for evaluation.
+ * 
  * 
  * The function may have one independent variable: x
  * <p>
@@ -83,10 +85,6 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private double min;
-
-	private double max;
-
 	private int points;
 
 	private String name;
@@ -96,6 +94,9 @@ public class F1D extends DrawOptions implements Serializable {
 	private double[] y = null;
 
 	private Expression calc = null;
+
+	private double min = 999;
+	private double max = 999;
 
 	private ExpressionBuilder function = null;
 
@@ -137,7 +138,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 * <li>cosh: hyperbolic cosine</li>
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
-	 * <li>log: logarithmus naturalis (base e)</li>
+	 * <li>log: logarithm natural (base e)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -152,78 +153,10 @@ public class F1D extends DrawOptions implements Serializable {
 	 * 
 	 * @param name
 	 *            String representing the function's definition
-	 * @param min
-	 *            Min value
-	 * @param max
-	 *            Max value
-	 */
-	public F1D(String name, double min, double max) {
-		this(name, name, min, max, true);
-
-	}
-
-	/**
-	 * Same function, but one can specify is it parsed or not.
-	 * 
-	 * @param name
-	 *            Name
-	 * @param min
-	 *            Min value
-	 * @param max
-	 *            Max value
-	 * @param parsed
-	 *            parsed or not.
-	 */
-	public F1D(String name, double min, double max, boolean parsed) {
-		this(name, name, min, max, parsed);
-
-	}
-
-	/**
-	 * Create a function in 1D for evaluation.
-	 * 
-	 * The function may have one independent variable: x
-	 * <p>
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
-	 * the following operators are supported:
-	 * <ul>
-	 * <li>Addition: '2 + 2'</li>
-	 * <li>Subtraction: '2 - 2'</li>
-	 * <li>Multiplication: '2 * 2'</li>
-	 * <li>Division: '2 / 2'</li>
-	 * <li>Exponential: '2 ^ 2' or ** (raise to a power)</li>
-	 * <li>Unary Minus,Plus (Sign Operators): '+2 - (-2)'</li>
-	 * <li>Modulo: '2 % 2'</li>
-	 * </ul>
-	 * the following functions are supported:
-	 * <ul>
-	 * <li>abs: absolute value</li>
-	 * <li>acos: arc cosine</li>
-	 * <li>asin: arc sine</li>
-	 * <li>atan: arc tangent</li>
-	 * <li>cbrt: cubic root</li>
-	 * <li>ceil: nearest upper integer</li>
-	 * <li>cos: cosine</li>
-	 * <li>cosh: hyperbolic cosine</li>
-	 * <li>exp: euler's number raised to the power (e^x)</li>
-	 * <li>floor: nearest lower integer</li>
-	 * <li>log: natural logarithm  (base e)</li>
-	 * <li>log10: logarithm  (base 10)</li>
-	 * <li>sin: sine</li>
-	 * <li>sinh: hyperbolic sine</li>
-	 * <li>sqrt: square root</li>
-	 * <li>tan: tangent</li>
-	 * <li>tanh: hyperbolic tangent</li>
-	 * </ul>
-	 * <br/>
-	 * It also recognizes the pi (or Pi) values; <br/>
-	 * 
-	 * @param name
-	 *            String representing the function
 	 */
 	public F1D(String name) {
-		this(name, name, 0.0, 1.0, true);
+		this(name, name, 999, 999,true);
+
 	}
 
 	/**
@@ -236,11 +169,13 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public F1D(String title, String name) {
-		this(title, name, 0.0, 1.0, true);
+		this(title, name, 999,999, true);
 	}
 
 	/**
-	 * Create a new function.
+	 * Create a new function. Do not parse it when using parameters. You should
+	 * apply substitution first and create a function with one variable "x".
+	 * If min=999 and max=999, the ranges are determinned by plotting canvases.
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
@@ -268,8 +203,8 @@ public class F1D extends DrawOptions implements Serializable {
 	 * <li>cosh: hyperbolic cosine</li>
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
-	 * <li>log: logarithmus naturalis (base e)</li>
-	 * <li>log10: logarithmus 10 naturalis (base e)</li>
+	 * <li>log: logarithm natural (base e)</li>
+	 * <li>log10: logarithm 10 natural(base e)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -285,23 +220,24 @@ public class F1D extends DrawOptions implements Serializable {
 	 * @param name
 	 *            definition
 	 * @param min
-	 *            min value
+	 *            minimum value for plotting
 	 * @param max
-	 *            max value
+	 *            maximum value for plotting
 	 * @param parse
-	 *            parset or not
+	 *            parse or not. Do not parse when using parameters.
 	 */
 	public F1D(String title, String name, double min, double max, boolean parse) {
 		this.iname = null;
 		this.title = title;
 		this.name = name;
+		this.min = min;
+		this.max = max;
 		this.name = this.name.replace("**", "^"); // preprocess power
 		this.name = this.name.replace("pi", "3.14159265");
 		this.name = this.name.replace("Pi", "3.14159265");
 
 		this.points = maxpoints;
-		this.min = min;
-		this.max = max;
+
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
 		function = new ExpressionBuilder(this.name);
@@ -323,66 +259,12 @@ public class F1D extends DrawOptions implements Serializable {
 	}
 
 	/**
-	 * Create a polynomial analytical function using a list of values. Example:
-	 * pars[0]+pars[1]*x+pars[2]*x*x +pars[3]*x*x*x
+	 * Create a new function in pre-defined range for plotting. Do not parse it
+	 * when using parameters. You should apply substitution first and create a
+	 * function with one variable "x".
+	 * If min=999 and max=999, ranges are determined by plotting canvaces.
 	 * 
-	 * @param title
-	 *            Title of this function
-	 * @param pars
-	 *            array of coefficients for polynomial function
-	 * @param min
-	 *            Min value for evaluation
-	 * @param max
-	 *            Max value for evaluation
-	 * @param parse
-	 *            set true if it should be parsed
-	 */
-
-	public F1D(String title, double[] pars, double min, double max,
-			boolean parse) {
-		this.iname = null;
-		this.title = title;
-		if (pars == null || pars.length < 1)
-			System.err.println("Failed to evaluate this polynomial");
-
-		this.name = Double.toString(pars[0]);
-		for (int i = 1; i < pars.length; i++) {
-			String sig = "+";
-			if (pars[i] < 0)
-				sig = "-";
-			double val = Math.abs(pars[i]);
-			String X = "*x";
-			for (int j = 1; j < i; j++)
-				X = X + "*x";
-			this.name = this.name + sig + Double.toString(val) + X;
-
-		}
-
-		this.points = maxpoints;
-		this.min = min;
-		this.max = max;
-		setTitle(title);
-		lpp.setType(LinePars.F1D);
-		if (parse == true) {
-			function = new ExpressionBuilder(this.name);
-			try {
-				calc = (function.variables("x")).build();
-				isParsed = true;
-			} catch (IllegalArgumentException e) {
-				isParsed = false;
-				// System.err.println("Failed to parse function " +
-				// this.name+" Error:"+e1.toString());
-				jhplot.utils.Util.ErrorMessage("Failed to parse function "
-						+ this.name + " Error:" + e.toString());
-
-			}
-
-		}
-
-	}
-
-	/**
-	 * Build a function. The function may have one independent variable: x
+	 * The function may have one independent variable: x
 	 * <p>
 	 * <b>Operators and functions</b><br/>
 	 * <br/>
@@ -408,7 +290,181 @@ public class F1D extends DrawOptions implements Serializable {
 	 * <li>cosh: hyperbolic cosine</li>
 	 * <li>exp: euler's number raised to the power (e^x)</li>
 	 * <li>floor: nearest lower integer</li>
-	 * <li>log: logarithmus naturalis (base e)</li>
+	 * <li>log: logarithm natural (base e)</li>
+	 * <li>log10: logarithm 10 natural(base e)</li>
+	 * <li>sin: sine</li>
+	 * <li>sinh: hyperbolic sine</li>
+	 * <li>sqrt: square root</li>
+	 * <li>tan: tangent</li>
+	 * <li>tanh: hyperbolic tangent</li>
+	 * </ul>
+	 * <br/>
+	 * It also recognizes the pi (or Pi) values; <br/>
+	 * 
+	 * 
+	 * @param name
+	 *            definition
+	 * @param min
+	 *            min value for plotting
+	 * @param max
+	 *            max value for plotting
+	 * @param parse
+	 *            parse or not. Do not parse when using parameters.
+	 */
+	public F1D(String name, double min, double max) {
+		this(name,name,min,max,true);
+	}
+
+	
+	/**
+	 * Create a new function in pre-defined range for plotting. Do not parse it
+	 * when using parameters. You should apply substitution first and create a
+	 * function with one variable "x".
+	 * If min=999 and max=999, ranges are determined by plotting canvaces.
+	 * 
+	 * The function may have one independent variable: x
+	 * <p>
+	 * <b>Operators and functions</b><br/>
+	 * <br/>
+	 * the following operators are supported:
+	 * <ul>
+	 * <li>Addition: '2 + 2'</li>
+	 * <li>Subtraction: '2 - 2'</li>
+	 * <li>Multiplication: '2 * 2'</li>
+	 * <li>Division: '2 / 2'</li>
+	 * <li>Exponential: '2 ^ 2' or ** (raise to a power)</li>
+	 * <li>Unary Minus,Plus (Sign Operators): '+2 - (-2)'</li>
+	 * <li>Modulo: '2 % 2'</li>
+	 * </ul>
+	 * the following functions are supported:
+	 * <ul>
+	 * <li>abs: absolute value</li>
+	 * <li>acos: arc cosine</li>
+	 * <li>asin: arc sine</li>
+	 * <li>atan: arc tangent</li>
+	 * <li>cbrt: cubic root</li>
+	 * <li>ceil: nearest upper integer</li>
+	 * <li>cos: cosine</li>
+	 * <li>cosh: hyperbolic cosine</li>
+	 * <li>exp: euler's number raised to the power (e^x)</li>
+	 * <li>floor: nearest lower integer</li>
+	 * <li>log: logarithm natural (base e)</li>
+	 * <li>log10: logarithm 10 natural(base e)</li>
+	 * <li>sin: sine</li>
+	 * <li>sinh: hyperbolic sine</li>
+	 * <li>sqrt: square root</li>
+	 * <li>tan: tangent</li>
+	 * <li>tanh: hyperbolic tangent</li>
+	 * </ul>
+	 * <br/>
+	 * It also recognizes the pi (or Pi) values; <br/>
+	 * 
+	 * @param title
+	 *            title
+	 * 
+	 * @param name
+	 *            definition
+	
+	 * @param parse
+	 *            parse or not. Do not parse when using parameters.
+	 */
+	public F1D(String title, String name, boolean parsed) {
+		this(title,name,999,999,parsed);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Create a polynomial analytical function using a list of values. Example:
+	 * pars[0]+pars[1]*x+pars[2]*x*x +pars[3]*x*x*x
+	 * 
+	 * @param title
+	 *            Title of this function
+	 * @param pars
+	 *            array of coefficients for polynomial function
+	 * @param parse
+	 *            set true if it should be parsed
+	 */
+
+	public F1D(String title, double[] pars, boolean parse) {
+		this.iname = null;
+		this.title = title;
+		if (pars == null || pars.length < 1)
+			System.err.println("Failed to evaluate this polynomial");
+
+		this.name = Double.toString(pars[0]);
+		for (int i = 1; i < pars.length; i++) {
+			String sig = "+";
+			if (pars[i] < 0)
+				sig = "-";
+			double val = Math.abs(pars[i]);
+			String X = "*x";
+			for (int j = 1; j < i; j++)
+				X = X + "*x";
+			this.name = this.name + sig + Double.toString(val) + X;
+
+		}
+
+		this.points = maxpoints;
+
+		setTitle(title);
+		lpp.setType(LinePars.F1D);
+		function = new ExpressionBuilder(this.name);
+		if (parse == true) {
+			try {
+				calc = (function.variables("x")).build();
+				isParsed = true;
+			} catch (IllegalArgumentException e) {
+				isParsed = false;
+				// System.err.println("Failed to parse function " +
+				// this.name+" Error:"+e1.toString());
+				jhplot.utils.Util.ErrorMessage("Failed to parse function "
+						+ this.name + " Error:" + e.toString());
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * Build a function. The function may have one independent variable: x.
+	 * Function can have parameters, in which case set parsing to false. You can
+	 * parse this function later after substitution of numeric parameter.
+	 * <p>
+	 * <b>Operators and functions</b><br/>
+	 * <br/>
+	 * the following operators are supported:
+	 * <ul>
+	 * <li>Addition: '2 + 2'</li>
+	 * <li>Subtraction: '2 - 2'</li>
+	 * <li>Multiplication: '2 * 2'</li>
+	 * <li>Division: '2 / 2'</li>
+	 * <li>Exponential: '2 ^ 2' or ** (raise to a power)</li>
+	 * <li>Unary Minus,Plus (Sign Operators): '+2 - (-2)'</li>
+	 * <li>Modulo: '2 % 2'</li>
+	 * </ul>
+	 * the following functions are supported:
+	 * <ul>
+	 * <li>abs: absolute value</li>
+	 * <li>acos: arc cosine</li>
+	 * <li>asin: arc sine</li>
+	 * <li>atan: arc tangent</li>
+	 * <li>cbrt: cubic root</li>
+	 * <li>ceil: nearest upper integer</li>
+	 * <li>cos: cosine</li>
+	 * <li>cosh: hyperbolic cosine</li>
+	 * <li>exp: euler's number raised to the power (e^x)</li>
+	 * <li>floor: nearest lower integer</li>
+	 * <li>log: logarithm natural (base e)</li>
 	 * <li>sin: sine</li>
 	 * <li>sinh: hyperbolic sine</li>
 	 * <li>sqrt: square root</li>
@@ -424,7 +480,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            is parsed or not?
 	 */
 	public F1D(String name, boolean parse) {
-		this(name, name, 0., 1., parse);
+		this(name, name, 999, 999,parse);
 	}
 
 	/**
@@ -434,7 +490,9 @@ public class F1D extends DrawOptions implements Serializable {
 	 **/
 	public boolean parse() {
 		try {
-			calc = (function.variables("x")).build();
+			function = new ExpressionBuilder(name);
+			function.variables("x");
+			calc = function.build();
 			isParsed = true;
 		} catch (IllegalArgumentException e) {
 			isParsed = false;
@@ -465,13 +523,11 @@ public class F1D extends DrawOptions implements Serializable {
 	 * @param max
 	 *            Max value
 	 */
-	public F1D(String title, ExpressionBuilder function, double min, double max) {
+	public F1D(String title, ExpressionBuilder function) {
 		this.iname = null;
 		this.title = title;
 		this.function = function;
 		this.points = maxpoints;
-		this.min = min;
-		this.max = max;
 		setTitle(name);
 		lpp.setType(LinePars.F1D);
 
@@ -491,70 +547,37 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            Title
 	 * @param function
 	 *            Expression after parsing and building
-	 * @param min
-	 *            Min value
-	 * @param max
-	 *            Max value
 	 */
-	public F1D(String title, Expression calc, double min, double max) {
+	public F1D(String title, Expression calc) {
 		this.iname = null;
 		this.name = name;
 		this.title = title;
 		this.calc = calc;
 		this.points = maxpoints;
-		this.min = min;
-		this.max = max;
+
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
 		isParsed = true;
 	}
 
 	/**
-	 * Create a function in 1D. 500 points are used between Min and Max for
-	 * evaluation. The function may have x as independent variable.
+	 * Create a function in 1D. The function may have x as independent variable.
 	 * 
 	 * @param function
-	 *            Expression after parsing and building
-	 * @param min
-	 *            Min value
-	 * @param max
-	 *            Max value
+	 *            expression
 	 */
-	public F1D(Expression calc, double min, double max) {
-		this("F1D", calc, min, max);
+	public F1D(Expression calc) {
+		this("F1D", calc);
 	}
 
 	/**
 	 * Build a function.
 	 * 
 	 * @param function
-	 *            input
-	 * @param min
-	 *            Min value
-	 * @param max
-	 *            Max value
+	 *            input of expression
 	 */
-	public F1D(ExpressionBuilder function, double min, double max) {
-		this("F1D", function, min, max);
-	}
-
-	/**
-	 * Create a function in 1D. 500 points are used between Min and Max for
-	 * evaluation. Function will be parsed.
-	 * 
-	 * @param title
-	 *            String representing the title
-	 * @param name
-	 *            String representing the function's definition
-	 * @param min
-	 *            Min value
-	 * @param max
-	 *            Max value
-	 */
-	public F1D(String title, String name, double min, double max) {
-
-		this(title, name, min, max, true);
-
+	public F1D(ExpressionBuilder function) {
+		this("F1D", function);
 	}
 
 	/**
@@ -690,11 +713,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            value in x
 	 */
 	public void eval(double min, double max) {
-
-		this.min = min;
-		this.max = max;
-		this.points = maxpoints;
-		eval();
+		eval(min, max, points);
 
 	}
 
@@ -711,18 +730,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 	public void eval(double min, double max, int Npoints) {
 
-		this.min = min;
-		this.max = max;
 		this.points = Npoints;
-		eval();
-
-	}
-
-	/**
-	 * Evaluate a function for graphic representation. Min and Max should be
-	 * given in constructor.
-	 */
-	public void eval() {
 
 		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
@@ -794,37 +802,12 @@ public class F1D extends DrawOptions implements Serializable {
 	 * 
 	 * @param iname
 	 *            input IFunction
-	 * @param min
-	 *            Min value
-	 * @param max
-	 *            Max value
-	 */
-	public F1D(IFunction iname, double min, double max) {
-
-		this.iname = iname;
-		this.name = iname.title();
-		this.points = 500;
-		this.min = min;
-		this.max = max;
-		setTitle(this.name);
-		lpp.setType(LinePars.F1D);
-
-	}
-
-	/**
-	 * Create a F1D function from JAIDA IFunction. By default, 500 points for
-	 * evaluation are used
-	 * 
-	 * @param iname
-	 *            input IFunction
 	 */
 	public F1D(IFunction iname) {
 
 		this.iname = iname;
 		this.name = iname.title();
-		this.points = 500;
-		this.min = 0;
-		this.max = 1;
+		this.points = maxpoints;
 		setTitle(this.name);
 		lpp.setType(LinePars.F1D);
 
@@ -843,13 +826,11 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            Max X values
 	 */
 
-	public F1D(String title, IFunction iname, double min, double max) {
+	public F1D(String title, IFunction iname) {
 
 		this.iname = iname;
 		this.name = iname.title();
-		this.points = 500;
-		this.min = min;
-		this.max = max;
+		this.points = maxpoints;
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
 
@@ -859,11 +840,13 @@ public class F1D extends DrawOptions implements Serializable {
 	 * Print the F1D function to a Table in a separate Frame. The numbers are
 	 * formatted to scientific format. One can sort and search the data in this
 	 * table (data cannot be modified)
+	 * 
+	 * @param min
+	 * @param max
 	 */
+	public void toTable(double min, double max) {
 
-	public void toTable() {
-
-		new HTable(this);
+		new HTable(this, min, max);
 
 	}
 
@@ -879,8 +862,6 @@ public class F1D extends DrawOptions implements Serializable {
 	public void setPar(String parameter, double value) {
 		String s1 = Double.toString(value);
 		this.name = name.replaceAll(parameter, s1);
-		function = new ExpressionBuilder(this.name);
-		parse();
 	}
 
 	/**
@@ -891,9 +872,10 @@ public class F1D extends DrawOptions implements Serializable {
 	 * @return
 	 */
 
-	public H1D getH1D() {
+	public H1D getH1D(double min, double max) {
 
 		int bins = getPoints();
+		eval(min, max, bins);
 		H1D h = new H1D(getTitle(), bins, min, max);
 		int ibins = bins + 2;
 		double[] newHeights = new double[ibins];
@@ -974,7 +956,8 @@ public class F1D extends DrawOptions implements Serializable {
 	}
 
 	/**
-	 * Replace abstract parameter with the value (integer). Case sensitive.
+	 * Replace abstract parameter with the value (integer). Case sensitive. You
+	 * will need to call parse() to finish this function.
 	 * 
 	 * @param parameter
 	 *            parameter name
@@ -983,7 +966,6 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public void setPar(String parameter, int value) {
-
 		String s1 = Integer.toString(value);
 		name = name.replaceAll(parameter, s1);
 	}
@@ -1047,48 +1029,6 @@ public class F1D extends DrawOptions implements Serializable {
 	}
 
 	/**
-	 * Set Min value in X
-	 * 
-	 * @param min
-	 *            Minimum value
-	 */
-
-	public void setMin(double min) {
-		this.min = min;
-
-	}
-
-	/**
-	 * Get the minimum value in X
-	 * 
-	 * @return min Minimum value
-	 */
-	public double getMin() {
-		return this.min;
-	}
-
-	/**
-	 * Set the maximum value in X
-	 * 
-	 * @param max
-	 *            Maximal value
-	 */
-	public void setMax(double max) {
-		this.max = max;
-
-	}
-
-	/**
-	 * Get the maximum value in X
-	 * 
-	 * @return Maximal value
-	 */
-	public double getMax() {
-		return this.max;
-
-	}
-
-	/**
 	 * Sets the number points between Min and Max for evaluation
 	 * 
 	 * @param bins
@@ -1097,6 +1037,19 @@ public class F1D extends DrawOptions implements Serializable {
 	public void setPoints(int bins) {
 		this.points = bins;
 
+	}
+
+	/**
+	 * Integral using fastest trapezium rule method. It uses the default number
+	 * of points (500).
+	 * 
+	 * @param min
+	 *            the first ordinate.
+	 * @param max
+	 *            the last ordinate.
+	 */
+	public double integral(double min, double max) {
+		return integral("trapezium", points, min, max);
 	}
 
 	/**
@@ -1391,6 +1344,61 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 	public String getException() {
 		return lastException;
+	}
+
+	
+	 /**
+     * Set Min value in X
+     * 
+     * @param min
+     *            Minimum value
+     */
+
+    public void setMin(double min) {
+            this.min = min;
+
+    }
+
+    /**
+     * Get the minimum value in X
+     * 
+     * @return min Minimum value
+     */
+    public double getMin() {
+            return this.min;
+    }
+
+    /**
+     * Set the maximum value in X
+     * 
+     * @param max
+     *            Maximal value
+     */
+    public void setMax(double max) {
+            this.max = max;
+
+    }
+    
+    /**
+     * Get the maximum value in X
+     * 
+     * @return Maximal value
+     */
+    public double getMax() {
+            return this.max;
+
+    }
+
+	/**
+	 * Get this function as a string.
+	 * 
+	 * @return Convert to string.
+	 */
+	public String toString() {
+		String tmp = getName();
+		tmp = tmp + " (title=" + getTitle() + ", n=" + Integer.toString(points)
+				+ ", " + Boolean.toString(isParsed) + ")";
+		return tmp;
 	}
 
 }

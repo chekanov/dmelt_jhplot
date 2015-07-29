@@ -616,7 +616,19 @@ public class WPlot {
 			pjplot = GJScatter.createInstance();
 		else
 			pjplot = GJLine.createInstance();
-		f1d.eval(); // evaluate first
+		
+		
+		Rectangle2D rc = graph.getDataRange();
+		
+		if (f1d.getMin() == f1d.getMax()) {
+		  double min=rc.getMinX();
+		  double max=rc.getMaxX();
+		  f1d.eval(min,max,f1d.getPoints()); // evaluate first
+		} else {
+		   f1d.eval(f1d.getMin(), f1d.getMax(), f1d.getPoints()); // evaluate
+			
+		}
+		
 		pjplot.setXData(f1d.getArrayX());
 		pjplot.setYData(f1d.getArrayY());
 

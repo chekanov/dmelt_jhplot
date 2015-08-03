@@ -249,7 +249,7 @@ public class LinRegWeighted {
 	 * @return
 	 */
 	public F1D getResult() {
-		F1D tmp = new F1D("P0+P1*x", false);
+		F1D tmp = new F1D("P0+P1*x", "P0+P1*x", minX, maxX, false);
 		tmp.setColor(Color.blue);
 		tmp.setTitle("P0+P1*x");
 		tmp.setPar("P0", getIntercept());

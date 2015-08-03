@@ -710,10 +710,8 @@ public class Fitter {
 		setHtml(mess);
 
 		if (hplot != null) {
-			
-			hplot.setRange(0, rmin, rmax);
 			if (h1 != null || p1 != null) {
-				f2 = new F1D(sfunc, fresult);
+				f2 = new F1D(sfunc, fresult, rmin, rmax);
 				codeFunc = codeFunc + "f2=F1D(\"" + sfunc
 						+ "\", fresult, rmin, rmax)\n";
 			}
@@ -818,7 +816,7 @@ public class Fitter {
 		}
 
 		getSettings();
-		f2 = new F1D(sfunc + "(plotted)", func);
+		f2 = new F1D(sfunc, func, rmin, rmax);
 		// draw function
 		if (h1 != null)
 			hplot.draw(f2, true);

@@ -159,7 +159,7 @@ public class BrowserDataGeneric extends JDialog {
 				else if (name.indexOf("H1D") > -1)
 					new HTable((H1D) obj);
 				else if (name.indexOf("F1D") > -1)
-					new HTable((F1D) obj, -100,100);
+					new HTable((F1D) obj);
 				else if (name.indexOf("PND") > -1)
 					new HTable((PND) obj);
 				else if (name.indexOf("PNI") > -1)

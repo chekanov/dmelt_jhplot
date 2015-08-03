@@ -80,6 +80,14 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private double Xmin=0;
+
+	private double Xmax=0;
+
+	private double Ymin=0;
+
+	private double Ymax=0;
+
 	private int points;
 
 	private String name;
@@ -99,6 +107,7 @@ public class F2D extends DrawOptions implements Serializable {
 
 	/**
 	 * Create a function in 2D for evaluation.
+	 * The function is not in range.
 	 * 
 	 * The function may have up to 2 independent variables: x,y.
 	 * 
@@ -142,7 +151,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 *            String representing the function
 	 */
 	public F2D(String name) {
-		this(name, name, true);
+		this(name, name, 0.0, 0.0, 0.0, 0.0);
 	}
 
 
@@ -155,14 +164,14 @@ public class F2D extends DrawOptions implements Serializable {
          *            definition
          */
          public F2D(String title, String name) {
-                this(title, name, true);
+                this(title, name, 0.0, 1.0, 0.0, 1.0);
         }
 
 
 	/**
-	 * Create a function in 2D. 
-	 * The function may have up to 2 independent variables in it
-	 * (x,y).
+	 * Create a function in 2D. This is a ranged function. Uses 500 points between min and max value for
+	 * evaluation. The function may have up to 2 independent variables in it
+	 * (x,y). 
 	 * 
 	 * <b>Operators and functions</b><br/>
 	 * <br/>
@@ -198,31 +207,36 @@ public class F2D extends DrawOptions implements Serializable {
 	 * <br/>
 	 * <br/>
 	 * 
-	 * @param title
-	 *            String representing the title.
+	 * 
 	 * 
 	 * @param name
 	 *            String representing the function.
-	 *            
-	 *  @param parsed
-	 *          if true, then parsed          
+	 * @param Xmin
+	 *            Min value in X
+	 * @param Xmax
+	 *            Max value in X
+	 * @param Ymin
+	 *            Min value in Y
+	 * @param Ymax
+	 *            Max value in Y
 	 */
-	public F2D(String title, String name, boolean parsed) {
+	public F2D(String title, String name, double Xmin, double Xmax,
+			double Ymin, double Ymax) {
 		
 		is3D=true;
 		this.name = name;
 		this.name = this.name.replace("**", "^"); // preprocess power
 		this.name = this.name.replace("pi", "3.14159265");
 		this.name = this.name.replace("Pi", "3.14159265");
-		this.isParsed=parsed;
-		
+
 		this.title = title;
 		this.points = 300;
-		
+		this.Xmin = Xmin;
+		this.Xmax = Xmax;
+		this.Ymin = Ymin;
+		this.Ymax = Ymax;
 		setTitle(this.title);
 		function = new ExpressionBuilder(this.name);
-		
-		if (parsed) {
 		try {
 			function.variables("x", "y");
 			calc = function.build();
@@ -233,13 +247,32 @@ public class F2D extends DrawOptions implements Serializable {
                     
                  }
 
-		}
 	}
 
+	/**
+	 * Build a 2D function. Title is set to the name.
+	 * This is ranged function.
+	 * 
+	 * @param name
+	 *            Name
+	 * @param Xmin
+	 *            X-min
+	 * @param Xmax
+	 *            X-max
+	 * @param Ymin
+	 *            Y-min
+	 * @param Ymax
+	 *            Y-max
+	 */
+	public F2D(String name, double Xmin, double Xmax, double Ymin, double Ymax) {
+
+		this(name, name, Xmin, Xmax, Ymin, Ymax);
+
+	}
 
 	/**
 	 * Create a F2D function from JAIDA IFunction. By default, 500 points for
-	 * evaluation are used
+	 * evaluation are used. Ranged function.
 	 * 
 	 * @param title
 	 *            Title
@@ -247,15 +280,27 @@ public class F2D extends DrawOptions implements Serializable {
 	 *            new function name
 	 * @param iname
 	 *            input IFunction
-
+	 * @param Xmin
+	 *            Min X value
+	 * @param Xmax
+	 *            Max X value
+	 * 
+	 * @param Ymin
+	 *            Min Y value
+	 * @param Ymax
+	 *            Max Y value
 	 */
-	public F2D(String title, IFunction iname) {
+	public F2D(String title, IFunction iname, double Xmin, double Xmax,
+			double Ymin, double Ymax) {
 
 		this.title = title;
 		this.name = title;
 		this.iname = iname;
-		this.points = 200;
-	
+		this.points = 300;
+		this.Xmin = Xmin;
+		this.Xmax = Xmax;
+		this.Ymin = Ymin;
+		this.Ymax = Ymax;
 
 	}
 
@@ -270,14 +315,27 @@ public class F2D extends DrawOptions implements Serializable {
          *            Title
          * @param function
          *            Expression after parsing and building
-    
+         * @param Xmin
+         *            Min X value
+         * @param Xmax
+         *            Max X value
+         * 
+         * @param Ymin
+         *            Min Y value
+         * @param Ymax
+         *            Max Y value
 
          */
-        public F2D(String title, Expression calc) {
+        public F2D(String title, Expression calc, double Xmin, double Xmax,
+                        double Ymin, double Ymax) {
                 this.iname = null;
                 this.title = title;
                 this.calc = calc;
                 this.points = maxpoints;
+                this.Xmin = Xmin;
+                this.Xmax = Xmax;
+                this.Ymin = Ymin;
+                this.Ymax = Ymax;
                 this.name="F2D";
                 setTitle(title);
                 isParsed = true; 
@@ -294,27 +352,57 @@ public class F2D extends DrawOptions implements Serializable {
          *            Title
          * @param function
          *            Expression after parsing and building
+         * @param Xmin
+         *            Min X value
+         * @param Xmax
+         *            Max X value
+         * 
+         * @param Ymin
+         *            Min Y value
+         * @param Ymax
+         *            Max Y value
+
          */
-        public F2D(Expression calc) {
-                this("F2D",calc); 
+        public F2D(Expression calc, double Xmin, double Xmax,
+                        double Ymin, double Ymax) {
+                this("F2D",calc,Xmin,Xmax,Ymin,Ymax); 
         }
 
 
 
 	/**
 	 * Create a F2D function from JAIDA IFunction. By default, 500 points for
-	 * evaluation are used.
+	 * evaluation are used. Unranged function.
 	 * 
 	 * @param iname
 	 */
 	public F2D(IFunction iname) {
 
-		this("IFunction", iname);
+		this("IFunction", iname, 0, 0, 0, 10);
 
 	}
 
 	
 	
+	/**
+	 * Create a F2D function from JAIDA IFunction.
+	 * 
+	 * @param iname
+	 *            input IFunction
+	 * @param Xmin
+	 *            Min X value
+	 * @param Xmax
+	 *            Max X value
+	 * @param Ymin
+	 *            Min Y value
+	 * @param Ymax
+	 *            Max Y value
+	 */
+	public F2D(IFunction iname, double Xmin, double Xmax, double Ymin,
+			double Ymax) {
+		this(iname.title(), iname, Xmin, Xmax, Ymin, Ymax);
+	}
+
 	/**
 	 * Evaluate a function at a specific point in (x,y)
 	 * 
@@ -457,6 +545,16 @@ public class F2D extends DrawOptions implements Serializable {
 	
 
 	/**
+	 * Set Min in X
+	 * 
+	 * @param min
+	 *            Min value
+	 */
+	public void setMinX(double min) {
+		this.Xmin = min;
+
+	}
+	/**
 	 * Parse the function.
 	 * @return true if parsed without problems. 
 	 **/
@@ -477,7 +575,26 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 	
-	
+	/**
+	 * Get Min value in X
+	 * 
+	 * @return Min value in X
+	 */
+	public double getMinX() {
+		return this.Xmin;
+	}
+
+	/**
+	 * Set Min value in Y
+	 * 
+	 * @param min
+	 *            Min value in Y
+	 */
+	public void setMinY(double min) {
+		this.Ymin = min;
+
+	}
+
 	/**
 	 * Show online documentation.
 	 */
@@ -489,7 +606,26 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
-	
+	/**
+	 * Get Min value in Y
+	 * 
+	 * @return Min value in Y
+	 */
+
+	public double getMinY() {
+		return this.Ymin;
+	}
+
+	/**
+	 * Set Max value in X
+	 * 
+	 * @param max
+	 *            Max value in X
+	 */
+	public void setMaxX(double max) {
+		this.Xmax = max;
+
+	}
 
 	/**
 	 * Sets a name of the function, i.e. what will be used for evaluation
@@ -513,7 +649,37 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
-	
+	/**
+	 * Get Max value in X
+	 * 
+	 * @return Max value in X
+	 */
+	public double getMaxX() {
+		return this.Xmax;
+
+	}
+
+	/**
+	 * Set Max value in Y
+	 * 
+	 * @param max
+	 *            Max value in Y
+	 */
+
+	public void setMaxY(double max) {
+		this.Ymax = max;
+
+	}
+
+	/**
+	 * Get Max value in Y
+	 * 
+	 * @return Max value in Y
+	 */
+	public double getMaxY() {
+		return this.Ymax;
+
+	}
 
 	/**
 	 * Get the number of points
@@ -797,7 +963,7 @@ public class F2D extends DrawOptions implements Serializable {
          */
         public String toString() {
                 String tmp=getName();
-                tmp = tmp+" (title="+getTitle()+", n="+Integer.toString(points)+", "+Boolean.toString(isParsed)+")";
+                tmp = tmp+" (title="+getTitle()+", n="+Integer.toString(points)+", minX="+Double.toString(Xmin)+", maxX="+Double.toString(Xmax)+", minY="+Double.toString(Ymin)+", maxY="+Double.toString(Ymax)+", "+Boolean.toString(isParsed)+")";
                 return tmp;
         }
 

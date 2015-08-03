@@ -773,7 +773,7 @@ public class HBook {
 				String name = xr.getString("name", "none");
 				double Xmin = xr.getDouble("min", 0);
 				double Xmax = xr.getDouble("max", 1);
-				map.put(id, new F1D(stitle, name));
+				map.put(id, new F1D(stitle, name, Xmin, Xmax));
 				xr.close(); // close f1d
 				xr.hide("f1d");
 				k1++;
@@ -787,7 +787,7 @@ public class HBook {
 				double maxX = xr.getDouble("Xmax", 1);
 				double minY = xr.getDouble("Ymin", 0);
 				double maxY = xr.getDouble("Ymax", 1);
-				map.put(id, new F2D(stitle, name));
+				map.put(id, new F2D(stitle, name, minX, maxX, minY, maxY));
 				xr.close(); // close f1d
 				xr.hide("f2d");
 				k1++;
@@ -1630,8 +1630,8 @@ public class HBook {
 		if (p.getLabelY().length() > 0)
 			setString("labely", p.getLabelY(), tx);
 		setString("name", p.getName(), tx);
-		setDouble("min", 0.0, tx);
-		setDouble("max", 1.0, tx);
+		setDouble("min", p.getMin(), tx);
+		setDouble("max", p.getMax(), tx);
 		tx.println("</f1d>");
 		tx.println("");
 
@@ -1674,10 +1674,10 @@ public class HBook {
 		if (p.getLabelZ().length() > 0)
 			setString("labelz", p.getLabelZ(), tx);
 		setString("name", p.getName(), tx);
-		setString("Xmin", DoubleS(0.0), tx);
-		setString("Xmax", DoubleS(1.0), tx);
-		setString("Ymin", DoubleS(0.0), tx);
-		setString("Ymax", DoubleS(1.0), tx);
+		setString("Xmin", DoubleS(p.getMinX()), tx);
+		setString("Xmax", DoubleS(p.getMaxX()), tx);
+		setString("Ymin", DoubleS(p.getMinY()), tx);
+		setString("Ymax", DoubleS(p.getMaxY()), tx);
 		tx.println("</f2d>");
 		tx.println("");
 

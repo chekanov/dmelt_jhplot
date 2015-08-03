@@ -95,8 +95,8 @@ public class F1D extends DrawOptions implements Serializable {
 
 	private Expression calc = null;
 
-	private double min = 999;
-	private double max = 999;
+	private double min = 0;
+	private double max = 0;
 
 	private ExpressionBuilder function = null;
 
@@ -110,7 +110,10 @@ public class F1D extends DrawOptions implements Serializable {
 
 	/**
 	 * Create a function in 1D. 500 points are used between Min and Max for
-	 * evaluation. The title is set to the function's definition
+	 * evaluation. The title is set to the function's definition.
+	 * <p>
+	 * A function can be ranged (range min and max is included) or unranged (min and max
+	 * are not defined). Ranged function determines the plot ranges, integration range etc.
 	 * 
 	 * The function may have one independent variable: x. Example: x*x
 	 * 
@@ -155,12 +158,12 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            String representing the function's definition
 	 */
 	public F1D(String name) {
-		this(name, name, 999, 999,true);
+		this(name, name, 0, 0,true);
 
 	}
 
 	/**
-	 * Create new function.
+	 * Create new function. The funtion is unranged (nor range is defined).
 	 * 
 	 * @param title
 	 *            title
@@ -169,13 +172,121 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public F1D(String title, String name) {
-		this(title, name, 999,999, true);
+		this(title, name, 0, 0, true);
 	}
 
+	
+	
 	/**
 	 * Create a new function. Do not parse it when using parameters. You should
 	 * apply substitution first and create a function with one variable "x".
-	 * If min=999 and max=999, the ranges are determinned by plotting canvases.
+	 * If min=0 and max=0, the ranges are determined by plotting canvases.
+	 * The function is ranged. The function is parsed.
+	 * 
+	 * The function may have one independent variable: x
+	 * <p>
+	 * <b>Operators and functions</b><br/>
+	 * <br/>
+	 * the following operators are supported:
+	 * <ul>
+	 * <li>Addition: '2 + 2'</li>
+	 * <li>Subtraction: '2 - 2'</li>
+	 * <li>Multiplication: '2 * 2'</li>
+	 * <li>Division: '2 / 2'</li>
+	 * <li>Exponential: '2 ^ 2' or ** (raise to a power)</li>
+	 * <li>Unary Minus,Plus (Sign Operators): '+2 - (-2)'</li>
+	 * <li>Modulo: '2 % 2'</li>
+	 * </ul>
+	 * the following functions are supported:
+	 * <ul>
+	 * <li>abs: absolute value</li>
+	 * <li>acos: arc cosine</li>
+	 * <li>asin: arc sine</li>
+	 * <li>atan: arc tangent</li>
+	 * <li>cbrt: cubic root</li>
+	 * <li>ceil: nearest upper integer</li>
+	 * <li>cos: cosine</li>
+	 * <li>cosh: hyperbolic cosine</li>
+	 * <li>exp: euler's number raised to the power (e^x)</li>
+	 * <li>floor: nearest lower integer</li>
+	 * <li>log: logarithm natural (base e)</li>
+	 * <li>log10: logarithm 10 natural(base e)</li>
+	 * <li>sin: sine</li>
+	 * <li>sinh: hyperbolic sine</li>
+	 * <li>sqrt: square root</li>
+	 * <li>tan: tangent</li>
+	 * <li>tanh: hyperbolic tangent</li>
+	 * </ul>
+	 * <br/>
+	 * It also recognizes the pi (or Pi) values; <br/>
+	 * 
+	 * 
+	 * @param title
+	 *            title
+	 * @param name
+	 *            definition
+	 * @param min
+	 *            minimum value for plotting
+	 * @param max
+	 *            maximum value for plotting
+	 */
+	public F1D(String title, String name, double min, double max) {
+	 this(title, name, min,max,true);
+	}
+	
+	
+	/**
+	 * Define a ranged function.
+	 * @param name name
+	 * @param min min value
+	 * @param max max value
+	 * @param parsed is parsed?
+	 */
+	public F1D(String name, double min, double max, boolean parsed) {
+		 this(name, name, min,max,parsed);
+		}
+	
+    /**
+     * Create F1D function from JAIDA IFunction. By default 500 points are used.
+     * The function is ranged.
+     * 
+     * @param title
+     *            Title
+     * @param iname
+     *            input IFunction
+     * @param min
+     *            Min X values
+     * @param max
+     *            Max X values
+     */
+
+    public F1D(String title, IFunction iname, double min, double max) {
+
+            this.iname = iname;
+            this.name = iname.title();
+            this.points = 500;
+            this.min = min;
+            this.max = max;
+            setTitle(title);
+            lpp.setType(LinePars.F1D);
+
+    }
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Create a new function. Do not parse it when using parameters. You should
+	 * apply substitution first and create a function with one variable "x".
+	 * If min=0 and max=0, the ranges are determined by plotting canvases.
+	 * The function is ranged.
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
@@ -262,7 +373,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 * Create a new function in pre-defined range for plotting. Do not parse it
 	 * when using parameters. You should apply substitution first and create a
 	 * function with one variable "x".
-	 * If min=999 and max=999, ranges are determined by plotting canvaces.
+	 * If min=0 and max=0, ranges are determined by plotting canvaces.
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
@@ -320,7 +431,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 * Create a new function in pre-defined range for plotting. Do not parse it
 	 * when using parameters. You should apply substitution first and create a
 	 * function with one variable "x".
-	 * If min=999 and max=999, ranges are determined by plotting canvaces.
+	 * Ranges for the function are not defined.
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
@@ -369,7 +480,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            parse or not. Do not parse when using parameters.
 	 */
 	public F1D(String title, String name, boolean parsed) {
-		this(title,name,999,999,parsed);
+		this(title,name,0,0,parsed);
 	}
 	
 	
@@ -707,16 +818,31 @@ public class F1D extends DrawOptions implements Serializable {
 	 * Evaluate a function for graphic representation. Number of points for
 	 * evaluations is 500.
 	 * 
-	 * @param Min
+	 * @param XMin
 	 *            value in x
-	 * @param Max
+	 * @param XMax
 	 *            value in x
 	 */
-	public void eval(double min, double max) {
+	public void eval(double xMin, double xMax) {
+		eval(xMin, xMax, points);
+
+	}
+
+	
+	/**
+	 * Evaluate a function for graphic representation. 
+	 * The function is assumed to me ranged (the range is defined
+	 * during the initialization).
+	 * 
+	
+	 */
+	public void eval() {
 		eval(min, max, points);
 
 	}
 
+	
+	
 	/**
 	 * Evaluate a function for graphic representation. Number of points for
 	 * evaluations is 500.
@@ -831,6 +957,8 @@ public class F1D extends DrawOptions implements Serializable {
 		this.iname = iname;
 		this.name = iname.title();
 		this.points = maxpoints;
+		min=0;
+		max=0;
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
 
@@ -844,9 +972,9 @@ public class F1D extends DrawOptions implements Serializable {
 	 * @param min
 	 * @param max
 	 */
-	public void toTable(double min, double max) {
+	public void toTable() {
 
-		new HTable(this, min, max);
+		new HTable(this);
 
 	}
 
@@ -867,9 +995,25 @@ public class F1D extends DrawOptions implements Serializable {
 	/**
 	 * Return H1D histogram from F1D function. The number of points are given by
 	 * setPoints() method, but the default 500 is used if not given. Min and Max
+	 * values are given during the function initialisation (ranged function)
+	 * The number of points is 500 by default.
+	 * 
+	 * @return histogram
+	 */
+
+	public H1D getH1D() {
+		return getH1D(min, max);
+	}
+	
+	/**
+	 * Return H1D histogram from F1D function. The number of points are given by
+	 * setPoints() method, but the default 500 is used if not given. Min and Max
 	 * values are given by the values used to parse the function.
 	 * 
-	 * @return
+	 * @param min value
+	 * @param max value
+	 * 
+	 * @return histogram
 	 */
 
 	public H1D getH1D(double min, double max) {
@@ -1039,6 +1183,26 @@ public class F1D extends DrawOptions implements Serializable {
 
 	}
 
+	
+	
+	
+	/**
+	 * Integral using fastest trapezium rule method. 
+	 * This function return non-zero if it the range was defined during the initialization.
+	 * The default number of points is 500. Increase it if needed more pecision.
+	 * 
+	 * @return integral in the range defined during the initisliazation.
+	 * 
+	 */
+	public double integral() {
+		return integral("trapezium", points, min, max);
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * Integral using fastest trapezium rule method. It uses the default number
 	 * of points (500).
@@ -1325,9 +1489,23 @@ public class F1D extends DrawOptions implements Serializable {
 		return jhplot.math.Numeric.differentiate(N, this, min, max);
 
 	}
+	
+	
 
 	/**
-	 * Get the number of points
+	 * Numerical differentiation of a function.
+	 * Range of the function is given during the initisalisation (ranged function)
+	 * @return array with differentials
+	 */
+	public double[] differentiate() {
+		return jhplot.math.Numeric.differentiate(points, this, min, max);
+
+	}
+	
+	
+
+	/**
+	 * Get the number of points used for plotting, integration and differentiation.
 	 * 
 	 * @return Number of points
 	 */

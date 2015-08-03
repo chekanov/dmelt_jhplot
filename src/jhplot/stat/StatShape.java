@@ -278,7 +278,7 @@ public class StatShape {
 	 */
 	public F1D getFitFunction() {
 
-		F1D f1 = new F1D("a+b*x",  false);
+		F1D f1 = new F1D("a+b*x", "a+b*x",-10, 10, false);
 		f1.setPar("a", a);
 		f1.setPar("b", b);
 		f1.parse();
@@ -295,7 +295,7 @@ public class StatShape {
 	public F1D getFitFunctionPerp() {
 
 
-		F1D f1 = new F1D("a+b*x",  false);
+		F1D f1 = new F1D("a+b*x","a+b*x", -10, 10, false);
 		f1.setPar("a", a0);
 		f1.setPar("b", b0);
 		f1.parse();
@@ -342,12 +342,12 @@ public class StatShape {
 	public F1D[] getFitFunctionQuadrants() {
 
 
-		F1D f1 = new F1D("a+b*x",  false);
+		F1D f1 = new F1D("a+b*x", -10, 10, false);
 		f1.setPar("a", newa);
 		f1.setPar("b", newb);
 		f1.parse();
 
-		F1D f2 = new F1D("a+b*x",  false);
+		F1D f2 = new F1D("a+b*x", -10, 10, false);
 		f2.setPar("a", newa0);
 		f2.setPar("b", newb0);
 		f2.parse();

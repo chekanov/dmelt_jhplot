@@ -1057,10 +1057,10 @@ public class SurfaceModelCanvas implements SurfaceModel {
 			
 			
 			if (m_AutoXY==true){
-				setXMin(0.0f  );
-				setXMax(1.0f  );
-				setYMin(0.0f );
-				setYMax(1.0f  );				
+				setXMin((float)fu1.getMinX()  );
+				setXMax((float)fu1.getMaxX()  );
+				setYMin((float)fu1.getMinY()  );
+				setYMax((float)fu1.getMaxY()  );				
 			}
 			
 			

@@ -198,17 +198,17 @@ public class SPsheet {
 
 	}
 
-	
-	/** 
-	 *  Build a spreadsheet from the F1D function
+	/**
+	 * Build a spreadsheet from the F1D function
+	 * 
 	 * @param f1d
-	 * @param min
-	 * @param max
+	 *            Input function
 	 */
-	public SPsheet(F1D f1d, double min, double max) {
+
+	public SPsheet(F1D f1d) {
 
 		showSPsheet();
-		VHolder vh = new VHolder(f1d,min,max);
+		VHolder vh = new VHolder(f1d);
 		fillWithVectors(vh.getTitle(), vh.getNames(), vh.getData());
 
 	}

@@ -104,9 +104,9 @@ public class VHolder {
 	 *            Input function
 	 */
 
-	public VHolder(F1D ff, double min, double max) {
+	public VHolder(F1D ff) {
 
-		ff.eval(min,max,ff.getPoints());
+		ff.eval();
 		
 		title = "F1D: " + ff.getTitle();
 		data = new Double[ff.getPoints()][3];

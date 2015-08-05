@@ -379,6 +379,31 @@ public class HPlot3DP extends GHFrame {
 
 	}
 
+
+
+        /**
+         * Draw array of functions
+         * 
+         * @param f
+         *            array of functions
+         */
+
+        public void draw(FPR[] f) {
+
+                for (int i = 0; i < f.length; i++) {
+                        draw(f[i]);
+                }
+
+        }
+
+
+
+
+
+
+
+
+
 	/**
 	 * Set range for X axis
 	 * 

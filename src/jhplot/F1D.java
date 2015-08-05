@@ -369,6 +369,31 @@ public class F1D extends DrawOptions implements Serializable {
 
 	}
 
+	
+	/**
+	 * Create a F1D function from JAIDA IFunction in ranges. By default, 500 points for
+	 * evaluation are used
+	 * 
+	 * @param iname
+	 *            input IFunction
+	 * @param min
+	 *            Min value
+	 * @param max
+	 *            Max value
+	 */
+	public F1D(IFunction iname, double min, double max) {
+
+		this.iname = iname;
+		this.name = iname.title();
+		this.points = maxpoints;
+		this.min = min;
+		this.max = max;
+		setTitle(this.name);
+		lpp.setType(LinePars.F1D);
+
+	}
+	
+	
 	/**
 	 * Create a new function in pre-defined range for plotting. Do not parse it
 	 * when using parameters. You should apply substitution first and create a
@@ -649,6 +674,32 @@ public class F1D extends DrawOptions implements Serializable {
 
 	}
 
+	
+	
+	/**
+	 * Create a function from the expression.
+	 * The function is in the range.
+	 * @param calc expression
+	 * @param min Min value
+	 * @param max Max value
+	 */
+	public F1D(Expression calc, double min, double max) {
+		this.iname = null;
+		this.title = "F1D";
+		this.calc = calc;
+		this.min=min;
+		this.max=max;
+		this.points = maxpoints;
+		setTitle(title);
+		lpp.setType(LinePars.F1D);
+		isParsed = true;
+	}
+	
+	
+
+	
+
+	
 	/**
 	 * Create a function in 1D. 500 points are used between Min and Max for
 	 * evaluation. The function may have x as independent variable.
@@ -726,7 +777,7 @@ public class F1D extends DrawOptions implements Serializable {
 		} // end of the standard jPlot function
 
 		// start AIDA function
-		if (iname != null && iname.dimension() == 2) {
+		if (iname != null && iname.dimension() == 1) {
 			try {
 				double[] xx = new double[iname.dimension()];
 				xx[0] = x;
@@ -924,7 +975,7 @@ public class F1D extends DrawOptions implements Serializable {
 
 	/**
 	 * Create a F1D function from JAIDA IFunction. By default, 500 points for
-	 * evaluation are used
+	 * evaluation are used. No ranges are set.
 	 * 
 	 * @param iname
 	 *            input IFunction

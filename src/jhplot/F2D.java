@@ -1,26 +1,26 @@
 /**
-*    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
-*    All rights reserved.
-*
-*    This program is free software; you can redistribute it and/or modify it under the terms
-*    of the GNU General Public License as published by the Free Software Foundation; either
-*    version 3 of the License, or any later version.
-*
-*    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-*    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*    See the GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License along with this program;
-*    if not, see <http://www.gnu.org/licenses>.
-*
-*    Additional permission under GNU GPL version 3 section 7:
-*    If you have received this program as a library with written permission from the DataMelt team,
-*    you can link or combine this library with your non-GPL project to convey the resulting work.
-*    In this case, this library should be considered as released under the terms of
-*    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
-*    provided you include this license notice and a URL through which recipients can access the
-*    Corresponding Source.
-**/
+ *    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
+ *    All rights reserved.
+ *
+ *    This program is free software; you can redistribute it and/or modify it under the terms
+ *    of the GNU General Public License as published by the Free Software Foundation; either
+ *    version 3 of the License, or any later version.
+ *
+ *    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *    See the GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License along with this program;
+ *    if not, see <http://www.gnu.org/licenses>.
+ *
+ *    Additional permission under GNU GPL version 3 section 7:
+ *    If you have received this program as a library with written permission from the DataMelt team,
+ *    you can link or combine this library with your non-GPL project to convey the resulting work.
+ *    In this case, this library should be considered as released under the terms of
+ *    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
+ *    provided you include this license notice and a URL through which recipients can access the
+ *    Corresponding Source.
+ **/
 package jhplot;
 
 import jhplot.math.exp4j.*;
@@ -56,8 +56,8 @@ import jhplot.gui.HelpBrowser;
  * <li>cosh: hyperbolic cosine</li>
  * <li>exp: euler's number raised to the power (e^x)</li>
  * <li>floor: nearest lower integer</li>
- * <li>log: logarithmus naturalis (base e)</li>
- * <li>log10: logarithmus (base 10)</li>
+ * <li>log: logarithm natural (base e)</li>
+ * <li>log10: logarithm (base 10)</li>
  * <li>sin: sine</li>
  * <li>sinh: hyperbolic sine</li>
  * <li>sqrt: square root</li>
@@ -80,13 +80,13 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private double Xmin=0;
+	private double Xmin = 0;
 
-	private double Xmax=0;
+	private double Xmax = 0;
 
-	private double Ymin=0;
+	private double Ymin = 0;
 
-	private double Ymax=0;
+	private double Ymax = 0;
 
 	private int points;
 
@@ -100,14 +100,12 @@ public class F2D extends DrawOptions implements Serializable {
 
 	private IFunction iname = null;
 
-        final int maxpoints=200;
+	final int maxpoints = 200;
 
-        private String lastException = "";
-
+	private String lastException = "";
 
 	/**
-	 * Create a function in 2D for evaluation.
-	 * The function is not in range.
+	 * Create a function in 2D for evaluation. The function is not in range.
 	 * 
 	 * The function may have up to 2 independent variables: x,y.
 	 * 
@@ -154,24 +152,22 @@ public class F2D extends DrawOptions implements Serializable {
 		this(name, name, 0.0, 0.0, 0.0, 0.0);
 	}
 
-
-          /**
-         * Create new function.
-         * 
-         * @param title
-         *            title
-         * @param name
-         *            definition
-         */
-         public F2D(String title, String name) {
-                this(title, name, 0.0, 1.0, 0.0, 1.0);
-        }
-
+	/**
+	 * Create new function.
+	 * 
+	 * @param title
+	 *            title
+	 * @param name
+	 *            definition
+	 */
+	public F2D(String title, String name) {
+		this(title, name, 0.0, 1.0, 0.0, 1.0);
+	}
 
 	/**
-	 * Create a function in 2D. This is a ranged function. Uses 500 points between min and max value for
-	 * evaluation. The function may have up to 2 independent variables in it
-	 * (x,y). 
+	 * Create a function in 2D. This is a ranged function. Uses 500 points
+	 * between min and max value for evaluation. The function may have up to 2
+	 * independent variables in it (x,y).
 	 * 
 	 * <b>Operators and functions</b><br/>
 	 * <br/>
@@ -222,8 +218,8 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 	public F2D(String title, String name, double Xmin, double Xmax,
 			double Ymin, double Ymax) {
-		
-		is3D=true;
+
+		is3D = true;
 		this.name = name;
 		this.name = this.name.replace("**", "^"); // preprocess power
 		this.name = this.name.replace("pi", "3.14159265");
@@ -241,17 +237,17 @@ public class F2D extends DrawOptions implements Serializable {
 			function.variables("x", "y");
 			calc = function.build();
 			isParsed = true;
-                 } catch (IllegalArgumentException  e) {
-                                isParsed = false;
-                                jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
-                    
-                 }
+		} catch (IllegalArgumentException e) {
+			isParsed = false;
+			jhplot.utils.Util.ErrorMessage("Failed to parse function "
+					+ this.name + " Error:" + e.toString());
+
+		}
 
 	}
 
 	/**
-	 * Build a 2D function. Title is set to the name.
-	 * This is ranged function.
+	 * Build a 2D function. Title is set to the name. This is ranged function.
 	 * 
 	 * @param name
 	 *            Name
@@ -304,71 +300,63 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
+	/**
+	 * Create a function in 2D. 500 points are used between Min and Max for
+	 * evaluation. The function may have x as independent variable. Make sure
+	 * that expression has 2 variables, x and y.
+	 * 
+	 * @param title
+	 *            Title
+	 * @param function
+	 *            Expression after parsing and building
+	 * @param Xmin
+	 *            Min X value
+	 * @param Xmax
+	 *            Max X value
+	 * 
+	 * @param Ymin
+	 *            Min Y value
+	 * @param Ymax
+	 *            Max Y value
+	 */
+	public F2D(String title, Expression calc, double Xmin, double Xmax,
+			double Ymin, double Ymax) {
+		this.iname = null;
+		this.title = title;
+		this.calc = calc;
+		this.points = maxpoints;
+		this.Xmin = Xmin;
+		this.Xmax = Xmax;
+		this.Ymin = Ymin;
+		this.Ymax = Ymax;
+		this.name = "F2D";
+		setTitle(title);
+		isParsed = true;
+	}
 
-         /**
-         * Create a function in 2D. 500 points are used between Min and Max for
-         * evaluation.
-         * The function may have x as independent variable.
-         * Make sure that expression has 2 variables, x and y. 
-         * 
-         * @param title
-         *            Title
-         * @param function
-         *            Expression after parsing and building
-         * @param Xmin
-         *            Min X value
-         * @param Xmax
-         *            Max X value
-         * 
-         * @param Ymin
-         *            Min Y value
-         * @param Ymax
-         *            Max Y value
-
-         */
-        public F2D(String title, Expression calc, double Xmin, double Xmax,
-                        double Ymin, double Ymax) {
-                this.iname = null;
-                this.title = title;
-                this.calc = calc;
-                this.points = maxpoints;
-                this.Xmin = Xmin;
-                this.Xmax = Xmax;
-                this.Ymin = Ymin;
-                this.Ymax = Ymax;
-                this.name="F2D";
-                setTitle(title);
-                isParsed = true; 
-        }
-
-
-         /**
-         * Create a function in 2D. 500 points are used between Min and Max for
-         * evaluation.
-         * The function may have x as independent variable.
-         * Make sure that expression has 2 variables, x and y. 
-         * 
-         * @param title
-         *            Title
-         * @param function
-         *            Expression after parsing and building
-         * @param Xmin
-         *            Min X value
-         * @param Xmax
-         *            Max X value
-         * 
-         * @param Ymin
-         *            Min Y value
-         * @param Ymax
-         *            Max Y value
-
-         */
-        public F2D(Expression calc, double Xmin, double Xmax,
-                        double Ymin, double Ymax) {
-                this("F2D",calc,Xmin,Xmax,Ymin,Ymax); 
-        }
-
-
+	/**
+	 * Create a function in 2D. 500 points are used between Min and Max for
+	 * evaluation. The function may have x as independent variable. Make sure
+	 * that expression has 2 variables, x and y.
+	 * 
+	 * @param title
+	 *            Title
+	 * @param function
+	 *            Expression after parsing and building
+	 * @param Xmin
+	 *            Min X value
+	 * @param Xmax
+	 *            Max X value
+	 * 
+	 * @param Ymin
+	 *            Min Y value
+	 * @param Ymax
+	 *            Max Y value
+	 */
+	public F2D(Expression calc, double Xmin, double Xmax, double Ymin,
+			double Ymax) {
+		this("F2D", calc, Xmin, Xmax, Ymin, Ymax);
+	}
 
 	/**
 	 * Create a F2D function from JAIDA IFunction. By default, 500 points for
@@ -382,8 +370,6 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
-	
-	
 	/**
 	 * Create a F2D function from JAIDA IFunction.
 	 * 
@@ -542,8 +528,6 @@ public class F2D extends DrawOptions implements Serializable {
 		return z;
 	}
 
-	
-
 	/**
 	 * Set Min in X
 	 * 
@@ -554,27 +538,31 @@ public class F2D extends DrawOptions implements Serializable {
 		this.Xmin = min;
 
 	}
+
 	/**
 	 * Parse the function.
-	 * @return true if parsed without problems. 
+	 * 
+	 * @return true if parsed without problems.
 	 **/
 	public boolean parse() {
-                isParsed = false;
+		isParsed = false;
 		try {
-                        function = new ExpressionBuilder(name);
-			calc=(function.variables("x","y")).build();
+			function = new ExpressionBuilder(name);
+			calc = (function.variables("x", "y")).build();
 			isParsed = true;
 		} catch (IllegalArgumentException e) {
 			isParsed = false;
-		        //System.err.println("Failed to parse function " + this.name+" Error:"+e.toString());
-                        jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
+			// System.err.println("Failed to parse function " +
+			// this.name+" Error:"+e.toString());
+			jhplot.utils.Util.ErrorMessage("Failed to parse function "
+					+ this.name + " Error:" + e.toString());
 
 		}
-              
+
 		return isParsed;
 
 	}
-	
+
 	/**
 	 * Get Min value in X
 	 * 
@@ -692,19 +680,19 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
-         /**
-         * Replace abstract parameter with the value (double). Case sensitive!
-         * 
-         * @param parameter
-         *            parameter name
-         * @param value
-         *            value to be inserted
-         */
+	/**
+	 * Replace abstract parameter with the value (double). Case sensitive!
+	 * 
+	 * @param parameter
+	 *            parameter name
+	 * @param value
+	 *            value to be inserted
+	 */
 
-        public void setPar(String parameter, double value) {
-                String s1 = Double.toString(value);
-                this.name = name.replaceAll(parameter, s1);
-        }
+	public void setPar(String parameter, double value) {
+		String s1 = Double.toString(value);
+		this.name = name.replaceAll(parameter, s1);
+	}
 
 	/**
 	 * Get the number of points for evaluation of a function
@@ -740,120 +728,119 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
-         /**
-         * Integral using fastest trapezium rule method. It uses the default number of points (500).
-         * @param minX
-         *            the first ordinate in X.
-         * @param maxX
-         *            the last ordinate in X.
-         * @param minY
-         *            the first ordinate in X.
-         * @param maxY
-         *            the last ordinate in Y.
-         */
-         public double integral(double minX, final double maxX, double minY, final double maxY) {
-                 return integral(points, minX, maxX,minY, maxY);
-          }
+	/**
+	 * Integral using fastest trapezium rule method. It uses the default number
+	 * of points (500).
+	 * 
+	 * @param minX
+	 *            the first ordinate in X.
+	 * @param maxX
+	 *            the last ordinate in X.
+	 * @param minY
+	 *            the first ordinate in X.
+	 * @param maxY
+	 *            the last ordinate in Y.
+	 */
+	public double integral(double minX, final double maxX, double minY,
+			final double maxY) {
+		return integral(points, minX, maxX, minY, maxY);
+	}
 
+	/**
+	 * Try to simplify this function. It is often useful to rewrite an
+	 * expression in term of elementary functions (log, exp, frac, sqrt,
+	 * implicit roots), using the "elementary()" before simplifying it. Retrieve
+	 * the simplified name as a string using getName() method.
+	 * 
+	 * @return false if error occurs. Retrieve this error as a string using
+	 *         getException().
+	 */
 
+	public boolean simplify() {
 
-        /**
-         * Try to simplify this function. It is often useful to rewrite an
-         * expression in term of elementary functions (log, exp, frac, sqrt,
-         * implicit roots), using the "elementary()" before simplifying it. Retrieve
-         * the simplified name as a string using getName() method.
-         * 
-         * @return false if error occurs. Retrieve this error as a string using
-         *         getException().
-         */
+		try {
+			name = jscl.math.Expression.valueOf(name).simplify().toString();
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return false;
+		}
+		return true;
 
-        public boolean simplify() {
+	}
 
-                try {
-                        name = jscl.math.Expression.valueOf(name).simplify().toString();
-                } catch (Exception e) {
-                        lastException = e.getMessage().toString();
-                        return false;
-                }
-                return true;
+	/**
+	 * If error occurs at some step, this is the way to retrieve it.
+	 * 
+	 * @return last exception happened in any method of this class.
+	 */
+	public String getException() {
+		return lastException;
+	}
 
-        }
+	/**
+	 * Convert this function rewrite in term of elementary functions (log, exp,
+	 * frac, sqrt, implicit roots) This is useful before simplifying function.
+	 * Retrieve the simplified name as a string using getName() method.
+	 * 
+	 * @return false if error occurs. Retrieve this error as a string using
+	 *         getException().
+	 */
 
-        /**
-         * If error occurs at some step, this is the way to retrieve it.
-         * 
-         * @return last exception happened in any method of this class.
-         */
-        public String getException() {
-                return lastException;
-        }
+	public boolean elementary() {
 
+		try {
+			name = jscl.math.Expression.valueOf(name).elementary().toString();
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return false;
+		}
+		return true;
 
-        /**
-         * Convert this function rewrite in term of elementary functions (log, exp,
-         * frac, sqrt, implicit roots) This is useful before simplifying function.
-         * Retrieve the simplified name as a string using getName() method.
-         * 
-         * @return false if error occurs. Retrieve this error as a string using
-         *         getException().
-         */
+	}
 
-        public boolean elementary() {
+	/**
+	 * Convert this function rewrite in expanded form. Retrieve the expanded
+	 * name as a string using getName() method.
+	 * 
+	 * @return false if error occurs. Retrieve this error as a string using
+	 *         getException().
+	 */
 
-                try {
-                        name = jscl.math.Expression.valueOf(name).elementary().toString();
-                } catch (Exception e) {
-                        lastException = e.getMessage().toString();
-                        return false;
-                }
-                return true;
+	public boolean expand() {
 
-        }
+		try {
+			name = jscl.math.Expression.valueOf(name).expand().toString();
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return false;
+		}
+		return true;
 
+	}
 
-       /**
-         * Convert this function rewrite in expanded form. Retrieve the expanded
-         * name as a string using getName() method.
-         * 
-         * @return false if error occurs. Retrieve this error as a string using
-         *         getException().
-         */
+	/**
+	 * Convert this function rewrite in factorized form (if can). Retrieve the
+	 * expanded name as a string using getName() method.
+	 * 
+	 * @return false if error occurs. Retrieve this error as a string using
+	 *         getException().
+	 */
 
-        public boolean expand() {
+	public boolean factorize() {
 
-                try {
-                        name = jscl.math.Expression.valueOf(name).expand().toString();
-                } catch (Exception e) {
-                        lastException = e.getMessage().toString();
-                        return false;
-                }
-                return true;
+		try {
+			name = jscl.math.Expression.valueOf(name).factorize().toString();
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return false;
+		}
+		return true;
 
-        }
-
-        /**
-         * Convert this function rewrite in factorized form (if can). Retrieve the
-         * expanded name as a string using getName() method.
-         * 
-         * @return false if error occurs. Retrieve this error as a string using
-         *         getException().
-         */
-
-        public boolean factorize() {
-
-                try {
-                        name = jscl.math.Expression.valueOf(name).factorize().toString();
-                } catch (Exception e) {
-                        lastException = e.getMessage().toString();
-                        return false;
-                }
-                return true;
-
-        }
-
+	}
 
 	/**
 	 * Return parsed function. One can evaluate it as "calculate()".
+	 * 
 	 * @return function
 	 **/
 	public Expression getParse() {
@@ -955,16 +942,85 @@ public class F2D extends DrawOptions implements Serializable {
 		return isParsed;
 	}
 
+	
+	
+	
+	/**
+	 * Integral using fastest trapezium rule method. 
+	 * This function return non-zero if it the range was defined during the initialization.
+	 * The default number of points is 500. Increase it if needed more precision.
+	 * 
+	 * @return integral in the range defined during the initialization.
+	 * 
+	 */
+	public double integral() {
+		return integral(points,points,Xmin, Xmax,Ymin,Ymax);
+	}
+	
+	
+	
+	
+	/**
+	 * Finds the volume under the surface described by the function f(x, y) for
+	 * a <= x <= b, c <= y <= d. It uses the trapezoid rule. Using xSegs number of
+	 * segments across the x axis and ySegs number of segments across the y
+	 * axis.
+	 * 
+	 * @param xSegs
+	 *            The number of segments in the x axis.
+	 * @param ySegs
+	 *            The number of segments in the y axis.
+	 * @param minX
+	 *            The lower bound of x.
+	 * @param maxX
+	 *            The upper bound of x.
+	 * @param minX
+	 *            The lower bound of y.
+	 * @param maxY
+	 *            The upper bound of y.
+	 * @return The volume under the function f(x, y).
+	 */
+	public double integral(int xSegs, int ySegs, double minX, double maxX, double minY,
+			double maxY) {
+		double xSegSize = (maxX - minX) / xSegs; // length of an x segment.
+		double ySegSize = (maxY - minY) / ySegs; // length of a y segment.
+		double volume = 0; // volume under the surface.
+		for (int i = 0; i < xSegs; i++) {
+			for (int j = 0; j < ySegs; j++) {
+				double height = eval(minX + (xSegSize * i), minY
+						+ (ySegSize * j));
+				height += eval(minX + (xSegSize * (i + 1)), minY
+						+ (ySegSize * j));
+				height += eval(minX + (xSegSize * (i + 1)), minY
+						+ (ySegSize * (j + 1)));
+				height += eval(minX + (xSegSize * i), minY
+						+ (ySegSize * (j + 1)));
+				height /= 4;
+				// height is the average value of the corners of the current
+				// segment.
+				// We can use the average value since a box of this height has
+				// the same volume as the original segment shape.
+				// Add the volume of the box to the volume.
+				volume += xSegSize * ySegSize * height;
+			}
+		}
 
-            /**
-         * Get this function as a string.
-         * 
-         * @return Convert to string. 
-         */
-        public String toString() {
-                String tmp=getName();
-                tmp = tmp+" (title="+getTitle()+", n="+Integer.toString(points)+", minX="+Double.toString(Xmin)+", maxX="+Double.toString(Xmax)+", minY="+Double.toString(Ymin)+", maxY="+Double.toString(Ymax)+", "+Boolean.toString(isParsed)+")";
-                return tmp;
-        }
+		return volume;
+	}
+
+	/**
+	 * Get this function as a string.
+	 * 
+	 * @return Convert to string.
+	 */
+	public String toString() {
+		String tmp = getName();
+		tmp = tmp + " (title=" + getTitle() + ", n=" + Integer.toString(points)
+				+ ", minX=" + Double.toString(Xmin) + ", maxX="
+				+ Double.toString(Xmax) + ", minY=" + Double.toString(Ymin)
+				+ ", maxY=" + Double.toString(Ymax) + ", "
+				+ Boolean.toString(isParsed) + ")";
+		return tmp;
+	}
 
 }

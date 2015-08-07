@@ -72,39 +72,22 @@ import jhplot.math.exp4j.*;
  * 
  */
 
-public class F3D extends DrawOptions implements Serializable {
+public class F3D extends DrawOptions  {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private double Xmin=0;
-
-	private double Xmax=0;
-
-	private double Ymin=0;
-
-	private double Ymax=0;
-
-	private double Zmin=0;
-
-	private double Zmax=0;
-
-	private int points;
-
+	private FProxy proxy;
+	final int maxpoints = 200;
 	private String title="F3D";
 	
-	private String name;
+	
 
 	private Expression calc = null;
 
 	private ExpressionBuilder function = null;
 
-
-	private boolean isParsed = false;
-
-	private IFunction iname = null;
 
 	/**
 	 * Create a function in 3D for evaluation.
@@ -212,28 +195,16 @@ public class F3D extends DrawOptions implements Serializable {
 	public F3D(String title, String name, double Xmin, double Xmax, double Ymin, double Ymax,
 			double Zmin, double Zmax) {
 
+		proxy = new FProxy(3,title, name, null,  new double[]{Xmin,Xmax,Ymin,Ymax,Zmin,Zmax}, 
+				maxpoints, true); 
 		
-		this.name=name;
-		this.name = this.name.replace("**", "^"); // preprocess power
-		this.name = this.name.replace("pi", "3.14159265"); 
-		this.name = this.name.replace("Pi", "3.14159265"); 
-		
-	    this.title = title;
-		this.points = 500;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
-		this.Zmin = Zmin;
-		this.Zmax = Zmax;
-
-		function = new ExpressionBuilder(this.name);
+		function = new ExpressionBuilder(proxy.getName());
         try {
                 calc = (function.variables("x","y","z")).build();
-                isParsed = true;
+                
 	 } catch (IllegalArgumentException  e) {
-                                isParsed = false;
-                                jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
+		 proxy.setParsed(false);
+         jhplot.utils.Util.ErrorMessage("Failed to parse function " + name+" Error:"+e.toString());
                        
 	 }
 
@@ -289,22 +260,36 @@ public class F3D extends DrawOptions implements Serializable {
 	public F3D(String title, String name, IFunction iname, double Xmin, double Xmax,
 			double Ymin, double Ymax, double Zmin, double Zmax) {
 
-	     this.name = name.replace("**","^"); // preprocess power	
+		proxy = new FProxy(3,title, name, iname,  new double[]{Xmin,Xmax,Ymin,Ymax,Zmin,Zmax}, maxpoints, true); 	
 		this.title = title;
-		this.iname = iname;
-		this.points = 500;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
-		this.Zmin = Zmin;
-		this.Zmax = Zmax;
+		
 	}
 	
 	public F3D(String name, IFunction iname, double Xmin, double Xmax,
 			double Ymin, double Ymax, double Zmin, double Zmax) {
 
 	}
+	
+	
+
+	/**
+	 * Initialize function from proxy.
+	 * @param f
+	 */
+	
+	public F3D(FProxy f) {
+		if (f.getType() != 3) {
+			jhplot.utils.Util.ErrorMessage("Error in parsing F3D. Wrong function type! " + f.getName());
+			return;
+		}
+		
+		
+		proxy=f;
+		setTitle(proxy.getTitle());
+
+	}
+	
+	
 	/**
 	 * Create a function in 3D from a AIDA IFunction.
 	 * @param iname
@@ -352,7 +337,9 @@ public class F3D extends DrawOptions implements Serializable {
 	public double eval(double x, double y, double z) {
 
 		double h = 0;
-
+		  IFunction iname=proxy.getIFunction();
+		  boolean  isParsed=proxy.isParsed();
+		  String name=proxy.getName();
 		// jPlot function first
 		if (iname == null && (function == null || isParsed == false)) {
 			jhplot.utils.Util.ErrorMessage("eval(): Function was not parsed correctly!");
@@ -370,7 +357,7 @@ public class F3D extends DrawOptions implements Serializable {
 				
 				
 			} catch (Exception e) {
-                                jhplot.utils.Util.ErrorMessage("Failed to evaluate function " + this.name+" Error:"+e.toString());
+                                jhplot.utils.Util.ErrorMessage("Failed to evaluate function " + name+" Error:"+e.toString());
 				// System.out.println("Failed to evaluate function:" + name);
 
 			}
@@ -386,7 +373,8 @@ public class F3D extends DrawOptions implements Serializable {
 				h = iname.value(xx);
 			} catch (Exception e) {
 				// System.out.println("Failed to evaluate function!");
-                                jhplot.utils.Util.ErrorMessage("Failed to evaluate function " + this.name+" Error:"+e.toString());
+                                jhplot.utils.Util.ErrorMessage("Failed to evaluate function " + 
+				name+" Error:"+e.toString());
 			}
 		} // end IFunction
 
@@ -422,7 +410,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 *            Min value
 	 */
 	public void setMinX(double min) {
-		this.Xmin = min;
+		proxy.setLimit(0,min);
 
 	}
 
@@ -432,7 +420,8 @@ public class F3D extends DrawOptions implements Serializable {
 	 * @return Min value in X
 	 */
 	public double getMinX() {
-		return this.Xmin;
+		double[] d= proxy.getLimits();
+		return d[0];
 	}
 
 	/**
@@ -442,7 +431,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 *            Min value in Y
 	 */
 	public void setMinY(double min) {
-		this.Ymin = min;
+		proxy.setLimit(2,min);
 
 	}
 
@@ -453,7 +442,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 *            Min value in Z
 	 */
 	public void setMinZ(double min) {
-		this.Zmin = min;
+		proxy.setLimit(4,min);
 
 	}
 
@@ -464,7 +453,8 @@ public class F3D extends DrawOptions implements Serializable {
 	 */
 
 	public double getMinY() {
-		return this.Ymin;
+		double[] d= proxy.getLimits();
+		return d[2];
 	}
 
 	/**
@@ -475,7 +465,8 @@ public class F3D extends DrawOptions implements Serializable {
 	 */
 
 	public double getMinZ() {
-		return this.Zmin;
+		double[] d= proxy.getLimits();
+		return d[4];
 	}
 
 	/**
@@ -485,7 +476,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 *            Max value in X
 	 */
 	public void setMaxX(double max) {
-		this.Xmax = max;
+		proxy.setLimit(1,max);
 
 	}
 
@@ -514,7 +505,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 *            Max value in Z
 	 */
 	public void setMaxZ(double max) {
-		this.Zmax = max;
+		proxy.setLimit(5,max);
 
 	}
 
@@ -526,7 +517,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 */
 
 	public void setName(String name) {
-		this.name = name;
+		proxy.setName(name);
 
 	}
 
@@ -536,7 +527,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 * @return Name
 	 */
 	public String getName() {
-		return this.name;
+		return proxy.getName();
 
 	}
 
@@ -546,7 +537,8 @@ public class F3D extends DrawOptions implements Serializable {
 	 * @return Max value in X
 	 */
 	public double getMaxX() {
-		return this.Xmax;
+		double[] d= proxy.getLimits();
+		return d[1];
 
 	}
 
@@ -556,7 +548,8 @@ public class F3D extends DrawOptions implements Serializable {
 	 * @return max Max value in Z
 	 */
 	public double getMaxZ() {
-		return this.Zmax;
+		double[] d= proxy.getLimits();
+		return d[5];
 
 	}
 
@@ -568,7 +561,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 */
 
 	public void setMaxY(double max) {
-		this.Ymax = max;
+		proxy.setLimit(3,max);
 
 	}
 
@@ -578,7 +571,8 @@ public class F3D extends DrawOptions implements Serializable {
 	 * @return Max value in Y
 	 */
 	public double getMaxY() {
-		return this.Ymax;
+		double[] d= proxy.getLimits();
+		return d[1];
 
 	}
 
@@ -589,7 +583,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 *            Number of points
 	 */
 	public void setPoints(int bins) {
-		this.points = bins;
+		proxy.setPoints(bins);
 
 	}
 
@@ -599,7 +593,7 @@ public class F3D extends DrawOptions implements Serializable {
 	 * @return Number of points
 	 */
 	public int getPoints() {
-		return this.points;
+		return proxy.getPoints();
 
 	}
 
@@ -617,33 +611,106 @@ public class F3D extends DrawOptions implements Serializable {
 	 * @return true if parsed without problems. 
 	 **/
 	public boolean parse() {
+		
+		
+		boolean  isParsed=proxy.isParsed();
+
+		  String name=proxy.getName();
 		try {
-                        function = new ExpressionBuilder(this.name);
+                        function = new ExpressionBuilder(name);
 			calc=(function.variables("x","y","z")).build();
-			isParsed = true;
+			proxy.setParsed(true);
 		} catch (IllegalArgumentException e) {
-			isParsed = false;
+			proxy.setParsed(false);
 		        //System.err.println("Failed to parse function " + this.name+" Error:"+e.toString());
-                        jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());
+                        jhplot.utils.Util.ErrorMessage("Failed to parse function " + name+" Error:"+e.toString());
 
 		}
               
 		return isParsed;
 
 	}
-        /**
-         * Replace abstract parameter with the value (double). Case sensitive!
-         * 
-         * @param parameter
-         *            parameter name
-         * @param value
-         *            value to be inserted
-         */
 
-        public void setPar(String parameter, double value) {
-                String s1 = Double.toString(value);
-                this.name = name.replaceAll(parameter, s1);
+
+
+         /**
+         * Get Jaida function
+         * 
+         * @return
+         */
+        public IFunction getIFunction() {
+
+                return proxy.getIFunction();
+
         }
+
+
+         /**
+         * If the function is parsed correctly, return true. Use this check before
+         * drawing it.
+         * 
+         * @return true if parsed.
+         */
+        public boolean isParsed() {
+
+                return proxy.isParsed();
+        }
+
+
+
+        /**
+        * Get the proxy of this function used for serialization 
+        * and non-graphical representations.
+        * 
+        * @param proxy proxy of this function. 
+        */
+        public FProxy get(){ 
+           return proxy;
+       }
+
+        /**
+    	 * Replace abstract parameter with the value (double). Case sensitive!
+    	 * 
+    	 * @param parameter
+    	 *            parameter name
+    	 * @param value
+    	 *            value to be inserted
+    	 */
+
+    	public void setPar(String parameter, double value) {
+    		String s1 = Double.toString(value);
+    		String name=proxy.getName();
+    		proxy.setName(name.replaceAll(parameter, s1));
+    	}
+
+
+	/**
+	 * Get this function as a string.
+	 * 
+	 * @return Convert to string.
+	 */
+	public String toString() {
+
+		String tmp = "F3D:" + proxy.getName();
+		double[] d = proxy.getLimits();
+		boolean isParsed = proxy.isParsed();
+		double Xmin = d[0];
+		double Xmax = d[1];
+		double Ymin = d[2];
+		double Ymax = d[3];
+		double Zmin = d[2];
+		double Zmax = d[3];
+		int points = proxy.getPoints();
+		tmp = tmp + " (title=" + getTitle() + ", n=" + Integer.toString(points)
+				+ ", minX=" + Double.toString(Xmin) + ", maxX="
+				+ Double.toString(Xmax) + ", minY=" + Double.toString(Ymin)
+				+ ", maxY=" + Double.toString(Ymax) + ", "
+				+ Double.toString(Xmax) + ", minZ=" + Double.toString(Zmin)
+				+ ", maxZ=" + Double.toString(Zmax) + ", "
+				+ Boolean.toString(isParsed) + ")";
+		return tmp;
+	}
+
 
 	
 

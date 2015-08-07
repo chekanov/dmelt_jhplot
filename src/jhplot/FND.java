@@ -1,36 +1,33 @@
 /**
-*    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
-*    All rights reserved.
-*
-*    This program is free software; you can redistribute it and/or modify it under the terms
-*    of the GNU General Public License as published by the Free Software Foundation; either
-*    version 3 of the License, or any later version.
-*
-*    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-*    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*    See the GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License along with this program;
-*    if not, see <http://www.gnu.org/licenses>.
-*
-*    Additional permission under GNU GPL version 3 section 7:
-*    If you have received this program as a library with written permission from the DataMelt team,
-*    you can link or combine this library with your non-GPL project to convey the resulting work.
-*    In this case, this library should be considered as released under the terms of
-*    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
-*    provided you include this license notice and a URL through which recipients can access the
-*    Corresponding Source.
-**/
+ *    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
+ *    All rights reserved.
+ *
+ *    This program is free software; you can redistribute it and/or modify it under the terms
+ *    of the GNU General Public License as published by the Free Software Foundation; either
+ *    version 3 of the License, or any later version.
+ *
+ *    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *    See the GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License along with this program;
+ *    if not, see <http://www.gnu.org/licenses>.
+ *
+ *    Additional permission under GNU GPL version 3 section 7:
+ *    If you have received this program as a library with written permission from the DataMelt team,
+ *    you can link or combine this library with your non-GPL project to convey the resulting work.
+ *    In this case, this library should be considered as released under the terms of
+ *    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
+ *    provided you include this license notice and a URL through which recipients can access the
+ *    Corresponding Source.
+ **/
 package jhplot;
 
 import jplot.LinePars;
 import org.nfunk.jep.*;
 import org.lsmp.djep.xjep.*;
 import org.lsmp.djep.djep.*;
-import java.io.Serializable;
-
 import javax.swing.JOptionPane;
-
 import jhplot.gui.HelpBrowser;
 
 /**
@@ -42,22 +39,15 @@ import jhplot.gui.HelpBrowser;
  * 
  */
 
-public class FND extends DrawOptions implements Serializable {
+public class FND extends DrawOptions {
 
 	/**
 	 * 
 	 */
+
+	private FProxy proxy;
+	final int maxpoints = 200;
 	private static final long serialVersionUID = 1L;
-
-	private double min;
-
-	private double max;
-
-	private int points;
-
-	private String name;
-
-	private String vars = "";
 
 	private double[] x = null;
 
@@ -115,12 +105,12 @@ public class FND extends DrawOptions implements Serializable {
 	public FND(String title, String name, String vars) {
 
 		this.title = title;
-		this.name = name;
-		this.vars = vars;
-		this.points = 500;
-		this.min = 0.0;
-		this.max = 1.0;
-		setTitle(name);
+		proxy = new FProxy(3, title, name, null, new double[] { 0, 0, 0, 0, 0,
+				0 }, maxpoints, true);
+
+                name=proxy.getName();
+		proxy.setVariables(vars);
+		setTitle(title);
 		lpp.setType(LinePars.F1D);
 		jep = new XJep();
 		jep.addStandardConstants();
@@ -161,6 +151,48 @@ public class FND extends DrawOptions implements Serializable {
 	}
 
 	/**
+	 * Initialize function from proxy.
+	 * 
+	 * @param f
+	 */
+
+	public FND(FProxy f) {
+		proxy = f;
+		String name = proxy.getName();
+		if (proxy.getType() != 4) {
+			ErrorMessage("Error in parsing FND. Wrong type! " + name);
+			return;
+		}
+
+		setTitle(proxy.getTitle());
+		lpp.setType(LinePars.F1D);
+		jep = new XJep();
+		jep.addStandardConstants();
+		jep.addStandardFunctions();
+		jep.setAllowUndeclared(true);
+		jep.setImplicitMul(true);
+		jep.setAllowAssignment(true);
+
+		// get all variables
+		String vars = proxy.getVariables();
+		avars = vars.split(",");
+		for (int i = 0; i < avars.length; i++) {
+			jep.addVariable(avars[i].trim(), 0);
+		}
+
+		jep.addVariable("x", 0);
+
+		try {
+			node = jep.parse(name);
+			processed = jep.preprocess(node);
+		} catch (ParseException e) {
+		} catch (Exception e) {
+			ErrorMessage("Error in parsing " + name);
+		}
+
+	}
+
+	/**
 	 * Treat the function as complex.
 	 **/
 	public void setComplex() {
@@ -171,6 +203,9 @@ public class FND extends DrawOptions implements Serializable {
 	 * Treat the function as complex.
 	 **/
 	public void simplify() {
+
+		String name = proxy.getName();
+
 		try {
 			simp = jep.simplify(processed);
 		} catch (ParseException e) {
@@ -187,6 +222,7 @@ public class FND extends DrawOptions implements Serializable {
 	 *            variable used for differentiation
 	 **/
 	public void diff(String var) {
+		String name = proxy.getName();
 
 		DJep j = new DJep();
 		j.addStandardConstants();
@@ -200,7 +236,7 @@ public class FND extends DrawOptions implements Serializable {
 
 		try {
 			// parse the string
-			node = j.parse(this.name);
+			node = j.parse(name);
 			diff = j.differentiate(node, var);
 			simp = j.simplify(diff);
 		} catch (ParseException e) {
@@ -286,7 +322,8 @@ public class FND extends DrawOptions implements Serializable {
 	 * @return true if no errors
 	 */
 	public boolean eval(String indvars, double xmin, double xmax, String vars) {
-
+		String name = proxy.getName();
+		int points = proxy.getPoints();
 		boolean suc = true;
 		String[] tmp = vars.split(",");
 		// double[] vd = new double[tmp.length];
@@ -310,8 +347,8 @@ public class FND extends DrawOptions implements Serializable {
 
 		}
 
-		this.min = xmin;
-		this.max = xmax;
+		double min = xmin;
+		double max = xmax;
 		x = new double[points];
 		y = new double[points];
 		for (int i = 0; i < points; i++) {
@@ -324,7 +361,8 @@ public class FND extends DrawOptions implements Serializable {
 					y[i] = ((Double) jep.evaluate(node)).doubleValue();
 				}
 			} catch (ParseException e) {
-			        jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());	
+				jhplot.utils.Util.ErrorMessage("Failed to parse function "
+						+ name + " Error:" + e.toString());
 				suc = false;
 			}
 
@@ -354,9 +392,11 @@ public class FND extends DrawOptions implements Serializable {
 	public boolean eval(String indvars, double xmin, double xmax) {
 
 		boolean suc = true;
+		String name = proxy.getName();
+		int points = proxy.getPoints();
 
-		this.min = xmin;
-		this.max = xmax;
+		double min = xmin;
+		double max = xmax;
 		x = new double[points];
 		y = new double[points];
 		for (int i = 0; i < points; i++) {
@@ -369,7 +409,8 @@ public class FND extends DrawOptions implements Serializable {
 					y[i] = ((Double) jep.evaluate(node)).doubleValue();
 				}
 			} catch (ParseException e) {
-			        jhplot.utils.Util.ErrorMessage("Failed to parse function " + this.name+" Error:"+e.toString());	
+				jhplot.utils.Util.ErrorMessage("Failed to parse function "
+						+ name + " Error:" + e.toString());
 				suc = false;
 			}
 
@@ -422,11 +463,20 @@ public class FND extends DrawOptions implements Serializable {
 	 */
 
 	public void setName(String name) {
-		this.name = name;
+		proxy.setName(name);
 
 	}
 
-	
+	/**
+	 * Get the proxy of this function used for serialization and non-graphical
+	 * representations.
+	 * 
+	 * @param proxy
+	 *            proxy of this function.
+	 */
+	public FProxy get() {
+		return proxy;
+	}
 
 	/**
 	 * Get the name of the function used for evaluation
@@ -434,7 +484,7 @@ public class FND extends DrawOptions implements Serializable {
 	 * @return Name
 	 */
 	public String getName() {
-		return this.name;
+		return proxy.getName();
 
 	}
 
@@ -444,7 +494,7 @@ public class FND extends DrawOptions implements Serializable {
 	 * @return arguments
 	 */
 	public String getVarString() {
-		return this.vars;
+		return proxy.getVariables();
 
 	}
 
@@ -467,7 +517,7 @@ public class FND extends DrawOptions implements Serializable {
 	 */
 
 	public void setMin(double min) {
-		this.min = min;
+		proxy.setLimit(0, min);
 
 	}
 
@@ -477,7 +527,8 @@ public class FND extends DrawOptions implements Serializable {
 	 * @return min Minimum value
 	 */
 	public double getMin() {
-		return this.min;
+		double[] d = proxy.getLimits();
+		return d[0];
 	}
 
 	/**
@@ -487,7 +538,7 @@ public class FND extends DrawOptions implements Serializable {
 	 *            Maximal value
 	 */
 	public void setMax(double max) {
-		this.max = max;
+		proxy.setLimit(1, max);
 
 	}
 
@@ -497,7 +548,8 @@ public class FND extends DrawOptions implements Serializable {
 	 * @return Maximal value
 	 */
 	public double getMax() {
-		return this.max;
+		double[] d = proxy.getLimits();
+		return d[1];
 
 	}
 
@@ -508,7 +560,7 @@ public class FND extends DrawOptions implements Serializable {
 	 *            Number of points
 	 */
 	public void setPoints(int bins) {
-		this.points = bins;
+		proxy.setPoints(bins);
 
 	}
 
@@ -519,7 +571,7 @@ public class FND extends DrawOptions implements Serializable {
 	 */
 
 	public int getPoints() {
-		return this.points;
+		return proxy.getPoints();
 
 	}
 

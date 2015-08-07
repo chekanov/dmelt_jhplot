@@ -83,7 +83,7 @@ public class IO {
 				outStream = new ObjectOutputStream(outFile);
 			}
 
-			outStream.writeObject(o);
+        	        outStream.writeObject(o);
 			outStream.close();
 			outFile.close();
 		} catch (FileNotFoundException e) {
@@ -133,9 +133,9 @@ public class IO {
 			XStream xstream = new XStream(new DomDriver());
 			ObjectOutputStream out = xstream
 					.createObjectOutputStream(new FileOutputStream(name));
-			out.writeObject(o);
+	
+                        out.writeObject(o);
 			out.close();
-
 		} catch (IOException e) {
 
 			ErrorMessage(e.toString());
@@ -205,6 +205,9 @@ public class IO {
 			}
 
 			p0 = in.readObject();
+
+                        
+
 			in.close();
 			fileIn.close();
 

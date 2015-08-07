@@ -25,7 +25,6 @@ package jhplot;
 
 import jplot.LinePars;
 import hep.aida.*;
-import java.io.Serializable;
 import jhplot.gui.HelpBrowser;
 import jhplot.math.exp4j.*;
 
@@ -78,16 +77,12 @@ import jhplot.math.exp4j.*;
  * 
  */
 
-public class F1D extends DrawOptions implements Serializable {
+public class F1D extends DrawOptions {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private int points;
-
-	private String name;
 
 	private double[] x = null;
 
@@ -95,25 +90,21 @@ public class F1D extends DrawOptions implements Serializable {
 
 	private Expression calc = null;
 
-	private double min = 0;
-	private double max = 0;
-
 	private ExpressionBuilder function = null;
-
-	private IFunction iname = null;
-
-	private boolean isParsed = false;
 
 	private String lastException = "";
 
 	final int maxpoints = 500;
 
+	private FProxy proxy;
+
 	/**
 	 * Create a function in 1D. 500 points are used between Min and Max for
 	 * evaluation. The title is set to the function's definition.
 	 * <p>
-	 * A function can be ranged (range min and max is included) or unranged (min and max
-	 * are not defined). Ranged function determines the plot ranges, integration range etc.
+	 * A function can be ranged (range min and max is included) or unranged (min
+	 * and max are not defined). Ranged function determines the plot ranges,
+	 * integration range etc.
 	 * 
 	 * The function may have one independent variable: x. Example: x*x
 	 * 
@@ -158,12 +149,33 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            String representing the function's definition
 	 */
 	public F1D(String name) {
-		this(name, name, 0, 0,true);
+		this(name, name, 0, 0, true);
 
 	}
 
 	/**
-	 * Create new function. The funtion is unranged (nor range is defined).
+	 * Initialize function from proxy.
+	 * 
+	 * @param f
+	 */
+
+	public F1D(FProxy f) {
+
+		if (f.getType() != 1) {
+			jhplot.utils.Util.ErrorMessage("Error in parsing F1D. Wrong type! "
+					+ f.getName());
+			return;
+		}
+
+		proxy = f;
+
+		setTitle(proxy.getTitle());
+		lpp.setType(LinePars.F1D);
+
+	}
+
+	/**
+	 * Create new function. The function is unranged (nor range is defined).
 	 * 
 	 * @param title
 	 *            title
@@ -175,13 +187,11 @@ public class F1D extends DrawOptions implements Serializable {
 		this(title, name, 0, 0, true);
 	}
 
-	
-	
 	/**
 	 * Create a new function. Do not parse it when using parameters. You should
-	 * apply substitution first and create a function with one variable "x".
-	 * If min=0 and max=0, the ranges are determined by plotting canvases.
-	 * The function is ranged. The function is parsed.
+	 * apply substitution first and create a function with one variable "x". If
+	 * min=0 and max=0, the ranges are determined by plotting canvases. The
+	 * function is ranged. The function is parsed.
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
@@ -231,62 +241,64 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            maximum value for plotting
 	 */
 	public F1D(String title, String name, double min, double max) {
-	 this(title, name, min,max,true);
+		this(title, name, min, max, true);
 	}
-	
-	
+
 	/**
 	 * Define a ranged function.
-	 * @param name name
-	 * @param min min value
-	 * @param max max value
-	 * @param parsed is parsed?
+	 * 
+	 * @param name
+	 *            name
+	 * @param min
+	 *            min value
+	 * @param max
+	 *            max value
+	 * @param parsed
+	 *            is parsed?
 	 */
 	public F1D(String name, double min, double max, boolean parsed) {
-		 this(name, name, min,max,parsed);
-		}
-	
-    /**
-     * Create F1D function from JAIDA IFunction. By default 500 points are used.
-     * The function is ranged.
-     * 
-     * @param title
-     *            Title
-     * @param iname
-     *            input IFunction
-     * @param min
-     *            Min X values
-     * @param max
-     *            Max X values
-     */
+		this(name, name, min, max, parsed);
+	}
 
-    public F1D(String title, IFunction iname, double min, double max) {
+	/**
+	 * Create F1D function from JAIDA IFunction. By default 500 points are used.
+	 * The function is ranged.
+	 * 
+	 * @param title
+	 *            Title
+	 * @param iname
+	 *            input IFunction
+	 * @param min
+	 *            Min X values
+	 * @param max
+	 *            Max X values
+	 */
 
-            this.iname = iname;
-            this.name = iname.title();
-            this.points = 500;
-            this.min = min;
-            this.max = max;
-            setTitle(title);
-            lpp.setType(LinePars.F1D);
+	public F1D(String title, IFunction iname, double min, double max) {
 
-    }
+		proxy = new FProxy(1, title, null, iname, new double[] { min, max, 0,
+				0, 0, 0 }, maxpoints, false);
+		setTitle(title);
+		lpp.setType(LinePars.F1D);
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}
+
+	/**
+	 * Get the proxy of this function used for serialization and non-graphical
+	 * representations.
+	 * 
+	 * @param proxy
+	 *            proxy of this function.
+	 */
+	public FProxy get() {
+		return proxy;
+	}
+
 	/**
 	 * Create a new function. Do not parse it when using parameters. You should
-	 * apply substitution first and create a function with one variable "x".
-	 * If min=0 and max=0, the ranges are determined by plotting canvases.
-	 * The function is ranged.
+	 * apply substitution first and create a function with one variable "x". If
+	 * min=0 and max=0, the ranges are determined by plotting canvases. The
+	 * function is ranged.
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
@@ -338,30 +350,19 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            parse or not. Do not parse when using parameters.
 	 */
 	public F1D(String title, String name, double min, double max, boolean parse) {
-		this.iname = null;
-		this.title = title;
-		this.name = name;
-		this.min = min;
-		this.max = max;
-		this.name = this.name.replace("**", "^"); // preprocess power
-		this.name = this.name.replace("pi", "3.14159265");
-		this.name = this.name.replace("Pi", "3.14159265");
-
-		this.points = maxpoints;
-
+		proxy = new FProxy(1, title, name, null, new double[] { min, max, 0, 0,
+				0, 0 }, maxpoints, parse);
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
-		function = new ExpressionBuilder(this.name);
-		isParsed = false;
+		function = new ExpressionBuilder(proxy.getName());
 		if (parse == true) {
 			try {
 				function.variables("x");
 				calc = function.build();
-				isParsed = true;
 			} catch (IllegalArgumentException e) {
-				isParsed = false;
+				proxy.setParsed(false);
 				jhplot.utils.Util.ErrorMessage("Failed to parse function "
-						+ this.name + " Error:" + e.toString());
+						+ name + " Error:" + e.toString());
 
 			}
 
@@ -369,10 +370,9 @@ public class F1D extends DrawOptions implements Serializable {
 
 	}
 
-	
 	/**
-	 * Create a F1D function from JAIDA IFunction in ranges. By default, 500 points for
-	 * evaluation are used
+	 * Create a F1D function from JAIDA IFunction in ranges. By default, 500
+	 * points for evaluation are used
 	 * 
 	 * @param iname
 	 *            input IFunction
@@ -382,23 +382,18 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            Max value
 	 */
 	public F1D(IFunction iname, double min, double max) {
-
-		this.iname = iname;
-		this.name = iname.title();
-		this.points = maxpoints;
-		this.min = min;
-		this.max = max;
-		setTitle(this.name);
+		proxy = new FProxy(1, iname.title(), iname.title(), iname,
+				new double[] { min, max }, maxpoints, false);
+		setTitle(iname.title());
 		lpp.setType(LinePars.F1D);
 
 	}
-	
-	
+
 	/**
 	 * Create a new function in pre-defined range for plotting. Do not parse it
 	 * when using parameters. You should apply substitution first and create a
-	 * function with one variable "x".
-	 * If min=0 and max=0, ranges are determined by plotting canvaces.
+	 * function with one variable "x". If min=0 and max=0, ranges are determined
+	 * by plotting canvaces.
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
@@ -448,15 +443,13 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            parse or not. Do not parse when using parameters.
 	 */
 	public F1D(String name, double min, double max) {
-		this(name,name,min,max,true);
+		this(name, name, min, max, true);
 	}
 
-	
 	/**
 	 * Create a new function in pre-defined range for plotting. Do not parse it
 	 * when using parameters. You should apply substitution first and create a
-	 * function with one variable "x".
-	 * Ranges for the function are not defined.
+	 * function with one variable "x". Ranges for the function are not defined.
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
@@ -500,24 +493,14 @@ public class F1D extends DrawOptions implements Serializable {
 	 * 
 	 * @param name
 	 *            definition
-	
+	 * 
 	 * @param parse
 	 *            parse or not. Do not parse when using parameters.
 	 */
 	public F1D(String title, String name, boolean parsed) {
-		this(title,name,0,0,parsed);
+		this(title, name, 0, 0, parsed);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * Create a polynomial analytical function using a list of values. Example:
 	 * pars[0]+pars[1]*x+pars[2]*x*x +pars[3]*x*x*x
@@ -531,12 +514,14 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public F1D(String title, double[] pars, boolean parse) {
-		this.iname = null;
-		this.title = title;
+
 		if (pars == null || pars.length < 1)
 			System.err.println("Failed to evaluate this polynomial");
 
-		this.name = Double.toString(pars[0]);
+		String name = Double.toString(pars[0]);
+		proxy = new FProxy(1, title, name, null, new double[] { 0, 0, 0, 0, 0,
+				0 }, maxpoints, parse);
+
 		for (int i = 1; i < pars.length; i++) {
 			String sig = "+";
 			if (pars[i] < 0)
@@ -545,25 +530,22 @@ public class F1D extends DrawOptions implements Serializable {
 			String X = "*x";
 			for (int j = 1; j < i; j++)
 				X = X + "*x";
-			this.name = this.name + sig + Double.toString(val) + X;
+			name = name + sig + Double.toString(val) + X;
 
 		}
 
-		this.points = maxpoints;
-
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
-		function = new ExpressionBuilder(this.name);
+		function = new ExpressionBuilder(name);
 		if (parse == true) {
 			try {
 				calc = (function.variables("x")).build();
-				isParsed = true;
 			} catch (IllegalArgumentException e) {
-				isParsed = false;
+				proxy.setParsed(false);
 				// System.err.println("Failed to parse function " +
 				// this.name+" Error:"+e1.toString());
 				jhplot.utils.Util.ErrorMessage("Failed to parse function "
-						+ this.name + " Error:" + e.toString());
+						+ name + " Error:" + e.toString());
 
 			}
 
@@ -616,7 +598,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            is parsed or not?
 	 */
 	public F1D(String name, boolean parse) {
-		this(name, name, 999, 999,parse);
+		this(name, name, 999, 999, parse);
 	}
 
 	/**
@@ -626,20 +608,20 @@ public class F1D extends DrawOptions implements Serializable {
 	 **/
 	public boolean parse() {
 		try {
-			function = new ExpressionBuilder(name);
+			function = new ExpressionBuilder(proxy.getName());
 			function.variables("x");
 			calc = function.build();
-			isParsed = true;
+			proxy.setParsed(true);
 		} catch (IllegalArgumentException e) {
-			isParsed = false;
+			proxy.setParsed(false);
 			// System.err.println("Failed to parse function " +
 			// this.name+" Error:"+e.toString());
 			jhplot.utils.Util.ErrorMessage("Failed to parse function "
-					+ this.name + " Error:" + e.toString());
-
+					+ proxy.getName() + " Error:" + e.toString());
+			return false;
 		}
 
-		return isParsed;
+		return true;
 
 	}
 
@@ -660,44 +642,50 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            Max value
 	 */
 	public F1D(String title, ExpressionBuilder function) {
-		this.iname = null;
-		this.title = title;
+		proxy = new FProxy(1, title, null, null, new double[] { 0, 0, 0, 0, 0,
+				0 }, maxpoints, false);
 		this.function = function;
-		this.points = maxpoints;
-		setTitle(name);
 		lpp.setType(LinePars.F1D);
 
-		isParsed = parse();
+		boolean isParsed = parse();
 		if (isParsed == false)
-			jhplot.utils.Util.ErrorMessage("Failed to parse function "
-					+ this.name);
+			jhplot.utils.Util.ErrorMessage("Failed to parse function " + title);
 
 	}
 
-	
-	
 	/**
-	 * Create a function from the expression.
-	 * The function is in the range.
-	 * @param calc expression
-	 * @param min Min value
-	 * @param max Max value
+	 * Create a function from the expression. The function is in the range.
+	 * 
+	 * @param calc
+	 *            expression
+	 * @param min
+	 *            Min value
+	 * @param max
+	 *            Max value
 	 */
 	public F1D(Expression calc, double min, double max) {
-		this.iname = null;
-		this.title = "F1D";
+		
+		this("F1D",calc,min,max);
+		
+	}
+
+	/**
+	 * Create a function in 1D. 500 points are used between Min and Max for
+	 * evaluation. The function may have x as independent variable.
+	 * 
+	 * 
+	 * @param title
+	 *            Title
+	 * @param function
+	 *            Expression after parsing and building
+	 */
+	public F1D(String title, Expression calc, double min, double max) {
+		proxy = new FProxy(1, title, title, null, new double[] { min, max, 0, 0, 0,
+				0 }, maxpoints, true);
 		this.calc = calc;
-		this.min=min;
-		this.max=max;
-		this.points = maxpoints;
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
-		isParsed = true;
 	}
-	
-	
-
-	
 
 	
 	/**
@@ -711,17 +699,11 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            Expression after parsing and building
 	 */
 	public F1D(String title, Expression calc) {
-		this.iname = null;
-		this.name = name;
-		this.title = title;
-		this.calc = calc;
-		this.points = maxpoints;
-
-		setTitle(title);
-		lpp.setType(LinePars.F1D);
-		isParsed = true;
+		this(title,calc,0,0);
+		
 	}
-
+	
+	
 	/**
 	 * Create a function in 1D. The function may have x as independent variable.
 	 * 
@@ -729,7 +711,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            expression
 	 */
 	public F1D(Expression calc) {
-		this("F1D", calc);
+		this("F1D", calc,0,0);
 	}
 
 	/**
@@ -752,24 +734,25 @@ public class F1D extends DrawOptions implements Serializable {
 	public double eval(double x) {
 
 		double y = 0;
-
+		IFunction iname = proxy.getIFunction();
 		// jPlot function first
-		if (iname == null && (calc == null || isParsed == false)) {
+		if (iname == null && (calc == null || proxy.isParsed() == false)) {
 			jhplot.utils.Util
 					.ErrorMessage("eval(): Function was not parsed correctly!");
 			return y;
 		}
 
 		// evaluate function
-		if (iname == null && calc != null && isParsed == true) {
+		if (iname == null && calc != null && proxy.isParsed() == true) {
 			try {
 				calc.setVariable("x", x);
 				y = calc.evaluate();
 			} catch (Exception e) {
 				lastException = e.getMessage().toString();
 				String ss1 = Double.toString(x);
-				System.err.println("Failed to evaluate function:" + name
-						+ " at x=" + ss1 + "\n" + e.toString());
+				System.err.println("Failed to evaluate function:"
+						+ proxy.getName() + " at x=" + ss1 + "\n"
+						+ e.toString());
 
 			}
 
@@ -786,8 +769,9 @@ public class F1D extends DrawOptions implements Serializable {
 				// System.out.println("Failed to evaluate function!");
 				lastException = e.getMessage().toString();
 				String ss1 = Double.toString(x);
-				System.err.println("Failed to evaluate function:" + name
-						+ " at x=" + ss1 + "\n" + e.toString());
+				System.err.println("Failed to evaluate function:"
+						+ proxy.getName() + " at x=" + ss1 + "\n"
+						+ e.toString());
 			}
 
 			return y;
@@ -808,15 +792,17 @@ public class F1D extends DrawOptions implements Serializable {
 
 		double[] y = new double[x.length];
 
+		IFunction iname = proxy.getIFunction();
+
 		// jPlot function first
-		if (iname == null && (calc == null || isParsed == false)) {
+		if (iname == null && (calc == null || proxy.isParsed() == false)) {
 			jhplot.utils.Util
 					.ErrorMessage("eval(): Function was not parsed correctly!");
 			return y;
 		}
 
 		// evaluate function
-		if (iname == null && calc != null && isParsed == true) {
+		if (iname == null && calc != null && proxy.isParsed() == true) {
 
 			for (int i = 0; i < x.length; i++) {
 
@@ -831,8 +817,8 @@ public class F1D extends DrawOptions implements Serializable {
 					lastException = e.getMessage().toString() + " at position="
 							+ ss;
 					jhplot.utils.Util
-							.ErrorMessage("eval(): Failed to evaluate:" + name
-									+ " at position=" + ss);
+							.ErrorMessage("eval(): Failed to evaluate:"
+									+ proxy.getName() + " at position=" + ss);
 					return null;
 
 				}
@@ -853,8 +839,8 @@ public class F1D extends DrawOptions implements Serializable {
 					String ss = Integer.toString(i);
 					lastException = e.getMessage().toString() + " at position="
 							+ ss;
-					jhplot.utils.Util.ErrorMessage("Failed to evaluate:" + name
-							+ " at position=" + ss);
+					jhplot.utils.Util.ErrorMessage("Failed to evaluate:"
+							+ proxy.getName() + " at position=" + ss);
 				}
 			}
 
@@ -875,25 +861,21 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            value in x
 	 */
 	public void eval(double xMin, double xMax) {
-		eval(xMin, xMax, points);
+		eval(xMin, xMax, maxpoints);
 
 	}
 
-	
 	/**
-	 * Evaluate a function for graphic representation. 
-	 * The function is assumed to me ranged (the range is defined
-	 * during the initialization).
+	 * Evaluate a function for graphic representation. The function is assumed
+	 * to me ranged (the range is defined during the initialization).
 	 * 
-	
 	 */
 	public void eval() {
-		eval(min, max, points);
+		double d[] = proxy.getLimits();
+		eval(d[0], d[1], maxpoints);
 
 	}
 
-	
-	
 	/**
 	 * Evaluate a function for graphic representation. Number of points for
 	 * evaluations is 500.
@@ -907,7 +889,9 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 	public void eval(double min, double max, int Npoints) {
 
-		this.points = Npoints;
+		int points = Npoints;
+		IFunction iname = proxy.getIFunction();
+		boolean isParsed = proxy.isParsed();
 
 		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
@@ -929,7 +913,7 @@ public class F1D extends DrawOptions implements Serializable {
 					// System.out.println(y[i]);
 				} catch (Exception e) {
 					String ss = Double.toString(x[i]);
-					System.err.println("Failed to evaluate:" + name
+					System.err.println("Failed to evaluate:" + proxy.getName()
 							+ " at position=" + ss);
 					return;
 				}
@@ -982,10 +966,9 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 	public F1D(IFunction iname) {
 
-		this.iname = iname;
-		this.name = iname.title();
-		this.points = maxpoints;
-		setTitle(this.name);
+		proxy = new FProxy(1, iname.title(), null, iname, new double[] { 0, 0,
+				0, 0, 0, 0 }, maxpoints, true);
+		setTitle(iname.title());
 		lpp.setType(LinePars.F1D);
 
 	}
@@ -1004,12 +987,8 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public F1D(String title, IFunction iname) {
-
-		this.iname = iname;
-		this.name = iname.title();
-		this.points = maxpoints;
-		min=0;
-		max=0;
+		proxy = new FProxy(1, title, null, iname, new double[] { 0, 0, 0, 0, 0,
+				0 }, maxpoints, true);
 		setTitle(title);
 		lpp.setType(LinePars.F1D);
 
@@ -1040,29 +1019,34 @@ public class F1D extends DrawOptions implements Serializable {
 
 	public void setPar(String parameter, double value) {
 		String s1 = Double.toString(value);
-		this.name = name.replaceAll(parameter, s1);
+		String name = proxy.getName();
+		proxy.setName(name.replaceAll(parameter, s1));
 	}
 
 	/**
 	 * Return H1D histogram from F1D function. The number of points are given by
 	 * setPoints() method, but the default 500 is used if not given. Min and Max
-	 * values are given during the function initialisation (ranged function)
-	 * The number of points is 500 by default.
+	 * values are given during the function initialisation (ranged function) The
+	 * number of points is 500 by default.
 	 * 
 	 * @return histogram
 	 */
 
 	public H1D getH1D() {
-		return getH1D(min, max);
+
+		double[] d = proxy.getLimits();
+		return getH1D(d[0], d[1]);
 	}
-	
+
 	/**
 	 * Return H1D histogram from F1D function. The number of points are given by
 	 * setPoints() method, but the default 500 is used if not given. Min and Max
 	 * values are given by the values used to parse the function.
 	 * 
-	 * @param min value
-	 * @param max value
+	 * @param min
+	 *            value
+	 * @param max
+	 *            value
 	 * 
 	 * @return histogram
 	 */
@@ -1162,7 +1146,8 @@ public class F1D extends DrawOptions implements Serializable {
 
 	public void setPar(String parameter, int value) {
 		String s1 = Integer.toString(value);
-		name = name.replaceAll(parameter, s1);
+		String name = proxy.getName();
+		proxy.setName(name.replaceAll(parameter, s1));
 	}
 
 	/**
@@ -1199,7 +1184,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public void setName(String name) {
-		this.name = name;
+		proxy.setName(name);
 
 	}
 
@@ -1209,7 +1194,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 * @return Name
 	 */
 	public String getName() {
-		return this.name;
+		return proxy.getName();
 
 	}
 
@@ -1230,30 +1215,24 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            Number of points
 	 */
 	public void setPoints(int bins) {
-		this.points = bins;
+		proxy.setPoints(bins);
 
 	}
 
-	
-	
-	
 	/**
-	 * Integral using fastest trapezium rule method. 
-	 * This function return non-zero if it the range was defined during the initialization.
-	 * The default number of points is 500. Increase it if needed more pecision.
+	 * Integral using fastest trapezium rule method. This function return
+	 * non-zero if it the range was defined during the initialization. The
+	 * default number of points is 500. Increase it if needed more pecision.
 	 * 
 	 * @return integral in the range defined during the initisliazation.
 	 * 
 	 */
 	public double integral() {
-		return integral("trapezium", points, min, max);
+		int points = proxy.getPoints();
+		double[] d = proxy.getLimits();
+		return integral("trapezium", points, d[0], d[1]);
 	}
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * Integral using fastest trapezium rule method. It uses the default number
 	 * of points (500).
@@ -1264,6 +1243,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 *            the last ordinate.
 	 */
 	public double integral(double min, double max) {
+		int points = proxy.getPoints();
 		return integral("trapezium", points, min, max);
 	}
 
@@ -1330,26 +1310,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 * @return
 	 */
 	public IFunction getIFunction() {
-
-		if (iname != null)
-			return iname;
-
-		/**
-		 * if (function != null && iname==null) {
-		 * 
-		 * IAnalysisFactory af = IAnalysisFactory.create(); ITree m_ITree =
-		 * af.createTreeFactory().create();
-		 * 
-		 * IFunctionFactory functionfact = af.createFunctionFactory(tree)
-		 * 
-		 * String ss=getName().replace("x", "x[0]");
-		 * 
-		 * IFunction inum=functionfact.createFunctionFromScript(getName(), arg1,
-		 * arg2, arg3, arg4); return inum;
-		 * 
-		 * }
-		 **/
-		return null;
+		return proxy.getIFunction();
 
 	}
 
@@ -1383,7 +1344,7 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 	public boolean isParsed() {
 
-		return isParsed;
+		return proxy.isParsed();
 	}
 
 	/**
@@ -1395,7 +1356,7 @@ public class F1D extends DrawOptions implements Serializable {
 	public String toMathML() {
 
 		try {
-			return jscl.math.Expression.valueOf(name).toMathML();
+			return jscl.math.Expression.valueOf(proxy.getName()).toMathML();
 		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return "";
@@ -1412,7 +1373,7 @@ public class F1D extends DrawOptions implements Serializable {
 	public String toJava() {
 
 		try {
-			return jscl.math.Expression.valueOf(name).toJava();
+			return jscl.math.Expression.valueOf(proxy.getName()).toJava();
 		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return "";
@@ -1432,8 +1393,10 @@ public class F1D extends DrawOptions implements Serializable {
 
 	public boolean simplify() {
 
+		String name = proxy.getName();
 		try {
 			name = jscl.math.Expression.valueOf(name).simplify().toString();
+			proxy.setName(name);
 		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
@@ -1452,9 +1415,10 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public boolean elementary() {
-
+		String name = proxy.getName();
 		try {
 			name = jscl.math.Expression.valueOf(name).elementary().toString();
+			proxy.setName(name);
 		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
@@ -1472,9 +1436,10 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public boolean expand() {
-
+		String name = proxy.getName();
 		try {
 			name = jscl.math.Expression.valueOf(name).expand().toString();
+			proxy.setName(name);
 		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
@@ -1492,9 +1457,10 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public boolean factorize() {
-
+		String name = proxy.getName();
 		try {
 			name = jscl.math.Expression.valueOf(name).factorize().toString();
+			proxy.setName(name);
 		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
@@ -1513,9 +1479,10 @@ public class F1D extends DrawOptions implements Serializable {
 	 */
 
 	public boolean numeric() {
-
+		String name = proxy.getName();
 		try {
 			name = jscl.math.Expression.valueOf(name).numeric().toString();
+			proxy.setName(name);
 		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
@@ -1540,30 +1507,29 @@ public class F1D extends DrawOptions implements Serializable {
 		return jhplot.math.Numeric.differentiate(N, this, min, max);
 
 	}
-	
-	
 
 	/**
-	 * Numerical differentiation of a function.
-	 * Range of the function is given during the initisalisation (ranged function)
+	 * Numerical differentiation of a function. Range of the function is given
+	 * during the initisalisation (ranged function)
+	 * 
 	 * @return array with differentials
 	 */
 	public double[] differentiate() {
-		return jhplot.math.Numeric.differentiate(points, this, min, max);
+		int points = proxy.getPoints();
+		double[] d = proxy.getLimits();
+		return jhplot.math.Numeric.differentiate(points, this, d[0], d[1]);
 
 	}
-	
-	
 
 	/**
-	 * Get the number of points used for plotting, integration and differentiation.
+	 * Get the number of points used for plotting, integration and
+	 * differentiation.
 	 * 
 	 * @return Number of points
 	 */
 
 	public int getPoints() {
-		return this.points;
-
+		return proxy.getPoints();
 	}
 
 	/**
@@ -1575,48 +1541,60 @@ public class F1D extends DrawOptions implements Serializable {
 		return lastException;
 	}
 
-	
-	 /**
-     * Set Min value in X
-     * 
-     * @param min
-     *            Minimum value
-     */
+	/**
+	 * Set Min value in X
+	 * 
+	 * @param min
+	 *            Minimum value
+	 */
 
-    public void setMin(double min) {
-            this.min = min;
+	public void setMin(double min) {
+		proxy.setLimit(0, min);
+	}
 
-    }
+	/**
+	 * Get the minimum value in X
+	 * 
+	 * @return min Minimum value
+	 */
+	public double getMin() {
+		double[] d = proxy.getLimits();
+		if (d != null)
+			return d[0];
+		return 0;
 
-    /**
-     * Get the minimum value in X
-     * 
-     * @return min Minimum value
-     */
-    public double getMin() {
-            return this.min;
-    }
+	}
 
-    /**
-     * Set the maximum value in X
-     * 
-     * @param max
-     *            Maximal value
-     */
-    public void setMax(double max) {
-            this.max = max;
+	/**
+	 * Set the maximum value in X
+	 * 
+	 * @param max
+	 *            Maximal value
+	 */
+	public void setMax(double max) {
+		proxy.setLimit(1, max);
+	}
 
-    }
-    
-    /**
-     * Get the maximum value in X
-     * 
-     * @return Maximal value
-     */
-    public double getMax() {
-            return this.max;
+	/**
+	 * Set proxy function
+	 * 
+	 * @param f
+	 */
+	public void set(FProxy f) {
+		proxy = f;
+	}
 
-    }
+	/**
+	 * Get the maximum value in X
+	 * 
+	 * @return Maximal value
+	 */
+	public double getMax() {
+		double[] d = proxy.getLimits();
+		if (d != null)
+			return d[1];
+		return 0;
+	}
 
 	/**
 	 * Get this function as a string.
@@ -1624,9 +1602,10 @@ public class F1D extends DrawOptions implements Serializable {
 	 * @return Convert to string.
 	 */
 	public String toString() {
-		String tmp = getName();
-		tmp = tmp + " (title=" + getTitle() + ", n=" + Integer.toString(points)
-				+ ", " + Boolean.toString(isParsed) + ")";
+		String tmp = "F1D:" + proxy.getName();
+		tmp = tmp + " (title=" + proxy.getTitle() + ", n="
+				+ Integer.toString(proxy.getPoints()) + ", "
+				+ Boolean.toString(proxy.isParsed()) + ")";
 		return tmp;
 	}
 

@@ -1,7 +1,7 @@
 package jhplot;
 
 import hep.aida.ref.function.AbstractIFunction;
-
+import java.io.Serializable;
 
 /**
 * Non-parametric function implementation.  
@@ -13,7 +13,7 @@ import hep.aida.ref.function.AbstractIFunction;
 * @author S.Chekanov
 **/
 
-public class FNon extends AbstractIFunction {
+public class FNon extends AbstractIFunction implements Serializable {
 
 
 	/**

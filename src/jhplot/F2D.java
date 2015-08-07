@@ -25,7 +25,6 @@ package jhplot;
 
 import jhplot.math.exp4j.*;
 import hep.aida.IFunction;
-import java.io.Serializable;
 import jhplot.gui.HelpBrowser;
 
 /**
@@ -73,35 +72,20 @@ import jhplot.gui.HelpBrowser;
  * 
  */
 
-public class F2D extends DrawOptions implements Serializable {
+public class F2D extends DrawOptions {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private double Xmin = 0;
-
-	private double Xmax = 0;
-
-	private double Ymin = 0;
-
-	private double Ymax = 0;
-
-	private int points;
-
-	private String name;
+	
 
 	private Expression calc = null;
-
 	private ExpressionBuilder function = null;
 
-	private boolean isParsed = false;
-
-	private IFunction iname = null;
-
 	final int maxpoints = 200;
-
+	private FProxy proxy;
 	private String lastException = "";
 
 	/**
@@ -220,27 +204,16 @@ public class F2D extends DrawOptions implements Serializable {
 			double Ymin, double Ymax) {
 
 		is3D = true;
-		this.name = name;
-		this.name = this.name.replace("**", "^"); // preprocess power
-		this.name = this.name.replace("pi", "3.14159265");
-		this.name = this.name.replace("Pi", "3.14159265");
-
-		this.title = title;
-		this.points = 300;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
-		setTitle(this.title);
-		function = new ExpressionBuilder(this.name);
+		proxy = new FProxy(2,title, name, null,  new double[]{Xmin,Xmax,Ymin,Ymax,0,0}, maxpoints, true); 
+		setTitle(title);
+		function = new ExpressionBuilder(proxy.getName());
 		try {
 			function.variables("x", "y");
 			calc = function.build();
-			isParsed = true;
 		} catch (IllegalArgumentException e) {
-			isParsed = false;
+			proxy.setParsed(false);
 			jhplot.utils.Util.ErrorMessage("Failed to parse function "
-					+ this.name + " Error:" + e.toString());
+					+ name + " Error:" + e.toString());
 
 		}
 
@@ -288,15 +261,8 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 	public F2D(String title, IFunction iname, double Xmin, double Xmax,
 			double Ymin, double Ymax) {
-
-		this.title = title;
-		this.name = title;
-		this.iname = iname;
-		this.points = 300;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
+	proxy = new FProxy(2,title, title, iname,  new double[]{Xmin,Xmax,Ymin,Ymax,0,0}, maxpoints, false); 
+        setTitle(title);
 
 	}
 
@@ -321,19 +287,22 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 	public F2D(String title, Expression calc, double Xmin, double Xmax,
 			double Ymin, double Ymax) {
-		this.iname = null;
-		this.title = title;
-		this.calc = calc;
-		this.points = maxpoints;
-		this.Xmin = Xmin;
-		this.Xmax = Xmax;
-		this.Ymin = Ymin;
-		this.Ymax = Ymax;
-		this.name = "F2D";
+			
+		proxy = new FProxy(1,title, title, null,  new double[] {Xmin,Xmax,Ymin,Ymax,0,0}, maxpoints, true);
+		this.calc = calc;	
 		setTitle(title);
-		isParsed = true;
+	
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Create a function in 2D. 500 points are used between Min and Max for
 	 * evaluation. The function may have x as independent variable. Make sure
@@ -370,6 +339,25 @@ public class F2D extends DrawOptions implements Serializable {
 
 	}
 
+	
+
+	/**
+	 * Initialize function from proxy.
+	 * @param f
+	 */
+	
+	public F2D(FProxy f) {
+		
+		if (f.getType() != 2) {
+			jhplot.utils.Util.ErrorMessage("Error in parsing F2D. Wrong function type! " + f.getName());
+			return;
+		}
+		
+		proxy=f;
+		setTitle(proxy.getTitle());
+
+	}
+	
 	/**
 	 * Create a F2D function from JAIDA IFunction.
 	 * 
@@ -401,7 +389,10 @@ public class F2D extends DrawOptions implements Serializable {
 	public double eval(double x, double y) {
 
 		double z = 0;
-
+		  IFunction iname=proxy.getIFunction();
+		  boolean  isParsed=proxy.isParsed();
+		  String name=proxy.getName();
+		  
 		// jPlot function first
 		if (iname == null && (calc == null || isParsed == false)) {
 			jhplot.utils.Util
@@ -447,6 +438,17 @@ public class F2D extends DrawOptions implements Serializable {
 		return z;
 	}
 
+
+         /**
+         * Get Jaida function
+         * 
+         * @return
+         */
+        public IFunction getIFunction() {
+          return proxy.getIFunction();
+
+        }
+
 	/**
 	 * Evaluate a function for an array of x-values
 	 * 
@@ -458,6 +460,9 @@ public class F2D extends DrawOptions implements Serializable {
 	 * @return array of function values
 	 */
 	public double[][] eval(double[] x, double[] y) {
+		IFunction iname=proxy.getIFunction();
+        boolean  isParsed=proxy.isParsed();
+        String name=proxy.getName();
 
 		double[][] z = new double[x.length][y.length];
 		String err = "";
@@ -535,7 +540,8 @@ public class F2D extends DrawOptions implements Serializable {
 	 *            Min value
 	 */
 	public void setMinX(double min) {
-		this.Xmin = min;
+		 proxy.setLimit(0,min);
+		
 
 	}
 
@@ -545,7 +551,8 @@ public class F2D extends DrawOptions implements Serializable {
 	 * @return true if parsed without problems.
 	 **/
 	public boolean parse() {
-		isParsed = false;
+		boolean  isParsed=proxy.isParsed();
+		String name=proxy.getName();
 		try {
 			function = new ExpressionBuilder(name);
 			calc = (function.variables("x", "y")).build();
@@ -555,7 +562,7 @@ public class F2D extends DrawOptions implements Serializable {
 			// System.err.println("Failed to parse function " +
 			// this.name+" Error:"+e.toString());
 			jhplot.utils.Util.ErrorMessage("Failed to parse function "
-					+ this.name + " Error:" + e.toString());
+					+ name + " Error:" + e.toString());
 
 		}
 
@@ -569,7 +576,8 @@ public class F2D extends DrawOptions implements Serializable {
 	 * @return Min value in X
 	 */
 	public double getMinX() {
-		return this.Xmin;
+		double[] d= proxy.getLimits();
+		return d[0];
 	}
 
 	/**
@@ -579,7 +587,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 *            Min value in Y
 	 */
 	public void setMinY(double min) {
-		this.Ymin = min;
+		 proxy.setLimit(2,min);
 
 	}
 
@@ -601,7 +609,8 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 
 	public double getMinY() {
-		return this.Ymin;
+		double[] d= proxy.getLimits();
+		return d[2];
 	}
 
 	/**
@@ -611,10 +620,9 @@ public class F2D extends DrawOptions implements Serializable {
 	 *            Max value in X
 	 */
 	public void setMaxX(double max) {
-		this.Xmax = max;
+		proxy.setLimit(1,max);
 
 	}
-
 	/**
 	 * Sets a name of the function, i.e. what will be used for evaluation
 	 * 
@@ -623,7 +631,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 
 	public void setName(String name) {
-		this.name = name;
+		proxy.setName(name);
 
 	}
 
@@ -633,9 +641,11 @@ public class F2D extends DrawOptions implements Serializable {
 	 * @return Name
 	 */
 	public String getName() {
-		return this.name;
+		return proxy.getName();
 
 	}
+
+	
 
 	/**
 	 * Get Max value in X
@@ -643,7 +653,8 @@ public class F2D extends DrawOptions implements Serializable {
 	 * @return Max value in X
 	 */
 	public double getMaxX() {
-		return this.Xmax;
+		double[] d= proxy.getLimits();
+		return d[1];
 
 	}
 
@@ -655,7 +666,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 
 	public void setMaxY(double max) {
-		this.Ymax = max;
+		proxy.setLimit(1,max);
 
 	}
 
@@ -665,10 +676,13 @@ public class F2D extends DrawOptions implements Serializable {
 	 * @return Max value in Y
 	 */
 	public double getMaxY() {
-		return this.Ymax;
+		double[] d= proxy.getLimits();
+		return d[3];
 
 	}
 
+	
+	
 	/**
 	 * Get the number of points
 	 * 
@@ -676,10 +690,11 @@ public class F2D extends DrawOptions implements Serializable {
 	 *            Number of points
 	 */
 	public void setPoints(int bins) {
-		this.points = bins;
+		proxy.setPoints(bins);
 
 	}
 
+	
 	/**
 	 * Replace abstract parameter with the value (double). Case sensitive!
 	 * 
@@ -691,8 +706,11 @@ public class F2D extends DrawOptions implements Serializable {
 
 	public void setPar(String parameter, double value) {
 		String s1 = Double.toString(value);
-		this.name = name.replaceAll(parameter, s1);
+		String name=proxy.getName();
+		proxy.setName(name.replaceAll(parameter, s1));
 	}
+
+	
 
 	/**
 	 * Get the number of points for evaluation of a function
@@ -700,7 +718,7 @@ public class F2D extends DrawOptions implements Serializable {
 	 * @return Number of points
 	 */
 	public int getPoints() {
-		return this.points;
+		return proxy.getPoints();
 
 	}
 
@@ -743,9 +761,13 @@ public class F2D extends DrawOptions implements Serializable {
 	 */
 	public double integral(double minX, final double maxX, double minY,
 			final double maxY) {
+		
+		int points=proxy.getPoints();
 		return integral(points, minX, maxX, minY, maxY);
 	}
 
+	
+	
 	/**
 	 * Try to simplify this function. It is often useful to rewrite an
 	 * expression in term of elementary functions (log, exp, frac, sqrt,
@@ -758,8 +780,10 @@ public class F2D extends DrawOptions implements Serializable {
 
 	public boolean simplify() {
 
+		String name = proxy.getName();
 		try {
 			name = jscl.math.Expression.valueOf(name).simplify().toString();
+			 proxy.setName(name);
 		} catch (Exception e) {
 			lastException = e.getMessage().toString();
 			return false;
@@ -777,67 +801,7 @@ public class F2D extends DrawOptions implements Serializable {
 		return lastException;
 	}
 
-	/**
-	 * Convert this function rewrite in term of elementary functions (log, exp,
-	 * frac, sqrt, implicit roots) This is useful before simplifying function.
-	 * Retrieve the simplified name as a string using getName() method.
-	 * 
-	 * @return false if error occurs. Retrieve this error as a string using
-	 *         getException().
-	 */
-
-	public boolean elementary() {
-
-		try {
-			name = jscl.math.Expression.valueOf(name).elementary().toString();
-		} catch (Exception e) {
-			lastException = e.getMessage().toString();
-			return false;
-		}
-		return true;
-
-	}
-
-	/**
-	 * Convert this function rewrite in expanded form. Retrieve the expanded
-	 * name as a string using getName() method.
-	 * 
-	 * @return false if error occurs. Retrieve this error as a string using
-	 *         getException().
-	 */
-
-	public boolean expand() {
-
-		try {
-			name = jscl.math.Expression.valueOf(name).expand().toString();
-		} catch (Exception e) {
-			lastException = e.getMessage().toString();
-			return false;
-		}
-		return true;
-
-	}
-
-	/**
-	 * Convert this function rewrite in factorized form (if can). Retrieve the
-	 * expanded name as a string using getName() method.
-	 * 
-	 * @return false if error occurs. Retrieve this error as a string using
-	 *         getException().
-	 */
-
-	public boolean factorize() {
-
-		try {
-			name = jscl.math.Expression.valueOf(name).factorize().toString();
-		} catch (Exception e) {
-			lastException = e.getMessage().toString();
-			return false;
-		}
-		return true;
-
-	}
-
+	
 	/**
 	 * Return parsed function. One can evaluate it as "calculate()".
 	 * 
@@ -931,16 +895,7 @@ public class F2D extends DrawOptions implements Serializable {
 		return hnew;
 	}
 
-	/**
-	 * If the function is parsed correctly, return true. Use this check before
-	 * drawing it.
-	 * 
-	 * @return true if parsed.
-	 */
-	public boolean isParsed() {
-
-		return isParsed;
-	}
+	
 
 	
 	
@@ -954,6 +909,13 @@ public class F2D extends DrawOptions implements Serializable {
 	 * 
 	 */
 	public double integral() {
+		double[] d= proxy.getLimits();
+		double Xmin=d[0];
+		double Xmax=d[1];
+		double Ymin=d[2];
+		double Ymax=d[3];
+		int points=proxy.getPoints();
+
 		return integral(points,points,Xmin, Xmax,Ymin,Ymax);
 	}
 	
@@ -1009,12 +971,164 @@ public class F2D extends DrawOptions implements Serializable {
 	}
 
 	/**
+	 * If the function is parsed correctly, return true. Use this check before
+	 * drawing it.
+	 * 
+	 * @return true if parsed.
+	 */
+	public boolean isParsed() {
+
+		return proxy.isParsed();
+	}
+
+	/**
+	 * Convert the function into MathML form.
+	 * 
+	 * @return String representing this function in MathML.
+	 */
+
+	public String toMathML() {
+
+		try {
+			return jscl.math.Expression.valueOf(proxy.getName()).toMathML();
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return "";
+		}
+
+	}
+
+	/**
+	 * Convert the function into Java code.
+	 * 
+	 * @return String representing this function in Java.
+	 */
+
+	public String toJava() {
+
+		try {
+			return jscl.math.Expression.valueOf(proxy.getName()).toJava();
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return "";
+		}
+
+	}
+
+	
+
+	/**
+	 * Convert this function rewrite in term of elementary functions (log, exp,
+	 * frac, sqrt, implicit roots) This is useful before simplifying function.
+	 * Retrieve the simplified name as a string using getName() method.
+	 * 
+	 * @return false if error occurs. Retrieve this error as a string using
+	 *         getException().
+	 */
+
+	public boolean elementary() {
+		String name = proxy.getName();
+		try {
+			name = jscl.math.Expression.valueOf(name).elementary().toString();
+			proxy.setName(name);	
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return false;
+		}
+		return true;
+
+	}
+
+	/**
+	 * Convert this function rewrite in expanded form. Retrieve the expanded
+	 * name as a string using getName() method.
+	 * 
+	 * @return false if error occurs. Retrieve this error as a string using
+	 *         getException().
+	 */
+
+	public boolean expand() {
+		String name = proxy.getName();
+		try {
+			name = jscl.math.Expression.valueOf(name).expand().toString();
+			proxy.setName(name);
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return false;
+		}
+		return true;
+
+	}
+
+	/**
+	 * Convert this function rewrite in factorized form (if can). Retrieve the
+	 * expanded name as a string using getName() method.
+	 * 
+	 * @return false if error occurs. Retrieve this error as a string using
+	 *         getException().
+	 */
+
+	public boolean factorize() {
+		String name = proxy.getName();
+		try {
+			name = jscl.math.Expression.valueOf(name).factorize().toString();
+			proxy.setName(name);
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return false;
+		}
+		return true;
+
+	}
+
+	/**
+	 * Perform some numeric substitutions. Examples: exp(1) should be
+	 * 2.71828182, "pi" should be 3.14159 etc. Retrieve the expanded name as a
+	 * string using getName() method.
+	 * 
+	 * @return false if error occurs. Retrieve this error as a string using
+	 *         getException().
+	 */
+
+	public boolean numeric() {
+		String name = proxy.getName();
+		try {
+			name = jscl.math.Expression.valueOf(name).numeric().toString();
+			proxy.setName(name);
+		} catch (Exception e) {
+			lastException = e.getMessage().toString();
+			return false;
+		}
+		return true;
+
+	}
+
+
+    /**
+    * Get the proxy of this function used for serialization 
+    * and non-graphical representations.
+    * 
+    * @param proxy proxy of this function. 
+    */
+    public FProxy get(){ 
+       return proxy;
+   }
+	
+	/**
 	 * Get this function as a string.
 	 * 
 	 * @return Convert to string.
 	 */
 	public String toString() {
-		String tmp = getName();
+
+		String tmp = "F2D:" + proxy.getName();
+		double[] d = proxy.getLimits();
+		boolean isParsed = proxy.isParsed();
+		double Xmin = d[0];
+		double Xmax = d[1];
+		double Ymin = d[2];
+		double Ymax = d[3];
+		int points = proxy.getPoints();
 		tmp = tmp + " (title=" + getTitle() + ", n=" + Integer.toString(points)
 				+ ", minX=" + Double.toString(Xmin) + ", maxX="
 				+ Double.toString(Xmax) + ", minY=" + Double.toString(Ymin)

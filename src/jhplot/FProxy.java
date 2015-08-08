@@ -79,9 +79,13 @@ public class FProxy implements Serializable {
 	public FProxy(int type, String title, String name, IFunction iname,
 			double[] limits, int points, boolean isParsed) {
 
+                if (name !=null) {
 		name = name.replace("**", "^"); // preprocess power
 		name = name.replace("pi", "3.14159265");
 		name = name.replace("Pi", "3.14159265");
+                name = name.replace("PI", "3.14159265");
+                }
+
 		this.points = points;
 		this.name = name;
 		this.title = title;

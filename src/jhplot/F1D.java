@@ -276,7 +276,7 @@ public class F1D extends DrawOptions {
 
 	public F1D(String title, IFunction iname, double min, double max) {
 
-		proxy = new FProxy(1, title, null, iname, new double[] { min, max, 0,
+		proxy = new FProxy(1, title, iname.title(), iname, new double[] { min, max, 0,
 				0, 0, 0 }, maxpoints, false);
 		setTitle(title);
 		lpp.setType(LinePars.F1D);

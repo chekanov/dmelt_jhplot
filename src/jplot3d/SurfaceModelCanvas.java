@@ -1037,7 +1037,7 @@ public class SurfaceModelCanvas implements SurfaceModel {
                 // System.out.println(fu.size());
 		
 
-            min1 = max1 = min2 = max2 = Float.NaN;
+                       min1 = max1 = min2 = max2 = Float.NaN;
             
 			//reads the calcDivision that will be used
 			calcDivisions = getCalcDivisions();

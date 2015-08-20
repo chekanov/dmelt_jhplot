@@ -750,6 +750,7 @@ public class HPlot3D extends GHFrame {
 	 * @param a
 	 */
 	public void setContour(boolean a) {
+                changeStyleCalled = true;
 		sp[N1][N2].setBarsType(false);
 		sp[N1][N2].setContourType(a);
 	}
@@ -768,6 +769,7 @@ public class HPlot3D extends GHFrame {
 	 * @param a
 	 */
 	public void setDensity(boolean a) {
+                changeStyleCalled = true;
 		sp[N1][N2].setBarsType(false);
 		sp[N1][N2].setDensityType(a);
 	}
@@ -1088,12 +1090,28 @@ public class HPlot3D extends GHFrame {
 			if (f1.getLabelZ().length() > 0)
 				setNameZ(f1.getLabelZ());
 
-		if (changeStyleCalled == false)
+	        if (changeStyleCalled == false)
 			setBars(true);
 		jpp[N1][N2].setH2D(f1);
 		update();
 
 	}
+
+
+         /**
+         * Draw array of histograms 
+         * 
+         * @param d
+         *            array of histograms
+         */
+
+        public void draw(H2D[] d) {
+
+                for (int i = 0; i < d.length; i++) {
+                        draw(d[i]);
+                }
+
+        }
 
 	/**
 	 * Display P2D data holder with X,Y,Z values in 3D. If setSurface applied,
@@ -1118,6 +1136,22 @@ public class HPlot3D extends GHFrame {
 		update();
 
 	}
+
+
+        /**
+         * Draw array of P2D holders
+         * 
+         * @param d
+         *            array of P2D data holders
+         */
+
+        public void draw(P2D[] d) {
+
+                for (int i = 0; i < d.length; i++) {
+                        draw(d[i]);
+                }
+
+        }
 
 	/**
 	 * Set autorange in X,Y,Z.
@@ -1172,6 +1206,21 @@ public class HPlot3D extends GHFrame {
 		jpp[N1][N2].setP3D(h);
 		update();
 	}
+
+         /**
+         * Draw array of P3D holders
+         * 
+         * @param d
+         *            array of P3D data holders
+         */
+
+        public void draw(P3D[] d) {
+
+                for (int i = 0; i < d.length; i++) {
+                        draw(d[i]);
+                }
+
+        }
 
 	/**
 	 * Plot two H2D histograms on the same plot. When only one histogram is

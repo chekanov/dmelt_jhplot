@@ -252,14 +252,14 @@ public class HProf2D implements Serializable {
 	     //       	 int binx = mapBinNumber(i,xAx);
 	      //         int biny = mapBinNumber(j,yAy);
 	     
-	        for (int i = 0; i < xAx.bins(); i++) {
-				for (int j = 0; j < yAy.bins(); j++) {
+	        for (int i = 0; i < xbins-1; i++) {
+				for (int j = 0; j < ybins-1; j++) {
 	       
-					int binx = i+2;
-					int biny = j+2;
+					int binx = i+1;
+					int biny = j+1;
 					// int binx = mapBinNumber(i+1,xAx);
 				    // int biny = mapBinNumber(j+1,yAy);
-	                newHeights[binx][biny] = h1.binHeight(i,j);
+	                     newHeights[binx][biny] = h1.binHeight(i,j);
 		             newErrors [binx][biny] = h1.binError(i,j);
 		             if (option == "s" || option == "S")  newErrors [binx][biny] = h1.binRms(i,j);
 		             newEntries[binx][biny] = h1.binEntries(i,j);        

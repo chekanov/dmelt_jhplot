@@ -333,7 +333,7 @@ public class H1D extends DrawOptions implements Serializable {
 
     }
 
-     /** Fill the histogram with random numbers from fralt distribution.
+     /** Fill the histogram with random numbers from a flat distribution.
      * Seed is taken from time. 
      * Using mean=0 and width=1 will give a flat distribution between 0 and 1.  
      * @param TotNumber  number generated events

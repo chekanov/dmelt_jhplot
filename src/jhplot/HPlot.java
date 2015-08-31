@@ -3230,8 +3230,8 @@ public class HPlot extends GHFrame implements Serializable {
 		label0.setUsePosition(true);
 		label0.setText(h1.getStatParameters());
 
-		double xtop = gs[N1][N2].getTopMargin() + 0.5 * label0.getHeight();
-		label0.setLocation(w - gs[N1][N2].getRightMargin() - label0.getWidth(),
+		double xtop = gs[N1][N2].getTopMargin() + 0.4 * label0.getHeight();
+		label0.setLocation(w - gs[N1][N2].getRightMargin() - 0.8*label0.getWidth(),
 				xtop);
 		gs[N1][N2].addLabel(label0);
 

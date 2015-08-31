@@ -108,6 +108,7 @@ public class HPlot2D extends GHFrame {
 		titleY = new String[N1final][N2final];
 		xA = new Range2D[N1final][N2final];
 		yA = new Range2D[N1final][N2final];
+                Font fleg = new Font("Arial", Font.BOLD, 12);
 
 		// build empty canvas
 		for (int i2 = 0; i2 < N2final; i2++) {
@@ -132,8 +133,13 @@ public class HPlot2D extends GHFrame {
 				gridAtt[i1][i2].setStyle(GridAttribute.RASTER_CONTOUR);
 				xA[i1][i2] = new Range2D(0, 1, 0.02);
 				yA[i1][i2] = new Range2D(0, 1, 0.02);
+                                cp[i1][i2].getPlot().getAxis(0).setLabelFont(fleg);
+                                cp[i1][i2].getPlot().getAxis(1).setLabelFont(fleg);
+                                cp[i1][i2].getPlot().getAxis(0).setLabelHeightP(0.04);
+                                cp[i1][i2].getPlot().getAxis(1).setLabelHeightP(0.04);
 
-				/*
+
+	                    /*
 				 * Domain dom= new Domain(xA[N1][N2],yA[N1][N2]); try {
 				 * cp[N1][N2].getPlot().setRange(dom); } catch
 				 * (PropertyVetoException e) { // TODO Auto-generated catch
@@ -363,7 +369,7 @@ public class HPlot2D extends GHFrame {
 	
 	
 	/**
-	 * Add a label to the Canvas in NDC coordinates
+	 * Add a label to the Canvas in NDC coordinates. 
 	 * 
 	 * @param label
 	 *            Label to be added
@@ -427,6 +433,10 @@ public class HPlot2D extends GHFrame {
          public  void setColorBar(ColorKey k) {
             cp[N1][N2].getPlot().setColorBar(k);
         }
+
+
+
+
 	
          /**
          * Private method for collections
@@ -1126,7 +1136,9 @@ public class HPlot2D extends GHFrame {
                 ax.setVisible(b);
 
         }
-        
+       
+
+       
         
         /**
          * Set fonts for axis Label
@@ -1138,6 +1150,22 @@ public class HPlot2D extends GHFrame {
             cp[N1][N2].getPlot().getAxis(1).setLabelFont(fnt);
         	
         }
+
+
+
+   /**
+   * Set the label height in physical units.
+   *
+   * @param lhgt label height.
+   */
+        public void setAxisLabelHeight(double lhgt) {
+
+            cp[N1][N2].getPlot().getAxis(0).setLabelHeightP(lhgt);
+            cp[N1][N2].getPlot().getAxis(1).setLabelHeightP(lhgt);
+
+        }
+
+
 
         /**
          * Sets the length of the sub-ticks. In fact, the actual sub tick length is the
@@ -1205,7 +1233,7 @@ public class HPlot2D extends GHFrame {
          * @param lthgt
          *          height of ticks in NDC units
          */
-        public void setAxisTicHeight(int lthgt) {
+        public void setAxisTicHeight(double lthgt) {
         	cp[N1][N2].getPlot().getAxis(0).setLargeTicHeightP(lthgt);
         	cp[N1][N2].getPlot().getAxis(1).setLargeTicHeightP(lthgt);     
 

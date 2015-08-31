@@ -26,9 +26,8 @@ package jhplot.io;
 
 import java.io.*;
 import java.util.Map;
-
+import jhplot.*;
 import jhplot.gui.HelpBrowser;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -229,6 +228,15 @@ public class HFileXML {
 	public boolean write(Object ob) {
 
 		boolean success = true;
+
+
+                // fix serialization for for functions
+                if (ob instanceof jhplot.F1D)         ob=((F1D)ob).get();
+                else if (ob instanceof jhplot.F2D)    ob=((F2D)ob).get();
+                else if (ob instanceof jhplot.F3D)    ob=((F3D)ob).get();
+                else if (ob instanceof jhplot.FND)    ob=((FND)ob).get();
+
+
 		try {
 			oos.writeObject(ob);
 			nev++;
@@ -237,7 +245,7 @@ public class HFileXML {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			success = false;
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		return success;
@@ -254,27 +262,29 @@ public class HFileXML {
 		Object ob = null;
 		try {
 			ob = iis.readObject();
+
+
+                        // restore functions
+                        if (ob instanceof jhplot.FProxy) {
+                         if ( ((FProxy)ob).getType()==1) ob=new F1D((FProxy)ob);
+                         else if ( ((FProxy)ob).getType()==2) ob=new F2D((FProxy)ob);
+                         else if ( ((FProxy)ob).getType()==3) ob=new F3D((FProxy)ob);
+                         else if ( ((FProxy)ob).getType()==4) ob=new FND((FProxy)ob);
+                         }
+
+
 			
-			if (ob instanceof jhplot.io.HFileMap) {
+		if (ob instanceof jhplot.io.HFileMap) {
                 hmap = (HFileMap<String,Object>)ob;
                 return null;
                 }
 			
 			nev++;
-		} catch (EOFException ex) { // This exception will be caught when EOF is
+		} catch (IOException | ClassNotFoundException  ex) { // This exception will be caught when EOF is
 			// reached
 			return null;
 			// System.out.println("End of file reached.");
-		} catch (ClassNotFoundException ex) {
-			return null;
-			// ex.printStackTrace();
-		} catch (FileNotFoundException ex) {
-			return null;
-			// ex.printStackTrace();
-		} catch (IOException ex) {
-			return null;
-			// ex.printStackTrace();
-		}
+		} 
 
 		return ob;
 

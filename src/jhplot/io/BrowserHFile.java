@@ -41,7 +41,6 @@ public BrowserHFile(final GHFrame frame, HFile hfile, boolean ishow){
 	}
 	
 
-
 	
 	/**
 	 * Open HFile file in a pop-up window to browser it and check all objects
@@ -55,10 +54,7 @@ public BrowserHFile(final GHFrame frame, HFile hfile, boolean ishow){
 		map = new TreeMap<String, Object>();
 		
 		 
-		
-		
-		 
-		while (take = true) {
+		while (take == true) {
 			Object obj = hfile.read();
 			if (obj == null) {
 				take = false;
@@ -81,6 +77,8 @@ public BrowserHFile(final GHFrame frame, HFile hfile, boolean ishow){
 				title = ((PNI) obj).getTitle();
 			else if (name.equalsIgnoreCase("jhplot.F1D"))		
 				title = ((F1D) obj).getTitle();
+                        else if (name.equalsIgnoreCase("jhplot.F3D"))
+                                title = ((F3D) obj).getTitle();
 			else if (name.equalsIgnoreCase("jhplot.F2D"))		
 				title = ((F2D) obj).getTitle();
 			else if (name.equalsIgnoreCase("jhplot.FND"))
@@ -89,26 +87,23 @@ public BrowserHFile(final GHFrame frame, HFile hfile, boolean ishow){
 				title = ((FPR) obj).getTitle();
 			else if (name.equalsIgnoreCase("jhplot.H1D"))
 				title = ((H1D) obj).getTitle();
-	         else if (name.equalsIgnoreCase("jhplot.H2D"))
+	                 else if (name.equalsIgnoreCase("jhplot.H2D"))
                                 title = ((H2D) obj).getTitle();
-	
+
 			title=title.replaceAll("jhplot.", "");
 			map.put(name + " : " + title, obj);
-			// System.out.println(name);
+			// System.out.println(name  + " : " + title);
 		}
 		
 		
-		map = hfile.getObjectMap();
-		
+		// map = hfile.getObjectMap();
 		// now add the rest
 		//map.putAll(hfile.getObjectMap());
 		
 		
-		
-		
        hfile.close();
 
-       if (frame !=null)  setDataFileBrowser(frame, map,ishow);
+        if (frame !=null)  setDataFileBrowser(frame, map, ishow);
 	}
 
 	

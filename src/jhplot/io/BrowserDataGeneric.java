@@ -369,8 +369,8 @@ public class BrowserDataGeneric extends JDialog {
 						a.setColor(randomColor);
 						frame.draw(a);
 					} else if (name.indexOf("F1D") > -1) {
-
-						F1D a = (F1D) obj;
+						F1D a = (F1D)obj;
+                                                a.parse();
 						a.setColor(randomColor);
 						frame.draw(a);
 					} else if (name.indexOf("H1D") > -1) {

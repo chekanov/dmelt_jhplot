@@ -608,10 +608,16 @@ public class P0D extends DoubleArrayList implements Serializable {
 	 */
 	public H1D getH1D(int bins) {
 
-		H1D h1d = new H1D(this.title, bins, getMin(), getMax());
+                double xmin=getMin();
+                double xmax=getMin();
+                if (xmin<=xmax) {
+                   xmax=1.0;
+                   jhplot.utils.Util.ErrorMessage("Array was not filled. Using the deafult max value 1 for the histogram");
+                }
+
+		H1D h1d = new H1D(this.title, bins, xmin, xmax);
 		for (int i = 0; i <size(); i++)
 			h1d.fill((double)getQuick(i));
-
 		return h1d;
 
 	}
@@ -982,8 +988,8 @@ public class P0D extends DoubleArrayList implements Serializable {
 	 * @return the maximum value.
 	 */
 	public double getMax() {
-
-		return Descriptive.max(this);
+                if (size()>0) return Descriptive.max(this);
+		return 0;
 	}
 
 	/**
@@ -992,7 +998,7 @@ public class P0D extends DoubleArrayList implements Serializable {
 	 * @return index of maximum value.
 	 */
 	public int getMaxIndex() {
-
+                if (size()==0) return -1;
 		int maxI = 0;
 		for (int i = 1; i < size(); i++)
 			if (get(i) > getQuick(maxI))
@@ -1006,7 +1012,7 @@ public class P0D extends DoubleArrayList implements Serializable {
 	 * @return index of minimum value.
 	 */
 	public int getMinIndex() {
-
+                if (size()==0) return -1;
 		int minI = 0;
 		for (int i = 1; i < size(); i++)
 			if (get(i) < getQuick(minI))
@@ -1020,8 +1026,8 @@ public class P0D extends DoubleArrayList implements Serializable {
 	 * @return the minimum value.
 	 */
 	public double getMin() {
-
-		return Descriptive.min(this);
+                if (this.size()>0) Descriptive.min(this);
+		return 0;
 
 	}
 

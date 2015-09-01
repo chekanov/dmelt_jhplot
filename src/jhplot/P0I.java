@@ -930,6 +930,7 @@ public class P0I extends IntArrayList implements Serializable {
 	 * @return the minimum value.
 	 */
 	public int getMax() {
+                if (size()==0) return 0;
 		int mI = java.lang.Integer.MIN_VALUE;
 		for (int i = 1; i < size(); i++)
 			if (getQuick(i) > mI)
@@ -944,7 +945,7 @@ public class P0I extends IntArrayList implements Serializable {
 	 * @return index of maximum value.
 	 */
 	public int getMaxIndex() {
-
+                 if (size()==0) return 0;
 		int maxI = 0;
 		for (int i = 1; i < size(); i++)
 			if (get(i) > getQuick(maxI))
@@ -958,7 +959,7 @@ public class P0I extends IntArrayList implements Serializable {
 	 * @return index of minimum value.
 	 */
 	public int getMinIndex() {
-
+                 if (size()==0) return -1;
 		int minI = 0;
 		for (int i = 0; i < size(); i++)
 			if (get(i) < getQuick(minI))
@@ -972,6 +973,7 @@ public class P0I extends IntArrayList implements Serializable {
 	 * @return the minimum value.
 	 */
 	public int getMin() {
+                if (size()==0) return 0; 
 		int mI = java.lang.Integer.MAX_VALUE;
 		for (int i = 0; i < size(); i++)
 			if (getQuick(i) < mI)

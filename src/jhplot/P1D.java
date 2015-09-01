@@ -5239,8 +5239,8 @@ public class P1D extends DrawOptions implements Serializable {
 	 */
 	public double getMin(int axis) {
 		
-		if (axis==0) return Descriptive.min(X);
-		if (axis==1) return Descriptive.min(Y);
+		if (axis==0 && X.size()>0) return Descriptive.min(X);
+		if (axis==1 && Y.size()>0) return Descriptive.min(Y);
 		
 		return 0;
 	}

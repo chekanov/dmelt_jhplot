@@ -21,7 +21,7 @@ public class BrowserData {
 	 * Construct a data browser using the input file for 2D data. The file can
 	 * be URL (starts from http or ftp).
 	 * <p>
-	 * File must have the extensions: 
+	 * File must have the extensions <br>: 
          * "jdat" (HBook) <br>
 	 * "jser" (HFile) <br>
 	 * "jxml" (HFileXML) <br>
@@ -39,26 +39,21 @@ public class BrowserData {
 		String ss = file.toLowerCase();
 		if (ss.endsWith(".jser")) {
 			HFile hh = new HFile(file);
-
 			if (frame != null)
 				new BrowserHFile(frame, hh, true);
 			else {
 				BrowserHFile b = new BrowserHFile(null, hh, true);
 				map = b.getMap();
 			}
-		}
-		if (ss.endsWith(".jxml")) {
+		} else if (ss.endsWith(".jxml")) {
 			HFileXML hh = new HFileXML(file);
-
 			if (frame != null)
 				new BrowserHFileXML(frame, hh, true);
 			else {
 				BrowserHFileXML b = new BrowserHFileXML(null, hh, true);
 				map = b.getMap();
 			}
-
 		} else if (ss.endsWith(".jpbu")) {
-
 			PFile hh = new PFile(file);
 
 			if (frame != null)
@@ -99,10 +94,8 @@ public class BrowserData {
 		} else {
 
 			jhplot.utils.Util
-					.ErrorMessage("Not supported file format. Available: .ser,.xml, .jdat, .root, .pbu");
-		}
-		;
-
+					.ErrorMessage("Not supported file format. Required:  *.jser, *.jxml, *.jdat, *.root, *.jpbu");
+		}; 
 	}
 
 	/**

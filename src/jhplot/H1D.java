@@ -1613,14 +1613,14 @@ public class H1D extends DrawOptions implements Serializable {
 	}
 
 	/**
-	 * Sum of all heights
+	 * Sum of all heights multiplied by the bin size.
 	 * 
-	 * @return Sum of all Heights
+	 * @return Sum of all heights times bin size. 
 	 */
 	public double integral() {
-
-		return h1.sumAllBinHeights();
-
+                IAxis a=h1.axis();
+                int Nbins = a.bins();
+                return integral(1,Nbins, true);
 	}
 
 	/**

@@ -598,7 +598,18 @@ public class P0I extends IntArrayList implements Serializable {
 	 */
 	public H1D getH1D(int bins) {
 
-		H1D h1d = new H1D(this.title, bins, getMin(), getMax());
+                double xmin=getMin();
+                double xmax=getMax();
+
+                  if (xmin>=xmax) {
+                   xmin=0.0;
+                   xmax=1.0;
+                   jhplot.utils.Util.ErrorMessage("Array was not filled?. Using the default max value 1 for the histogram");
+                }
+
+
+
+		H1D h1d = new H1D(this.title, bins, xmin, xmax);
 		for (int i = 0; i < size(); i++)
 			h1d.fill((double) getQuick(i));
 

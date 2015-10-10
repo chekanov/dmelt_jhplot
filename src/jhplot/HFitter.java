@@ -486,13 +486,14 @@ public class HFitter implements Serializable {
 		double maxX = h2d.getMaxX();
 		double minY = h2d.getMinY();
 		double maxY = h2d.getMaxY();
+                data.create2DConnection(h2d.get());
 
-		// data.range(0).excludeAll();
-		// data.range(1).excludeAll();
-		// data.range(0).include(minX, maxX);
-		// data.range(1).include(minY, maxY);
-		// data.create2DConnection(h2d.get());
-		result = fitter.fit(h2d.get(), iFunc);
+		data.range(0).excludeAll();
+		data.range(1).excludeAll();
+		data.range(0).include(minX, maxX);
+		data.range(1).include(minY, maxY);
+
+		result = fitter.fit(data, iFunc);
 		// System.out.println("FITTED");
 	}
 

@@ -16,10 +16,7 @@
  limitations under the License.
  */
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -91,6 +88,32 @@ public class CSVWriter implements Closeable {
         this(writer, separator, DEFAULT_QUOTE_CHARACTER);
     }
 
+   
+    /**
+     * Constructs CSVWriter with supplied separator.
+     *
+     * @param file 
+     *          full path to the file. 
+     * @param separator
+     *            the delimiter to use for separating entries.
+     */
+    public CSVWriter(String file, char separator) throws IOException  {
+        this(new FileWriter(file), separator, DEFAULT_QUOTE_CHARACTER);
+    }
+
+ 
+     /**
+     * Constructs CSVWriter with supplied separator.
+     *
+     * @param file 
+     *          full path to the file. 
+     * @param separator
+     *            the delimiter to use for separating entries.
+     */
+    public CSVWriter(File file, char separator) throws IOException  {
+        this(new FileWriter(file), separator, DEFAULT_QUOTE_CHARACTER);
+    }
+
     /**
      * Constructs CSVWriter with supplied separator and quote char.
      *
@@ -105,6 +128,51 @@ public class CSVWriter implements Closeable {
     	this(writer, separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
     }
 
+    /**
+     * Constructs CSVWriter with supplied separator and quote char.
+     *
+     * @param file 
+     *            output file for an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     */
+    public CSVWriter(File file, char separator, char quotechar) throws IOException  {
+        this(new FileWriter(file), separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
+    }
+
+     /**
+     * Constructs CSVWriter with supplied separator and quote char.
+     *
+     * @param file 
+     *            output file for an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     */
+    public CSVWriter(String file, char separator, char quotechar) throws IOException {
+        this(new FileWriter(file), separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
+    }
+
+    /**
+     * Constructs CSVWriter with supplied separator and quote char.
+     *
+     * @param file 
+     *            output file for an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     * @param escapechar
+     *            the character to use for escaping quotechars or escapechars
+     */
+    public CSVWriter(String file, char separator, char quotechar, char escapechar) throws IOException  {
+        this(new FileWriter(file), separator, quotechar, escapechar, DEFAULT_LINE_END);
+    }
+
+      
     /**
      * Constructs CSVWriter with supplied separator and quote char.
      *
@@ -207,6 +275,16 @@ public class CSVWriter implements Closeable {
     	}
     }
 
+     /**
+     * Writes the next line to the file.
+     * Same as writeNext().
+     * @param nextLine
+     *            a string array with each comma-separated element as a separate
+     *            entry.
+     */
+    public void write(String[] nextLine) {
+              writeNext(nextLine);
+    } 
     
     /**
      * Writes the next line to the file.

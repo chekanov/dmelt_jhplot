@@ -132,6 +132,20 @@ public class CSVReader implements Closeable {
     }
 
     /**
+     * Constructs CSVReader with supplied separator and quote char.
+     * 
+     * @param reader
+     *            the reader to an underlying CSV source.
+     * @param separator
+     *            the delimiter to use for separating entries
+     * @param quotechar
+     *            the character to use for quoted elements
+     */
+    public CSVReader(String file, char separator, char quotechar)  throws Exception  {
+        this(new BufferedReader(new FileReader(file)), separator, quotechar, CSVParser.DEFAULT_ESCAPE_CHARACTER, DEFAULT_SKIP_LINES, CSVParser.DEFAULT_STRICT_QUOTES);
+    }
+
+    /**
      * Constructs CSVReader with supplied separator, quote char and quote handling
      * behavior.
      *
@@ -326,9 +340,9 @@ public class CSVReader implements Closeable {
 
        /**
      * Reads the next line from the buffer and converts to a string array.
-     * 
+     * Same as getNextLine().
      * @return a string array with each comma-separated element as a separate
-     *         entry.
+     *         entry. 
      * 
      * @throws IOException
      *             if bad things happen during the read

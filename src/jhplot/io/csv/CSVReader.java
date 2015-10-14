@@ -16,17 +16,15 @@ package jhplot.io.csv;
  limitations under the License.
  */
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A very simple CSV reader released under a commercial-friendly license.
  * 
- * @author Glen Smith
+ * @author Glen Smith and S.Chekanov 
  * 
  */
 public class CSVReader implements Closeable {
@@ -56,6 +54,7 @@ public class CSVReader implements Closeable {
         this(reader, CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER);
     }
 
+    
     /**
      * Constructs CSVReader with supplied separator.
      * 
@@ -67,6 +66,44 @@ public class CSVReader implements Closeable {
     public CSVReader(Reader reader, char separator) {
         this(reader, separator, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER);
     }
+
+
+     /**
+     * Constructs CSVReader with supplied separator.
+     * 
+     * @param file  
+     *            file  
+     * @param separator
+     *            the delimiter to use for separating entries.
+     */
+    public CSVReader(String file, char separator) throws Exception {
+        this( new BufferedReader(new FileReader(file)), separator, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER);
+    }
+
+     /**
+     * Constructs CSVReader with supplied separator.
+     * 
+     * @param file URL 
+     *            file URL 
+     * @param separator
+     *            the delimiter to use for separating entries.
+     */
+    public CSVReader(File file, char separator) throws Exception {
+        this( new BufferedReader(new FileReader(file)), separator, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER);
+    }
+
+   /**
+     * Constructs CSVReader with supplied separator.
+     * 
+     * @param file URL 
+     *            file URL 
+     * @param separator
+     *            the delimiter to use for separating entries.
+     */
+    public CSVReader(URL url, char separator) throws Exception  {
+        this(new BufferedReader(new InputStreamReader(url.openStream())), separator, CSVParser.DEFAULT_QUOTE_CHARACTER, CSVParser.DEFAULT_ESCAPE_CHARACTER);
+    }
+
 
      /**
      * Constructs CSVReader with supplied separator.
@@ -286,6 +323,22 @@ public class CSVReader implements Closeable {
     	} while (parser.isPending());
     	return result;
     }
+
+       /**
+     * Reads the next line from the buffer and converts to a string array.
+     * 
+     * @return a string array with each comma-separated element as a separate
+     *         entry.
+     * 
+     * @throws IOException
+     *             if bad things happen during the read
+     */
+      public String[] next() throws IOException {
+
+                  return readNext();
+       }
+
+
 
     /**
      * Reads the next line from the file.

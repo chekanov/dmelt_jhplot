@@ -264,6 +264,21 @@ public class P1D extends DrawOptions implements Serializable {
 		fill(p1, p2);
 	}
 
+         /**
+         * Construct a container from pairs X and Y
+         * 
+         * @param title
+         *            new title
+         * @param p1
+         *            array representing X
+         * @param p2
+         *            array representing Y
+         **/
+        public P1D(String title, int[] p1, int[] p2) {
+                this(title);
+                fill(p1, p2);
+        }
+
 	/**
 	 * Construct a new copy of the data container.
 	 * 
@@ -6010,9 +6025,33 @@ public class P1D extends DrawOptions implements Serializable {
 			Y.add(ya[i]);
 		}
 		
-		
-
 	}
+
+
+        /**
+         * Fill a P1D container from 2 integer arrays. If it is not empty, add values will
+         * be appended. It is assumed that all errors are zero.
+         * 
+         * @param xa
+         *            integer array with X values
+         * @param ya
+         *            integer array with Y values
+         * 
+         */
+        public void fill(int[] xa, int[] ya) {
+
+                if (xa.length != ya.length) {
+                        System.out.println("Different dimensions of arrays!");
+                        return;
+                }
+
+                setDimension(2);
+                for (int i = 0; i < xa.length; i++){
+                        X.add(xa[i]);
+                        Y.add(ya[i]);
+                }
+
+        }
 
 	/**
 	 * Fill a P1D container from 2 P0D arrays. If it is not empty, add values

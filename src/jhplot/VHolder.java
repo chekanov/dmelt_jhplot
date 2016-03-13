@@ -23,13 +23,12 @@
 **/
 package jhplot;
 
-//import org.apache.commons.lang.ArrayUtils;
 import hep.aida.IAxis;
-
 import hep.aida.ref.histogram.Histogram1D;
 import jhplot.gui.HelpBrowser;
 import jminhep.cluster.DataHolder;
 import jminhep.cluster.DataPoint;
+import java.util.Arrays;
 
 /**
  * A class to transform any HPlot container (H1D,H2D,P1D..) to a vector for
@@ -519,7 +518,19 @@ public class VHolder {
 		
 	}
 	
+
+        public String toString() {
+              String s="names="+Arrays.deepToString(names);
+              s=s+" data="+Arrays.deepToString(data);
+              return s;
+       }
 	
+
+
+
+        public void setData(Double[][] data){
+           this.data=data;
+        };
 
 	/**
 	 * Return the dimension of the data

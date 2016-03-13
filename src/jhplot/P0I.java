@@ -1417,6 +1417,23 @@ public class P0I extends IntArrayList implements Serializable {
 
 	}
 
+
+
+
+        /**
+         * Sum all ellements of this array.
+         * @return sum of all ellements 
+         **/
+        public int getSum() {
+                int  d=0;
+                for (int i = 0; i < size(); i++) d=d+getQuick(i); 
+                return d;
+
+        }
+
+
+
+
 	/**
 	 * Make transformation of P0I using a function.
 	 * 

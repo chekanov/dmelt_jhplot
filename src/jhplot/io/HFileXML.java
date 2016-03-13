@@ -195,25 +195,13 @@ public class HFileXML {
 	}
 
 	/**
-	 * Open a XML file to write or read objects to/from a serialized file in
-	 * sequential order. If "w" option is set, the old file will be removed.
+	 * Open a XML file to read objects from a file.
 	 * 
 	 * @param file
 	 *            File name for reading
 	 */
 	public HFileXML(String file) {
-
-		nev = 0;
-		try {
-			xstream = new XStream(new DomDriver());
-			iif = new FileInputStream(file);
-			iis = xstream.createObjectInputStream(iif);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+                this(file,"r");
 	};
 
 	/**
@@ -221,8 +209,6 @@ public class HFileXML {
 	 * 
 	 * @param ob
 	 *            Object
-	 * @param key
-	 *            key for object
 	 * @return true if success
 	 */
 	public boolean write(Object ob) {
@@ -312,8 +298,16 @@ public class HFileXML {
 			}
 		}
 
-		if (hmap.containsKey(key))
-			return hmap.get(key);
+                if (hmap.containsKey(key)) { 
+                         Object ob= hmap.get(key);
+                         if (ob instanceof jhplot.FProxy) {
+                         if ( ((FProxy)ob).getType()==1) ob=new F1D((FProxy)ob);
+                         else if ( ((FProxy)ob).getType()==2) ob=new F2D((FProxy)ob);
+                         else if ( ((FProxy)ob).getType()==3) ob=new F3D((FProxy)ob);
+                         else if ( ((FProxy)ob).getType()==4) ob=new FND((FProxy)ob);
+                         return ob;
+                         }
+                }
 
 		return null;
 

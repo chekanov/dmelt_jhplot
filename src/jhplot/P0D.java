@@ -1115,6 +1115,19 @@ public class P0D extends DoubleArrayList implements Serializable {
 
 	}
 
+        /**
+         * Sum all ellements of this array.
+         * @return sum of all ellements 
+         **/
+        public double getSum() {
+                double d=0;
+                for (int i = 0; i < size(); i++) d=d+getQuick(i); 
+                return d;
+
+        }
+
+
+
 	/**
 	 * Operations on P0D containers: add, subtract, multiply, divide. Keep the
 	 * same graphical attributes
@@ -1473,6 +1486,11 @@ public class P0D extends DoubleArrayList implements Serializable {
 		return indeces;
 
 	}
+
+
+
+       
+
 
 	
 	/**

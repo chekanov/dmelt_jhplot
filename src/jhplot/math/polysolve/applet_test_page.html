@@ -1,0 +1,24 @@
+<html>
+
+<body>
+    <form name="form">
+        Data Entry Area:<br/>
+        <textarea name="entries" style="width:800px;height:200px"  onkeyup="document.PolySolve.process();">
+-1 -1
+0 3
+1 2.5
+2 5
+3 4
+5 2
+7 5
+9 4
+        </textarea>
+    <div style="width:800px;height:600px;border:1px solid black;background:#ffffe0;">
+              <applet name="PolySolve" code="polysolve/PolySolve.class" archive="../../dist/PolySolve.jar" width="800" height="600" mayscript>
+              </applet>
+            </div>
+        Results Area:<br/>
+        <textarea name="results" style="width:800px;height:200px"></textarea>
+    </form>
+</body>
+</html> 

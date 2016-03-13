@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Polynomial Regression Data Fit (Java version) 
+    </title>
+<body>
+         <h1>   Polynomial Regression Data Fit (Java version) </h2>
+      <p></p>
+      
+    <div class="article_wrapper">
+      <div class="roundcorner_16_parch_content">&nbsp;
+      
+      <div align="center"><b>Note:</b> This program has been superseded by a <a href="index.html">JavaScript version</a><br/>that functions bettter and runs on more systems.</div>
+
+        
+        <a name="Background"></a><div class="article_subtopic">Background</div>
+        
+        <blockquote>
+          <p>For a given data set of x,y pairs, a polynomial regression of this
+          kind can be generated:</p>
+          
+          <blockquote>
+            $ \displaystyle f(x) = c_0 + c_1 \, x + c_2 \, x^2 + c_3 \, x^3 ... $            
+          </blockquote>
+          
+          <p>In which $c_0,c_1,c_2 \, ...$ represent coefficients created by a mathematical procedure <a href="../sage/polynomial.html">described in detail here</a>.</p>
+  
+                <p> In this regression method, the choice of degree and the evaluation of the fit's quality depend on judgments that are left up to the user. It is well known about this class of regression method that an effort to squeeze more correlation out of the algorithm than the data can support will sometimes produce an out-of-control function that, although it matches the data points, wanders wherever it pleases between those points. Therefore, a "good" (approaching 1.0) correlation coefficient is not enough to assure a well-behaved or meaningful function. Decisions about a result's appropriateness is more a matter of judgment than mathematics.</p>
+                
+                <p>A "perfect" fit (one in which all the data points are matched) can be gotten by setting the degree of the regression to the number of data pairs minus one. But, depending on the nature of the data set, this can also sometimes produce the pathological result described above in which the function wanders freely between data points in order to match the data exactly.</p>
+                
+                <p>For those seeking a standard two-element linear regression, select polynomial degree 1
+                below, and for the standard form &mdash;</p>
+                
+                <blockquote>
+                  $ \displaystyle f(x) = mx + b$
+                </blockquote>
+                
+                <p>&mdash; b corresponds to be the first parameter listed in the results window below,
+                  and m to the
+                second.</p>
+                
+                <p> This regression is provided by the Java applet below. To enter new data, type data pairs into the upper window (or paste from the system clipboard by pressing Ctrl+V), then press "Solve." To change the degree of the equation, press one of the provided arrow buttons.</p>
+                
+              
+        </blockquote>
+        
+        <a name="The_Applet"></a><div class="article_subtopic">The Applet</div>
+        
+        <blockquote>
+          
+          <form name="form">
+            <p style="width:860"><b>Data Entry Area:</b> <span style="color:gray;float:right;">Select: Ctrl+A | Copy: Ctrl+C | Paste: Ctrl+V</span></p>
+
+
+            
+            <textarea title="Enter or paste x,y paired data in this window" name="entries" style="width:860px;height:200px;padding:4px" onkeyup="document.PolySolve.process(true);">
+-1 -1
+0 3
+1 2.5
+2 5
+3 4
+5 2
+7 5
+9 4
+            </textarea>
+
+
+            
+        </blockquote>
+        <a name="Notes"></a><div class="article_subtopic">Notes</div>
+        <blockquote>
+          <ul>
+            <li>To paste data from the system clipboard into the upper "Data Entry" window, click the window, press Ctrl+A, then press Ctrl+V.</li>
+            
+            <li> To copy data from the lower "Results Area" window, click the window, press Ctrl+A, then press Ctrl+C.</li>
+            
+            <li>To download a copy of this program for desktop use, click here: <a href="java/PolySolve.jar">PolySolve.jar (30 KB)</a>.</li>
+            
+            <li>To run the downloaded JAR file, open a command prompt and type:
+              
+            <p> <tt>java -jar PolySolve.jar</tt></p></li>
+            
+            <li>If the above command doesn't work, you may need to download a Java runtime engine (it's free). <a href="http://java.com">Click here</a> to get your Java runtime engine.</li>
+            
+            <li>For a source archive / Netbeans project, click here: <a href="java/PolySolve.tar.bz2">PolySolve.tar.bz2 (14 KB)</a>.</li>
+            <li>PolySolve is &copy; copyright 2012, P. Lutus and is released under the <a href="../GPL/GPL.txt">GPL</a>.</li>
+            
+          </ul>
+        </blockquote>
+        
+        <a name="Version_History"></a><div class="article_subtopic">Version History</div>
+        <blockquote>
+          <ul>
+          <li>09-22-2012 Version 3.7. Fixed a bug in the table generator that poduced incorrect percentage values.</li>
+          <li>09-05-2012 Version 3.6. Increased the number of output formats and added a table generator, to support another project that uses this program.</li>
+          <li>09-03-2012 Version 3.5. Updated code to conform to recent changes in Java.</li>
+            <li>02-27-2011 Version 3.4. Rewrote the input/output scheme to address the fact that one can no longer copy or paste directly into a Java applet.</li>
+            <li>12-01-2009 Version 3.3. Further optimized matrix processing code.</li>
+            <li>11-13-2009 Version 3.2. Changed computation order to read each datum only once.</li>
+            <li>10-25-2009 Version 3.1. Refactored, optimized.</li>
+            <li>10-20-2009 Version 3.0. Brought up-to-date from a prior, much less efficient form.</li>
+          </ul>
+        </blockquote>
+        
+        <a name="References"></a><div class="article_subtopic">References</div>
+        <blockquote>
+          <ul>
+            <li><a href="../sage/polynomial.html">Polynomial Regression (arachnoid.com)</a></li>
+            <li><a href="http://en.wikipedia.org/wiki/Polynomial_regression">Polynomial Regression (Wikipedia)</a></li>
+            <li><a href="http://en.wikipedia.org/wiki/Matrix_%28mathematics%29">Matrix Mathematics (Wikipedia)</a></li>
+            <li><a href="http://en.wikipedia.org/wiki/Regression_analysis">Regression Analysis (Wikipedia)</a></li>
+            <li><a href="http://en.wikipedia.org/wiki/Gauss%E2%80%93Jordan_elimination">Gauss-Jordan Elimination (Wikipedia)</a></li>
+            <li><a href="http://en.wikipedia.org/wiki/Misuse_of_statistics">Misuse of Statistics (Wikipedia)</a></li>
+          </ul>
+          
+        </blockquote>
+        
+        &nbsp;
+        
+      </div> <!-- content -->
+      </div> <!-- wrapper -->
+  </body>
+</html>

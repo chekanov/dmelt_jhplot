@@ -40,6 +40,10 @@ The last command  runs a simple Java example showing a log scale for a canvas fi
 and you can start the DMelt as dmelt.sh (or dmelt.bat) 
 
 
+This version of jhplot is licensed under the GNU public license and included
+in the community edition of DMelt. A version with more permissive license is 
+available from the DMelt web page.
+
 S.Chekanov
 DMelt (http://jwork.org/dmelt/)
 

@@ -412,7 +412,11 @@ public class HBook {
 				minx = xr.getDouble("min", 0.0);
 				maxx = xr.getDouble("max", 0.0);
                                 String sline = xr.getString("variable-bins"," ");
-                                double[] edgesX = getDoubles(sline);
+
+                                double[] edgesX = null;
+                                if ( sline != null) {
+                                    edgesX = getDoubles(sline);
+                                }
                                 xr.hide("x-axis");
                                 xr.close(); // close y-axis
 
@@ -422,7 +426,12 @@ public class HBook {
                                 miny = xr.getDouble("min", 0.0);
                                 maxy = xr.getDouble("max", 0.0);
                                 sline = xr.getString("variable-bins"," ");
-                                double[] edgesY = getDoubles(sline);
+
+                                double[] edgesY = null;
+                                if ( sline != null) { 
+                                   edgesY = getDoubles(sline);
+                                }
+
                                 xr.hide("y-axis");
                                 xr.close(); // close y-axis
 				// System.out.println( "x-bins="+Integer.toString(binsx));
@@ -1352,12 +1361,16 @@ public class HBook {
                 setDouble("max", h2.getMaxX(), tx);
                 setDouble("underflow", h2.getUnderflowHeightX(), tx);
                 setDouble("overflow", h2.getOverflowHeightX(), tx);
+
+                if ( h2.getAxisX() instanceof  hep.aida.ref.histogram.VariableAxis ) {
                 String tmp=sep;
                 for (int j = 0; j < h2.getBinsX(); j++) {
                                 tmp=tmp+sep+DoubleS(h2.getLowerEdgeX(j));
                         }
                 tmp=tmp+sep+h2.getUpperEdgeY(h2.getBinsX()-1);
                 setString("variable-bins", tmp, tx);
+                }
+
 		tx.println("</x-axis>");
 
 		// Y-axis
@@ -1367,13 +1380,17 @@ public class HBook {
                 setDouble("max", h2.getMaxY(), tx);
                 setDouble("underflow", h2.getUnderflowHeightY(), tx);
                 setDouble("overflow", h2.getOverflowHeightY(), tx);
+
+                if ( h2.getAxisY() instanceof  hep.aida.ref.histogram.VariableAxis ) {
 		tx.println("<variable-width-bins>");
-                tmp=sep;
+                String tmp=sep;
                 for (int j = 0; j < h2.getBinsY(); j++) {
                                 tmp=tmp+sep+DoubleS(h2.getLowerEdgeY(j));
                         }
                 tmp=tmp+sep+h2.getUpperEdgeY(h2.getBinsY()-1);
                 setString("variable-bins", tmp, tx);
+                }
+
 
 		tx.println("</y-axis>");
 		// out of range
@@ -1408,7 +1425,7 @@ public class HBook {
 		tx.println("</out-of-range-data>");
 
 		// statistics
-		tx.println("<stat");
+		tx.println("<stat>");
 		setInt("all-entries", h2.allEntries(), tx);
 		setInt("in-range-entries", h2.entries(), tx);
 		setInt("out-of-range-entries", h2.extraEntries(), tx);

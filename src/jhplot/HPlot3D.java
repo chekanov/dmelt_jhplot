@@ -77,7 +77,8 @@ public class HPlot3D extends GHFrame {
 	public HPlot3D(String title, int xsize, int ysize, int n1, int n2,
 			boolean set) {
 
-		super(title, xsize, ysize, n1, n2, set);
+                // use minimalistic
+		super(title, xsize, ysize, n1, n2, set,1);
 
 		jpp = new JSurfacePanel[N1final][N2final];
 		sp = new SurfaceModelCanvas[N1final][N2final];

@@ -55,7 +55,7 @@ public class CommonGUI {
 	
 	
 	/**
-	 * File chooser images.
+	 * File chooser many images.
 	 * Used to save images for all canvaces.
 	 * 
 	 * @param com imput frame
@@ -82,6 +82,64 @@ public class CommonGUI {
 	      fileChooser.setAcceptAllFileFilterUsed(true);
 	      
 	      final File sFile = new File("dmelt.pdf");
+	      fileChooser.setSelectedFile(sFile);
+	      fileChooser.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, new PropertyChangeListener() {
+
+		        public void propertyChange(PropertyChangeEvent evt) {
+		            Object o = evt.getNewValue();
+		            if (o instanceof FileNameExtensionFilter) {
+		                FileNameExtensionFilter filter = (FileNameExtensionFilter) o;
+
+		                String ex = filter.getExtensions()[0];
+
+		                File selectedFile = fileChooser.getSelectedFile();
+		                if (selectedFile == null) {
+		                    selectedFile = sFile;
+		                }
+		                String path = selectedFile.getName();
+		                path = path.substring(0, path.lastIndexOf("."));
+
+		                fileChooser.setSelectedFile(new File(path + "." + ex));
+		            }
+		        }
+		    });
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      return fileChooser;
+	}
+	
+	
+	
+
+
+	/**
+	 * File chooser for raster images.
+	 * 
+	 * @param com imput frame
+	 * @return
+	 */
+	
+	public static JFileChooser openRasterImageFileChooser(Component com){
+		
+		
+		
+		  final JFileChooser fileChooser = new JFileChooser();
+		
+		  
+	      fileChooser.removeChoosableFileFilter(fileChooser.getAcceptAllFileFilter()); 
+              fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Portable Network Graphics (*.png)", "png"));
+	      // fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Raster Images (*.jpg, *.jpeg)","jpg", "jpeg"));
+	      fileChooser.setAcceptAllFileFilterUsed(true);
+	      
+	      final File sFile = new File("dmelt.png");
 	      fileChooser.setSelectedFile(sFile);
 	      
 	   // debug
@@ -127,8 +185,6 @@ public class CommonGUI {
 	      
 	      return fileChooser;
 	}
-	
-	
 	
 	
 	

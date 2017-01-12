@@ -162,7 +162,7 @@ public class HChart extends GHFrame {
 	public HChart(String title, int xsize, int ysize, int n1, int n2,
 			boolean set) {
 
-		super(title, xsize, ysize, n1, n2, set);
+		super(title, xsize, ysize, n1, n2, set,1);
 
 		cdatPie = new DefaultPieDataset[N1final][N2final];
 		cdatPie3D = new DefaultPieDataset[N1final][N2final];

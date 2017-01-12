@@ -70,7 +70,8 @@ public class HGraph extends GHFrame {
 	public HGraph(String title, int xsize, int ysize, int n1, int n2,
 			boolean set) {
 
-		super(title, xsize, ysize, n1, n2, set);
+                // minimalistic
+		super(title, xsize, ysize, n1, n2, set,1);
 
 		if (set)
 			setGraph();

@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Ant-Version: Apache Ant 1.9.3
-Created-By: 1.8.0_77-b03 (Oracle Corporation)
+Ant-Version: Apache Ant 1.9.6
+Created-By: 1.8.0_111-b14 (Oracle Corporation)
 Built-By: S.Chekanov and jWork.ORG
 Main-Class: test.Main
-Built-Date: 20160406
-Version: 1.4
+Built-Date: 20170112
+Version: 1.6
 Class-Path: 
 

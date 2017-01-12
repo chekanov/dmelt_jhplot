@@ -1,9 +1,27 @@
-// * This code is licensed under:
-// * JHPlot License, Version 1.0
-// * - for license details see http://hepforge.cedar.ac.uk/jhepwork/ 
-// *
-// * Copyright (c) 2005 by S.Chekanov (chekanov@mail.desy.de). 
-// * All rights reserved.
+/**
+ *    Copyright (C)  DataMelt project. The jHPLot package by S.Chekanov and Work.ORG
+ *    All rights reserved.
+ *
+ *    This program is free software; you can redistribute it and/or modify it under the terms
+ *    of the GNU General Public License as published by the Free Software Foundation; either
+ *    version 3 of the License, or any later version.
+ *
+ *    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *    without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *    See the GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License along with this program;
+ *    if not, see <http://www.gnu.org/licenses>.
+ *
+ *    Additional permission under GNU GPL version 3 section 7:
+ *    If you have received this program as a library with written permission from the DataMelt team,
+ *    you can link or combine this library with your non-GPL project to convey the resulting work.
+ *    In this case, this library should be considered as released under the terms of
+ *    GNU Lesser public license (see <https://www.gnu.org/licenses/lgpl.html>),
+ *    provided you include this license notice and a URL through which recipients can access the
+ *    Corresponding Source.
+ **/
+
 package jhplot.gui;
 
 import javax.swing.*;
@@ -53,11 +71,35 @@ abstract public class GHFrame extends GHPanel implements Serializable {
 
 	protected JMenu menu, about;
 
-	protected JMenuItem item11, item00, item01, item02, item03, item04, item05,
+	protected JMenuItem item11,  item00, item01, item02, item03, item04, item05,
 			item06, item12, item13;
 
+ 
+        protected int menusets=0;
+
+         /**
+         * Create main frame window with all HPlot menus.
+         * 
+         * @param title
+         *            Title
+         * @param xsize
+         *            size in x direction
+         * @param ysize
+         *            size in y direction
+         * @param n1
+         *            number of plots/graphs in x
+         * @param n2
+         *            number of plots/graphs in y
+         * @param set
+         *            set or not the graph
+         */
+        public GHFrame(String title, int xsize, int ysize, int n1, int n2,
+                        boolean set) {
+               this( title, xsize,  ysize, n1, n2, set, 0); 
+         }
+
 	/**
-	 * Create main frame window
+	 * Create main frame window for all Dmelt canvases.
 	 * 
 	 * @param title
 	 *            Title
@@ -71,11 +113,15 @@ abstract public class GHFrame extends GHPanel implements Serializable {
 	 *            number of plots/graphs in y
 	 * @param set
 	 *            set or not the graph
+         * @param menusets
+         *           menusets=0 for all menus. 1 means a minimalistic (with export, exit, help).
 	 */
 	public GHFrame(String title, int xsize, int ysize, int n1, int n2,
-			boolean set) {
+			boolean set, int menusets) {
 
 		super(xsize, ysize);
+
+                this.menusets = menusets;
 
 		if (n1 > 24 || n2 > 24) {
 
@@ -88,9 +134,7 @@ abstract public class GHFrame extends GHPanel implements Serializable {
 		}
 
 		mainFrame = new JFrame();
-
-		mainFrame
-				.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
+	        mainFrame.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent event) {
 				quitFrame();
@@ -145,7 +189,9 @@ abstract public class GHFrame extends GHPanel implements Serializable {
 		item05 = new JMenuItem(new ClearAction());
 		item06 = new JMenuItem(new RefreshAction());
 		item13 = new JMenuItem(new ReadDataAction());
-
+ 
+                // full menu
+                if (menusets==0){
 		menu.add(item01);
 		menu.add(item02);
 		menu.add(item03);
@@ -155,6 +201,16 @@ abstract public class GHFrame extends GHPanel implements Serializable {
 		menu.add(item06);
 		menu.insertSeparator(6);
 		menu.add(item00);
+                }
+
+
+                // minimalistic. Export, Print,  Exit.
+                if (menusets==1){
+                menu.add(item01);
+                menu.add(item02);
+                menu.insertSeparator(6);
+                menu.add(item00);
+                }
 
 		bar.add(menu);
 
@@ -451,7 +507,7 @@ abstract public class GHFrame extends GHPanel implements Serializable {
 		// System.out.println("Hidden\n" + e.getSource());
 	}// end componentHidden
 
-	private class ExitAction extends AbstractAction {
+	protected class ExitAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 
 		ExitAction() {
@@ -463,7 +519,7 @@ abstract public class GHFrame extends GHPanel implements Serializable {
 		}
 	}
 
-	private class ExportAction extends AbstractAction {
+	protected class ExportAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
 
 		ExportAction() {

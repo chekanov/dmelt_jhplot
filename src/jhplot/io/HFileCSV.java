@@ -41,7 +41,7 @@ import jhplot.io.csv.CSVWriter;
  * Write or read data in CSV (comma-separated values) format. The CSV is data
  * interchange Format (.csv) used to import/export spreadsheets between
  * spreadsheet programs. The files are simple text files that can be readable.
- * Should be used to write main ScaVis data structures and import them to
+ * Should be used to write main DMelt data structures and import them to
  * spreadsheet (such as OpenOffice). You can write only one object in one file.
  * 
  * @author S.Chekanov

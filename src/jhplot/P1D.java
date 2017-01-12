@@ -794,7 +794,7 @@ public class P1D extends DrawOptions implements Serializable {
 			}
 			return tmp;
 		}
-		
+	   	
 		if (dimen == 4) {
 			tmp=tmp+"#  X       Y     ErrorY-      ErrorY+ \n";
 			for (int i = 0; i < size(); i++) {
@@ -4167,7 +4167,8 @@ public class P1D extends DrawOptions implements Serializable {
 	 * x(left), x(right), y(upper), y(lower), x(leftSys), x(rightSys),
 	 * y(upperSys), y(lowerSys) - data with X and Y and 1st and 2nd level
 	 * errors. Comments lines starting with "#" and "*" are ignored.
-	 * 
+	 * Numbers are separated by a space.
+         * 
 	 * @param title
 	 *            Title of the container
 	 * @param url
@@ -4188,7 +4189,7 @@ public class P1D extends DrawOptions implements Serializable {
 	 * x(left), x(right), y(upper), y(lower), x(leftSys), x(rightSys),
 	 * y(upperSys), y(lowerSys) - data with X and Y and 1st and 2nd level
 	 * errors. Comments lines starting with "#" and "*" are ignored.
-	 * 
+	 * Numbers are seprated by space. 
 	 * @param url
 	 *            URL location
 	 */
@@ -4211,18 +4212,18 @@ public class P1D extends DrawOptions implements Serializable {
 		String line;
 		clear();
 
-	
+                int ncount=0;
+                boolean first=true;	
 		try {
 			while ((line = br.readLine()) != null) {
 
 				line = line.trim();
-				if (!line.startsWith("#") && !line.startsWith("*")) {
-
-					StringTokenizer st = new StringTokenizer(line);
-					int ncount = st.countTokens(); // number of words
-                    clear();
-                    setDimension(ncount);
-					
+				if (!line.startsWith("#") && !line.startsWith("*") && line.length()>1) {
+                                       
+                                        String[] currentLine = line.split("\\s+"); 
+                                        if (first) {
+                                                  setDimension(ncount); first=false; ncount = currentLine.length;};
+ 
 					double[] snum = new double[ncount];
 
 					if (ncount != 2 && ncount != 4 && ncount != 6
@@ -4233,23 +4234,17 @@ public class P1D extends DrawOptions implements Serializable {
 					}
 
 					// split this line
-					int mm = 0;
-					while (st.hasMoreTokens()) { // make sure there is stuff
-						// to get
-						String tmp = st.nextToken();
-
+                                        for (int k=0; k<ncount; k++) {
 						// read double
 						double dd = 0;
 						try {
-							dd = Double.parseDouble(tmp.trim());
+							dd = Double.parseDouble(currentLine[k]);
 						} catch (NumberFormatException e) {
 							ErrorMessage("Error in reading the line "
-									+ Integer.toString(mm + 1));
+									+ Integer.toString(k + 1));
 							return 3;
 						}
-						snum[mm] = dd;
-						mm++;
-
+						snum[k] = dd;
 					} // end loop over each line
 
 					if (ncount == 2)

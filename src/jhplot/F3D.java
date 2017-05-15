@@ -32,10 +32,16 @@ import jhplot.math.exp4j.*;
 
 /**
  * Create 3D function  using 3 independent variables: x,y,z.
+ *
+ * <p></p>
+ * One can enabled fast math calculation using @see jhplot.HParam.
+ * For example, setting jhplot.HParam.setFastMath(true) makes calculation of elementary functions 
+ * a factot 4-5 faster than using the standard Java Math, with precision of E-14. 
+ * <p></p> 
  * 
  * <p>
- * <b>Operators and functions</b><br/>
- * <br/>
+ * <b>Operators and functions</b>
+ * <br><br/>
  * the following operators are supported:
  * <ul>
  * <li>Addition: '2 + 2'</li>
@@ -65,8 +71,7 @@ import jhplot.math.exp4j.*;
  * <li>tan: tangent</li>
  * <li>tanh: hyperbolic tangent</li>
  * </ul>
- * <br/>
- * It also recognizes the pi (or Pi) values; <br/>
+ * It also recognizes the pi (or Pi) values. 
  * 
  * @author S.Chekanov
  * 
@@ -94,8 +99,8 @@ public class F3D extends DrawOptions  {
 	 * The function may have up to 3 independent variables: x,y,z.
 	 * This is unranged function.
 	 * 
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -125,9 +130,7 @@ public class F3D extends DrawOptions  {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
 	 * It also recognizes the pi (or Pi) values;
-	 * <br/>
 
 	 * @param name
 	 *            String representing the function
@@ -141,8 +144,8 @@ public class F3D extends DrawOptions  {
 	 * evaluation. The function may have up to 3 independent variables in it
 	 * (x,y,z). This is ranged function.
 	 *
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -172,8 +175,6 @@ public class F3D extends DrawOptions  {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
-	 * <br/>
 	 * 
 	 * 
 	 * @param name

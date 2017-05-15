@@ -41,10 +41,6 @@ import jhplot.gui.HelpBrowser;
 
 public class FND extends DrawOptions {
 
-	/**
-	 * 
-	 */
-
 	private FProxy proxy;
 	final int maxpoints = 200;
 	private static final long serialVersionUID = 1L;

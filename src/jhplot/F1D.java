@@ -33,12 +33,14 @@ import jhplot.math.exp4j.*;
  * could have parameters named in unique way as P0, P1, P2. In this case, the
  * function should not be parsed. Parameters have to be replaced with values
  * using setPar(x) method for evaluation.
- * 
- * 
+ * <p></p>
+ * One can enabled fast math calculation using @see jhplot.HParam. 
+ * For example, setting jhplot.HParam.setFastMath(true) makes calculation of elementary functions 
+ * a factot 4-5 faster than using the standard Java Math, with precision of E-14. 
+ * <p></p> 
  * The function may have one independent variable: x
  * <p>
- * <b>Operators and functions</b><br/>
- * <br/>
+ * <b>Operators and functions</b><br><br/>
  * the following operators are supported:
  * <ul>
  * <li>Addition: '2 + 2'</li>
@@ -69,8 +71,7 @@ import jhplot.math.exp4j.*;
  * <li>tan: tangent</li>
  * <li>tanh: hyperbolic tangent</li>
  * </ul>
- * <br/>
- * It also recognizes the pi (or Pi) values; <br/>
+ * It also recognizes the pi (or Pi) values. 
  * 
  * 
  * @author S.Chekanov
@@ -108,8 +109,8 @@ public class F1D extends DrawOptions {
 	 * 
 	 * The function may have one independent variable: x. Example: x*x
 	 * 
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br></br> 
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -139,10 +140,7 @@ public class F1D extends DrawOptions {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
 	 * It also recognizes the pi (or Pi) values;
-	 * 
-	 * <br/>
 	 * 
 	 * 
 	 * @param name
@@ -195,8 +193,8 @@ public class F1D extends DrawOptions {
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -227,9 +225,7 @@ public class F1D extends DrawOptions {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
-	 * It also recognizes the pi (or Pi) values; <br/>
-	 * 
+	 * It also recognizes the pi (or Pi) values.
 	 * 
 	 * @param title
 	 *            title
@@ -302,8 +298,8 @@ public class F1D extends DrawOptions {
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -334,8 +330,7 @@ public class F1D extends DrawOptions {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
-	 * It also recognizes the pi (or Pi) values; <br/>
+	 * It also recognizes the pi (or Pi) values. 
 	 * 
 	 * 
 	 * @param title
@@ -397,8 +392,8 @@ public class F1D extends DrawOptions {
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -429,8 +424,7 @@ public class F1D extends DrawOptions {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
-	 * It also recognizes the pi (or Pi) values; <br/>
+	 * It also recognizes the pi (or Pi) values.  
 	 * 
 	 * 
 	 * @param name
@@ -453,8 +447,8 @@ public class F1D extends DrawOptions {
 	 * 
 	 * The function may have one independent variable: x
 	 * <p>
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -485,8 +479,7 @@ public class F1D extends DrawOptions {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
-	 * It also recognizes the pi (or Pi) values; <br/>
+	 * It also recognizes the pi (or Pi) values. 
 	 * 
 	 * @param title
 	 *            title
@@ -558,8 +551,8 @@ public class F1D extends DrawOptions {
 	 * Function can have parameters, in which case set parsing to false. You can
 	 * parse this function later after substitution of numeric parameter.
 	 * <p>
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -589,8 +582,6 @@ public class F1D extends DrawOptions {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
-	 * <br/>
 	 * 
 	 * @param name
 	 *            name

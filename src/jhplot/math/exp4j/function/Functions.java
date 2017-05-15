@@ -15,8 +15,13 @@
 */
 package jhplot.math.exp4j.function;
 
+import net.jafama.FastMath;
+
 /**
  * Class representing the builtin functions available for use in expressions
+ * You can enabled fast math calculation using  
+ * @see jhplot.HParam 
+ * @author F. Asseg and S.Chekanov 
  */
 public class Functions {
     private static final int INDEX_SIN = 0;
@@ -47,42 +52,49 @@ public class Functions {
         builtinFunctions[INDEX_SIN] = new Function("sin") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.sin(args[0]);
                 return Math.sin(args[0]);
             }
         };
         builtinFunctions[INDEX_COS] = new Function("cos") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.cos(args[0]);
                 return Math.cos(args[0]);
             }
         };
         builtinFunctions[INDEX_TAN] = new Function("tan") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.tan(args[0]);
                 return Math.tan(args[0]);
             }
         };
         builtinFunctions[INDEX_LOG] = new Function("log") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.log(args[0]);
                 return Math.log(args[0]);
             }
         };
         builtinFunctions[INDEX_LOG2] = new Function("log2") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.log(args[0]) / FastMath.log(2d);
                 return Math.log(args[0]) / Math.log(2d);
             }
         };
         builtinFunctions[INDEX_LOG10] = new Function("log10") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.log10(args[0]);
                 return Math.log10(args[0]);
             }
         };
         builtinFunctions[INDEX_LOG1P] = new Function("log1p") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.log1p(args[0]);
                 return Math.log1p(args[0]);
             }
         };
@@ -95,18 +107,21 @@ public class Functions {
         builtinFunctions[INDEX_ACOS] = new Function("acos") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.acos(args[0]);
                 return Math.acos(args[0]);
             }
         };
         builtinFunctions[INDEX_ASIN] = new Function("asin") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.asin(args[0]);
                 return Math.asin(args[0]);
             }
         };
         builtinFunctions[INDEX_ATAN] = new Function("atan") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.atan(args[0]);
                 return Math.atan(args[0]);
             }
         };
@@ -119,54 +134,63 @@ public class Functions {
         builtinFunctions[INDEX_FLOOR] = new Function("floor") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.floor(args[0]);
                 return Math.floor(args[0]);
             }
         };
         builtinFunctions[INDEX_SINH] = new Function("sinh") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.sinh(args[0]);
                 return Math.sinh(args[0]);
             }
         };
         builtinFunctions[INDEX_SQRT] = new Function("sqrt") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.sqrt(args[0]);
                 return Math.sqrt(args[0]);
             }
         };
         builtinFunctions[INDEX_TANH] = new Function("tanh") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.tanh(args[0]);
                 return Math.tanh(args[0]);
             }
         };
         builtinFunctions[INDEX_COSH] = new Function("cosh") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.cosh(args[0]);
                 return Math.cosh(args[0]);
             }
         };
         builtinFunctions[INDEX_CEIL] = new Function("ceil") {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.ceil(args[0]);
                 return Math.ceil(args[0]);
             }
         };
         builtinFunctions[INDEX_POW] = new Function("pow", 2) {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.pow(args[0], args[1]);
                 return Math.pow(args[0], args[1]);
             }
         };
         builtinFunctions[INDEX_EXP] = new Function("exp", 1) {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.exp(args[0]);
                 return Math.exp(args[0]);
             }
         };
         builtinFunctions[INDEX_EXPM1] = new Function("expm1", 1) {
             @Override
             public double apply(double... args) {
+                if (jhplot.HParam.isFastMath()) return FastMath.expm1(args[0]);
                 return Math.expm1(args[0]);
             }
         };

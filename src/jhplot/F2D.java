@@ -29,10 +29,13 @@ import jhplot.gui.HelpBrowser;
 
 /**
  * Create 2D function. The function may have up to 2 independent variables: x,y.
- * 
- * <p>
- * <b>Operators and functions</b><br/>
- * <br/>
+ * <p></p>
+ * One can enabled fast math calculation using @see jhplot.HParam.
+ * For example, setting jhplot.HParam.setFastMath(true) makes calculation of elementary functions 
+ * a factot 4-5 faster than using the standard Java Math, with precision of E-14. 
+ * <p></p> 
+ * <b>Operators and functions</b>
+ * <br><br/>
  * the following operators are supported:
  * <ul>
  * <li>Addition: '2 + 2'</li>
@@ -63,8 +66,7 @@ import jhplot.gui.HelpBrowser;
  * <li>tan: tangent</li>
  * <li>tanh: hyperbolic tangent</li>
  * </ul>
- * <br/>
- * It also recognizes the pi (or Pi) values; <br/>
+ * It also recognizes the pi (or Pi) values. 
  * 
  * 
  * 
@@ -94,8 +96,8 @@ public class F2D extends DrawOptions {
 	 * The function may have up to 2 independent variables: x,y.
 	 * 
 	 * <p>
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b> 
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -125,8 +127,7 @@ public class F2D extends DrawOptions {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
-	 * It also recognizes the pi (or Pi) values; <br/>
+	 * It also recognizes the pi (or Pi) values.
 	 * 
 	 * 
 	 * @param name
@@ -153,8 +154,8 @@ public class F2D extends DrawOptions {
 	 * between min and max value for evaluation. The function may have up to 2
 	 * independent variables in it (x,y).
 	 * 
-	 * <b>Operators and functions</b><br/>
-	 * <br/>
+	 * <b>Operators and functions</b>
+	 * <br><br/>
 	 * the following operators are supported:
 	 * <ul>
 	 * <li>Addition: '2 + 2'</li>
@@ -184,10 +185,6 @@ public class F2D extends DrawOptions {
 	 * <li>tan: tangent</li>
 	 * <li>tanh: hyperbolic tangent</li>
 	 * </ul>
-	 * <br/>
-	 * <br/>
-	 * 
-	 * 
 	 * 
 	 * @param name
 	 *            String representing the function.

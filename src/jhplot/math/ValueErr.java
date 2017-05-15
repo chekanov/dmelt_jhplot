@@ -9,10 +9,13 @@
 package jhplot.math;
 
 import java.io.*;
+import net.jafama.FastMath;
 
 /**
  * A value represented with the number (value) and associated error. This class
  * contains methods useful for error propagation.
+ * You can enabled fast math calculation using  
+ * @see jhplot.HParam 
  * 
  * @author Dr Chekanov
  * 
@@ -798,7 +801,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr log(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.log(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.log(a.val);
+		else b.val = Math.log(a.val);
 		b.err = Math.abs(a.err / a.val);
 		return b;
 	}
@@ -812,7 +816,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr log10(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = log10(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.log10(a.val);
+		else b.val = log10(a.val);
 		b.err = Math.abs(a.err / (a.val * Math.log(10.0D)));
 		return b;
 	}
@@ -826,7 +831,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr sqrt(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.sqrt(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.sqrt(a.val); 
+		else b.val = Math.sqrt(a.val);
 		b.err = Math.abs(a.err / (2.0D * a.val));
 		return b;
 	}
@@ -839,7 +845,8 @@ public class ValueErr implements Serializable {
 			throw new ArithmeticException(
 					"Division by zero (n = 0 - infinite root)");
 		ValueErr b = new ValueErr();
-		b.val = Math.pow(a.val, 1 / n);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.pow(a.val, 1 / n);
+		else b.val = Math.pow(a.val, 1 / n);
 		b.err = Math.abs(a.err * Math.pow(a.val, 1 / n - 1) / ((double) n));
 		return b;
 	}
@@ -864,7 +871,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr pow(ValueErr a, double b) {
 		ValueErr c = new ValueErr();
-		c.val = Math.pow(a.val, b);
+                if (jhplot.HParam.isFastMath()) c.val = FastMath.pow(a.val, b);
+		else c.val = Math.pow(a.val, b);
 		c.err = Math.abs(b * Math.pow(a.val, b - 1.0));
 		return c;
 	}
@@ -874,7 +882,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr pow(double a, ValueErr b) {
 		ValueErr c = new ValueErr();
-		c.val = Math.pow(a, b.val);
+                if (jhplot.HParam.isFastMath()) c.val = FastMath.pow(a, b.val);
+		else c.val = Math.pow(a, b.val);
 		c.err = Math.abs(c.val * Math.log(a) * b.err);
 		return c;
 	}
@@ -884,7 +893,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr pow(ValueErr a, ValueErr b, double corrCoeff) {
 		ValueErr c = new ValueErr();
-		c.val = Math.pow(a.val, b.val);
+                if (jhplot.HParam.isFastMath()) c.val = FastMath.pow(a.val, b.val); 
+		else c.val = Math.pow(a.val, b.val);
 		c.err = hypWithCovariance(a.err * b.val * Math.pow(a.val, b.val - 1.0),
 				b.err * Math.log(a.val) * Math.pow(a.val, b.val), corrCoeff);
 		return c;
@@ -895,7 +905,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr pow(ValueErr a, ValueErr b) {
 		ValueErr c = new ValueErr();
-		c.val = Math.pow(a.val, b.val);
+                if (jhplot.HParam.isFastMath()) c.val = FastMath.pow(a.val, b.val);
+		else c.val = Math.pow(a.val, b.val);
 		c.err = hypWithCovariance(a.err * b.val * Math.pow(a.val, b.val - 1.0),
 				b.err * Math.log(a.val) * Math.pow(a.val, b.val), 0.0D);
 		return c;
@@ -906,7 +917,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr sin(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.sin(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.sin(a.val);
+		else b.val = Math.sin(a.val);
 		b.err = Math.abs(a.err * Math.cos(a.val));
 		return b;
 	}
@@ -916,7 +928,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr cos(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.cos(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.cos(a.val);
+		else b.val = Math.cos(a.val);
 		b.err = Math.abs(a.err * Math.sin(a.val));
 		return b;
 	}
@@ -926,7 +939,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr tan(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.tan(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.tan(a.val);
+		else b.val = Math.tan(a.val);
 		b.err = Math.abs(a.err * square(sec(a.val)));
 		return b;
 	}
@@ -950,7 +964,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr sinh(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.sinh(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.sinh(a.val);
+		else b.val = Math.sinh(a.val);
 		b.err = Math.abs(a.err * Math.cosh(a.val));
 		return b;
 	}
@@ -960,7 +975,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr cosh(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.cosh(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.cosh(a.val);
+		else b.val = Math.cosh(a.val);
 		b.err = Math.abs(a.err * Math.sinh(a.val));
 		return b;
 	}
@@ -970,7 +986,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr tanh(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.tanh(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.tanh(a.val);
+		else b.val = Math.tanh(a.val);
 		b.err = Math.abs(a.err * square(sech(a.val)));
 		return b;
 	}
@@ -987,7 +1004,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr asin(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.asin(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.asin(a.val);
+		else b.val = Math.asin(a.val);
 		b.err = Math.abs(a.err / Math.sqrt(1.0D - a.val * a.val));
 		return b;
 	}
@@ -997,7 +1015,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr acos(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.acos(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.acos(a.val);
+                else b.val = Math.acos(a.val); 
 		b.err = Math.abs(a.err / Math.sqrt(1.0D - a.val * a.val));
 		return b;
 	}
@@ -1007,7 +1026,8 @@ public class ValueErr implements Serializable {
 	 */
 	public ValueErr atan(ValueErr a) {
 		ValueErr b = new ValueErr();
-		b.val = Math.atan(a.val);
+                if (jhplot.HParam.isFastMath()) b.val = FastMath.atan(a.val);
+		else b.val = Math.atan(a.val);
 		b.err = Math.abs(a.err / (1.0D + a.val * a.val));
 		return b;
 	}
@@ -1029,7 +1049,8 @@ public class ValueErr implements Serializable {
 	public ValueErr atan2(ValueErr a, ValueErr b, double rho) {
 		ValueErr c = new ValueErr();
 		ValueErr d = a.divide(b, rho);
-		c.val = Math.atan2(a.val, b.val);
+                if (jhplot.HParam.isFastMath()) c.val = FastMath.atan2(a.val, b.val);
+		else c.val = Math.atan2(a.val, b.val);
 		c.err = Math.abs(d.err / (1.0D + d.val * d.val));
 		return c;
 	}

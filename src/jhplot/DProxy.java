@@ -60,8 +60,8 @@ public class DProxy implements Serializable {
 /**
          * Create a proxy for histogram. 
          * 
-         * @param P1D
-         *            hh 
+         * @param h input histogram 
+         *             
          */
           public DProxy(H1D h) {
              int ibins = h.getBins() + 2;
@@ -364,7 +364,7 @@ public class DProxy implements Serializable {
 	/**
 	 * Get the title of the function.
 	 * 
-	 * @returnTitle
+	 * @return Title
 	 */
 	public String getTitle() {
 		return this.title;

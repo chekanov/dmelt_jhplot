@@ -270,7 +270,7 @@ public class DrawOptions extends Plottable implements Serializable {
 	/**
 	 * Fill or not histogram or function.
 	 * 
-	 * @param cfill
+	 * @return  
 	 *            true if a drawing object should be filled
 	 */
 	public boolean isFilled() {
@@ -798,7 +798,7 @@ public class DrawOptions extends Plottable implements Serializable {
 	/**
 	 * Set the size of small tics shown at the end of error bars.
 	 * 
-	 * @param size
+	 * @param w 
 	 *            size of the small tic at ends of error bars
 	 */
 	public void setErrTicSize(double w) {
@@ -806,7 +806,7 @@ public class DrawOptions extends Plottable implements Serializable {
 	}
 
 	/**
-	 * Set the size of the symbols
+	 * Set the size of the symbols. 
 	 * 
 	 * @param w
 	 *            Size of the symbols
@@ -816,15 +816,15 @@ public class DrawOptions extends Plottable implements Serializable {
 	}
 
 	/**
-	 * Get the size of the symbols
-	 * 
+	 * Get the size of the symbols. 
+	 * @return  symbol size. 
 	 */
 	public double getSymbolSize() {
 		return (double) lpp.getSymbolSize();
 	}
 
 	/**
-	 * Set the style of the graph
+	 * Set the style of the graph. 
 	 * 
 	 * 
 	 * @param w

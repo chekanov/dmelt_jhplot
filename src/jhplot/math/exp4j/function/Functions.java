@@ -15,7 +15,9 @@
 */
 package jhplot.math.exp4j.function;
 
-import net.jafama.FastMath;
+import org.apache.commons.math3.util.FastMath;
+
+
 
 /**
  * Class representing the builtin functions available for use in expressions

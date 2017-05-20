@@ -29,10 +29,9 @@ import graph.RTextLine;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
-
 import java.text.DecimalFormat;
 import java.text.Format;
-
+import org.apache.commons.math3.util.FastMath;
 import org.freehep.graphics2d.VectorGraphics;
 
 /**
@@ -99,7 +98,7 @@ public class GraphXY extends GraphGeneral {
 				k += 1.0;
 			}
 		}
-		return Math.pow(x, k);
+		return FastMath.pow(x, k);
 	}
 
 	/**
@@ -204,11 +203,11 @@ public class GraphXY extends GraphGeneral {
 		double tic = Axis.calculateTicSep(min, max, gs.getMaxNumberOfTics());
 		if (gs.autoRange(axis)) {
 			if (min < max) {
-				min = (double) tic * Math.floor(min / tic);
-				max = (double) tic * Math.ceil(max / tic);
+				min = (double) tic * FastMath.floor(min / tic);
+				max = (double) tic * FastMath.ceil(max / tic);
 			} else {
-				min = (double) tic * Math.ceil(min / tic);
-				max = (double) tic * Math.floor(max / tic);
+				min = (double) tic * FastMath.ceil(min / tic);
+				max = (double) tic * FastMath.floor(max / tic);
 			}
 		}
 
@@ -227,12 +226,12 @@ public class GraphXY extends GraphGeneral {
 				gs.setNumberOfTics(axis, numberOfTics[axis]);
 			}
 		}
-		diff[axis] = (double) Math.abs(min - max);
+		diff[axis] = (double) FastMath.abs(min - max);
 
 		if (gs.useLogScale(axis)) {
 
-			min = Math.pow(10, min);
-			max = Math.pow(10, max);
+			min = FastMath.pow(10, min);
+			max = FastMath.pow(10, max);
 
 			if (numberOfTics[axis] > diff[axis]) {
 				// the following (1.0+1e-10) trick is introduced, again
@@ -266,12 +265,12 @@ public class GraphXY extends GraphGeneral {
 		AxisExponent[axis] = 0;
 
 		// determine exponent for labels
-		if (Math.abs(min) > Math.abs(max))
-			AxisExponent[axis] = ((int) Math
-					.floor(Math.log10(Math.abs(min)) / 3.0)) * 3;
+		if (FastMath.abs(min) > FastMath.abs(max))
+			AxisExponent[axis] = ((int) FastMath
+					.floor(FastMath.log10(Math.abs(min)) / 3.0)) * 3;
 		else
-			AxisExponent[axis] = ((int) Math
-					.floor(Math.log10(Math.abs(max)) / 3.0)) * 3;
+			AxisExponent[axis] = ((int) FastMath
+					.floor(FastMath.log10(Math.abs(max)) / 3.0)) * 3;
 
 		// if (axis == Y && AxisExponent[axis] != 0 ) {
 		// System.out.println(" Exponent for axis = " + axis + " exponent = " +
@@ -299,11 +298,11 @@ public class GraphXY extends GraphGeneral {
 		int origExpY = AxisExponent[Y];
 
 		// when to use exponential form?
-		if (Math.abs(AxisExponent[X]) <= 4) {
+		if (FastMath.abs(AxisExponent[X]) <= 4) {
 			AxisExponent[X] = 0;
 		}
 
-		if (Math.abs(AxisExponent[Y]) <= 4) {
+		if (FastMath.abs(AxisExponent[Y]) <= 4) {
 			AxisExponent[Y] = 0;
 		}
 
@@ -344,7 +343,7 @@ public class GraphXY extends GraphGeneral {
 			// extract
 			double NoExpon = ticval;
 			if (!gs.useLogScale(X)) {
-				NoExpon = ticval / Math.pow(10.0d, AxisExponent[X]);
+				NoExpon = ticval / FastMath.pow(10.0d, AxisExponent[X]);
 				ticstr = Utils.FormNum(NoExpon, MinAxis[X], MaxAxis[X]);
 
 			} else {
@@ -400,7 +399,7 @@ public class GraphXY extends GraphGeneral {
 			// extract
 			double NoExpon = ticval;
 			if (!gs.useLogScale(Y)) {
-				NoExpon = ticval / Math.pow(10.0d, AxisExponent[Y]);
+				NoExpon = ticval / FastMath.pow(10.0d, AxisExponent[Y]);
 				ticstr = Utils.FormNum(NoExpon, MinAxis[Y], MaxAxis[Y]);
 			} else {
 
@@ -998,7 +997,7 @@ public class GraphXY extends GraphGeneral {
 
 		if (gs.useLogScale(X)) {
 
-			mPosX = Math.pow(10, d) * gs.getMinValue(X);
+			mPosX = FastMath.pow(10, d) * gs.getMinValue(X);
 
 		} else {
 
@@ -1027,7 +1026,7 @@ public class GraphXY extends GraphGeneral {
 
 		double mPosY;
 		if (gs.useLogScale(Y)) {
-			mPosY = Math.pow(10.0, d) * gs.getMinValue(Y);
+			mPosY = FastMath.pow(10.0, d) * gs.getMinValue(Y);
 		} else {
 			mPosY = d + gs.getMinValue(Y);
 
@@ -1630,7 +1629,7 @@ public class GraphXY extends GraphGeneral {
 					if (da.getDashLength() > 0
 							&& (da.getType() == LinePars.H1D || da.getType() == LinePars.F1D)) {
 
-						double minDist = Math.sqrt((pp.getX() - prev.getX())
+						double minDist = FastMath.sqrt((pp.getX() - prev.getX())
 								* (pp.getX() - prev.getX())
 								+ (pp.getY() - prev.getY())
 								* (pp.getY() - prev.getY()));

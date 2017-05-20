@@ -4,8 +4,8 @@ package jhplot.bsom;
  * @(#)Matrix.java	1.3	20/9/96 Akio Utsugi
  */
 
-import java.lang.Math;
 import java.util.Random;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * Matrix is a class for matrix objects with basic linear calculation methods.
@@ -273,7 +273,7 @@ public class Matrix
 	for(k = 0; k < m; k++){
 	    pp=L.value[k][k];
 	    
-	    if(Math.abs(pp)< small){
+	    if(FastMath.abs(pp)< small){
 		return null;
 	    }
 	    w = 1/pp;
@@ -356,7 +356,7 @@ public class Matrix
 	
 	for(i=0; i<row; i++){
 	    for(j=0; j<col; j++){
-		value[i][j] = Math.exp(value[i][j]);
+		value[i][j] = FastMath.exp(value[i][j]);
 	    }
 	}
     }
@@ -487,7 +487,7 @@ public class Matrix
 	    }
 	}
 	else{
-	    n = Math.min(row, col);
+	    n = FastMath.min(row, col);
 	    ret = new Matrix(1, n);
 	    for(i=0; i< n; i++){
 		ret.value[0][i] = value[i][i];
@@ -516,12 +516,12 @@ public class Matrix
 	ll=0;
 
 	do{
-	    pmax = Math.abs(px.value[0][1]);
+	    pmax = FastMath.abs(px.value[0][1]);
 	    ll++;
 	    for(i=0; i<n-1; i++){
 		for(j=i+1; j<n; j++){
-		    if(pmax<= Math.abs(px.value[i][j])){
-			pmax= Math.abs(px.value[i][j]);
+		    if(pmax<= FastMath.abs(px.value[i][j])){
+			pmax= FastMath.abs(px.value[i][j]);
 			im=i;
 			jm=j;
 		    
@@ -535,8 +535,8 @@ public class Matrix
 
 	    d=pii-pjj;
 	    dd=d*d+4.*pij*pij;
-	    tn=2.*pij/(d+Math.sqrt(dd)*(d > 0 ? 1 : -1));
-	    a=1./Math.sqrt(1.+tn*tn);
+	    tn=2.*pij/(d+FastMath.sqrt(dd)*(d > 0 ? 1 : -1));
+	    a=1./FastMath.sqrt(1.+tn*tn);
 	    b=a*tn;
 
 	    for(i=0; i<n; i++){

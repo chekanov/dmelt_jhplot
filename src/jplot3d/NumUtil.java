@@ -2,6 +2,7 @@ package jplot3d;
 
 
 import java.text.NumberFormat;
+import org.apache.commons.math3.util.FastMath;
 
 // keep current data
    public class  NumUtil{
@@ -13,12 +14,12 @@ import java.text.NumberFormat;
      * Note: The argument must be strictly positive.
      */
     public static double roundUp(double val) {
-        int exponent = (int) Math.floor(Math.log10(val));
-        val *= Math.pow(10, -exponent);
+        int exponent = (int) FastMath.floor(FastMath.log10(val));
+        val *= FastMath.pow(10, -exponent);
         if (val > 5.0) val = 10.0;
         else if (val > 2.0) val = 5.0;
         else if (val > 1.0) val = 2.0;
-        val *= Math.pow(10, exponent);
+        val *= FastMath.pow(10, exponent);
         return val;
     }
 
@@ -29,7 +30,7 @@ import java.text.NumberFormat;
      */
     public static int numFracDigits(double num) {
         int numdigits = 0;
-        while (numdigits <= 15 && num != Math.floor(num)) {
+        while (numdigits <= 15 && num != FastMath.floor(num)) {
             num *= 10.0;
             numdigits += 1;
         }

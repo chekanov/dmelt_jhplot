@@ -2,7 +2,7 @@ package jhplot.math.pca.covmatrixevd;
 
 
 
-
+import org.apache.commons.math3.util.FastMath;
 import jhplot.math.pca.*;
 import Jama.Matrix;
 import Jama.SingularValueDecomposition;
@@ -25,7 +25,7 @@ public class SVDBased implements CovarianceMatrixEVDCalculator{
 			if(i < m) val = singularValues[i];
 			else val = 0;
 			
-			d.set(i, i, 1.0/(m-1) * Math.pow(val, 2));
+			d.set(i, i, 1.0/(m-1) * FastMath.pow(val, 2));
 		}
 		Matrix v = svd.getV();
 		return new EVDResult(d, v);

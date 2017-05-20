@@ -1,5 +1,7 @@
 package jhplot.math;
 
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * Singular Value Decomposition.
@@ -256,7 +258,7 @@ public class SingularValueDecomposition {
 
         int pp = p - 1;
         int iter = 0;
-        double eps = Math.pow(2.0, -52.0);
+        double eps = FastMath.pow(2.0, -52.0);
         while (p > 0) {
             int k, kase;
 
@@ -276,7 +278,7 @@ public class SingularValueDecomposition {
                 if (k == -1) {
                     break;
                 }
-                if (Math.abs(e[k]) <= eps * (Math.abs(s[k]) + Math.abs(s[k + 1]))) {
+                if (FastMath.abs(e[k]) <= eps * (FastMath.abs(s[k]) + FastMath.abs(s[k + 1]))) {
                     e[k] = 0.0;
                     break;
                 }
@@ -289,8 +291,8 @@ public class SingularValueDecomposition {
                     if (ks == k) {
                         break;
                     }
-                    double t = (ks != p ? Math.abs(e[ks]) : 0.) + (ks != k + 1 ? Math.abs(e[ks - 1]) : 0.);
-                    if (Math.abs(s[ks]) <= eps * t) {
+                    double t = (ks != p ? FastMath.abs(e[ks]) : 0.) + (ks != k + 1 ? FastMath.abs(e[ks - 1]) : 0.);
+                    if (FastMath.abs(s[ks]) <= eps * t) {
                         s[ks] = 0.0;
                         break;
                     }
@@ -550,7 +552,7 @@ public class SingularValueDecomposition {
      */
 
     public int rank() {
-        double eps = Math.pow(2.0, -52.0);
+        double eps = FastMath.pow(2.0, -52.0);
         double tol = Math.max(m, n) * s[0] * eps;
         int r = 0;
         for (int i = 0; i < s.length; i++) {

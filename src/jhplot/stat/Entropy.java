@@ -26,6 +26,8 @@
 *******************************************************************************/
 
 package jhplot.stat;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * Implements common discrete Shannon Entropy functions.
@@ -59,11 +61,11 @@ public abstract class Entropy
     {
       if (prob > 0) 
       {
-        entropy -= prob * Math.log(prob);
+        entropy -= prob * FastMath.log(prob);
       }
     }
 
-    entropy /= Math.log(LOG_BASE);
+    entropy /= FastMath.log(LOG_BASE);
     
     return entropy;
   }//calculateEntropy(double [])
@@ -92,11 +94,11 @@ public abstract class Entropy
       condValue = state.secondProbMap.get(key / numFirstStates);
       if ((jointValue > 0) && (condValue > 0))
       {
-        condEntropy -= jointValue * Math.log(jointValue / condValue);
+        condEntropy -= jointValue * FastMath.log(jointValue / condValue);
       }
     }
     
-    condEntropy /= Math.log(LOG_BASE);
+    condEntropy /= FastMath.log(LOG_BASE);
 
     return condEntropy;
   }//calculateConditionalEntropy(double [],double [])
@@ -121,11 +123,11 @@ public abstract class Entropy
     {
       if (prob > 0) 
       {
-        entropy -= prob * Math.log(prob);
+        entropy -= prob * FastMath.log(prob);
       }
     }
 
-    entropy /= Math.log(LOG_BASE);
+    entropy /= FastMath.log(LOG_BASE);
     
     return entropy;
   }//calculateJointEntropy(double [],double [])

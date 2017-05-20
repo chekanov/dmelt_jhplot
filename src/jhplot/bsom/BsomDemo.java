@@ -8,10 +8,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.*;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * BsomDemo is an applet for the demonstration of Bayesian Self-Organizing Maps.
@@ -104,8 +105,8 @@ public class BsomDemo extends JFrame {
 		 * Double.valueOf(p).doubleValue();
 		 */
 
-		initial_alpha = Math.pow(10., alpha_max_power);
-		initial_beta = Math.pow(10., beta_min_power);
+		initial_alpha = FastMath.pow(10., alpha_max_power);
+		initial_beta = FastMath.pow(10., beta_min_power);
 
 		xd = 210;
 		yd = 150;
@@ -560,8 +561,8 @@ class Visible2DPointArray extends Matrix {
 		int i;
 
 		for (i = 0; i < row; i++) {
-			if (Math.abs(x - (int) (scale * (value[i][0] - xo)) - dxo) <= radius
-					&& Math.abs(y - (int) (-scale * (value[i][1] - yo)) - dyo) <= radius)
+			if (FastMath.abs(x - (int) (scale * (value[i][0] - xo)) - dxo) <= radius
+					&& FastMath.abs(y - (int) (-scale * (value[i][1] - yo)) - dyo) <= radius)
 				return i;
 		}
 		return -1;
@@ -605,7 +606,7 @@ class Data extends Visible2DPointArray {
 		for (i = 0; i < n; i++) {
 			x = i;
 			value[i][0] = width * (2 * x / n - 1);
-			value[i][1] = height * Math.sin(2 * Math.PI * (x / n + phase));
+			value[i][1] = height * FastMath.sin(2 * FastMath.PI * (x / n + phase));
 		}
 
 		this.updateLinearConv(1., noise_level, noise);
@@ -854,7 +855,7 @@ class DrawArea extends Canvas implements Runnable {
 					// System.out.println("gamma="+Double.toString(gamma));
 					// System.out.println("alpha="+Double.toString(alpha));
 					// System.out.println("beta="+Double.toString(beta));
-					if (Math.abs(gamma - ini_gam) < delta)
+					if (FastMath.abs(gamma - ini_gam) < delta)
 						break;
 					ini_gam = gamma;
 				}
@@ -1078,7 +1079,7 @@ class HpSlider extends JSlider {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	static final double LOG10 = Math.log(10.);
+	static final double LOG10 = FastMath.log(10.);
 	protected DrawArea drawArea;
 	protected double min_power, max_power;
 	protected boolean stored_mode;
@@ -1172,19 +1173,19 @@ class HpSlider extends JSlider {
 
 	double getValueFromSlider() {
 		double power = value / 100. * range + min_power;
-		double v = Math.pow(10., power);
+		double v = FastMath.pow(10., power);
 		return v;
 	}
 
 	public double setValueOfSlider(double x) {
-		int v = (int) ((Math.log(x) / LOG10 - min_power) / range * 100);
+		int v = (int) ((FastMath.log(x) / LOG10 - min_power) / range * 100);
 
 		if (v < 1) {
 			v = 1;
-			x = Math.pow(10., 1. / 100. * range + min_power);
+			x = FastMath.pow(10., 1. / 100. * range + min_power);
 		} else if (v > 100) {
 			v = 100;
-			x = Math.pow(10., 1. * range + min_power);
+			x = FastMath.pow(10., 1. * range + min_power);
 		}
 
 		setValue(v);

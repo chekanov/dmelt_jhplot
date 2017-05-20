@@ -27,6 +27,7 @@ package jhplot.fit;
 
 
 import hep.aida.ref.function.AbstractIFunction;
+import org.apache.commons.math3.util.FastMath;
 
 /**
   * Gaussian distribution.
@@ -54,7 +55,7 @@ public class Gauss extends AbstractIFunction {
 
          //  if (p[2] == 0) return 1.e30;
           double  arg = (v[0]-p[1])/p[2];
-          double  res = p[0]*Math.exp(-0.5*arg*arg);
+          double  res = p[0]*FastMath.exp(-0.5*arg*arg);
           return res;
           // return res/(2.50662827463100024*sigma); //sqrt(2*Pi)=2.50662827463100024
 

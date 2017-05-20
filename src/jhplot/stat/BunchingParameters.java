@@ -1,10 +1,9 @@
 package jhplot.stat;
 
-import java.lang.Math;
 
 import jhplot.P1D;
 import jhplot.gui.HelpBrowser;
-
+import org.apache.commons.math3.util.FastMath;
 
 
 /**
@@ -298,12 +297,12 @@ public class BunchingParameters {
 		                  tmp=false;
 		                  }
 		
-		double p4=Math.pow(H[i][m],4);	
+		double p4=FastMath.pow(H[i][m],4);	
 		double p2=H[i-1][m]*H[i-1][m];
-	        double p5=Math.pow(H[i][m],5);
+	        double p5=FastMath.pow(H[i][m],5);
 	
 		A1=CE[i+1][i+1][m]*p2/p4;
-		A2=4*CE[i][i][m]*(H[i+1][m]*H[i+1][m])*p2/Math.pow(H[i][m],6);
+		A2=4*CE[i][i][m]*(H[i+1][m]*H[i+1][m])*p2/FastMath.pow(H[i][m],6);
 		A3=CE[i-1][i-1][m]*(H[i+1][m]*H[i+1][m])/p4;
 		A4=2*CE[i+1][i-1][m]*H[i+1][m]*H[i-1][m]/p4;
 		A5=4*CE[i+1][i][m]*H[i+1][m]*p2/p5;
@@ -311,11 +310,11 @@ public class BunchingParameters {
 				    
 				       
              AM=A1+A2+A3+A4-A5-A6;
-	     ER[i+1][m]=( (double)(i+1)/i)*Math.sqrt(AM);
+	     ER[i+1][m]=( (double)(i+1)/i)*FastMath.sqrt(AM);
 	     
 	     // take logs
-	     // ER[i+1][m]=Math.sqrt( (ER[i+1][m]*ER[i+1][m])/(BP[i+1][m]*BP[i+1][m])) ;
-	     // BP[i+1][m]=Math.log(BP[i+1][m]);
+	     // ER[i+1][m]=FastMath.sqrt( (ER[i+1][m]*ER[i+1][m])/(BP[i+1][m]*BP[i+1][m])) ;
+	     // BP[i+1][m]=FastMath.log(BP[i+1][m]);
 
 		 }}
 			

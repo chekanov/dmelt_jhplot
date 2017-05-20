@@ -1,6 +1,8 @@
 package jhplot.bsom;
 
 import java.util.Vector;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * User's data.
@@ -40,11 +42,11 @@ public class UserData extends Data {
 		for (i = 0; i < n; i++) {
 			value[i][0] -= mx;
 			value[i][1] -= my;
-			if (Math.abs(value[i][0]) > dmax) {
-				dmax = Math.abs(value[i][0]);
+			if (FastMath.abs(value[i][0]) > dmax) {
+				dmax = FastMath.abs(value[i][0]);
 			}
-			if (Math.abs(value[i][1]) > dmax) {
-				dmax = Math.abs(value[i][1]);
+			if (FastMath.abs(value[i][1]) > dmax) {
+				dmax = FastMath.abs(value[i][1]);
 			}
 		}
 

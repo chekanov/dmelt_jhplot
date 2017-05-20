@@ -26,6 +26,7 @@
 package jhplot.fit;
 
 import hep.aida.ref.function.AbstractIFunction;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * Exponential distribution. p0*exp(p1*(v0-p2));
@@ -49,7 +50,7 @@ public class Exponent extends AbstractIFunction {
 	}
 
 	public double value(double[] v) {
-		return p[0] * Math.exp(p[1] * (v[0] - p[2]));
+		return p[0] * FastMath.exp(p[1] * (v[0] - p[2]));
 	}
 
 	// Here change the parameter names

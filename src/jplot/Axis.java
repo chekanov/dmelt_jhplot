@@ -28,9 +28,9 @@ import java.util.Vector;
 import java.util.Enumeration;
 import java.text.NumberFormat;
 import java.util.Locale;
-import java.awt.Graphics;
 import java.awt.*;
 import javax.swing.*;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * Includes a static function for selecting and labeling graph axis tic labels.
@@ -61,15 +61,15 @@ public class Axis {
 	private static final boolean DEBUG = false;
 	public final static int X_AXIS = 0, Y_AXIS = 1;
 	// For use in calculating log base 10. A log times this is a log base 10.
-	private static final double LOG10SCALE = 1 / Math.log(10);
+	private static final double LOG10SCALE = 1 / FastMath.log(10);
 
 	// handy static methods
 	public static double log10(double val) {
-		return Math.log(val) * LOG10SCALE;
+		return FastMath.log(val) * LOG10SCALE;
 	}
 
 	public static double exp10(double val) {
-		return Math.exp(val / LOG10SCALE);
+		return FastMath.exp(val / LOG10SCALE);
 	}
 
 	public static float flog10(double val) {
@@ -89,9 +89,9 @@ public class Axis {
 	public static double calculateTicSep(double min, double max,
 			int maxNumberOfTicks) {
 		double xnorm, tic, posns;
-		double lrange = log10(Math.abs(min - max));
-		double fl = Math.floor(lrange);
-		xnorm = Math.pow(10.0, lrange - fl);
+		double lrange = log10(FastMath.abs(min - max));
+		double fl = FastMath.floor(lrange);
+		xnorm = FastMath.pow(10.0, lrange - fl);
 		posns = maxNumberOfTicks / xnorm;
 
 		if (posns > 40)
@@ -109,9 +109,9 @@ public class Axis {
 		else if (posns > 0.2)
 			tic = 10; // 0, 10, 100, 6
 		else
-			tic = Math.ceil(xnorm);
+			tic = FastMath.ceil(xnorm);
 
-		tic *= Math.pow(10.0, fl);
+		tic *= FastMath.pow(10.0, fl);
 
 		return tic;
 	}
@@ -128,20 +128,20 @@ public class Axis {
 		// System.out.println("Max="+Double.toString(xStep));
 
 		if (isLog == false) {
-			double xStart = xStep * Math.ceil(ticMinVal / xStep);
+			double xStart = xStep * FastMath.ceil(ticMinVal / xStep);
 			for (double xpos = xStart; xpos <= ticMaxVal; xpos += xStep)
 				n++;
 		} else {
 			int t1 = 0;
 			int t2 = 0;
 			if (ticMinVal > 0)
-				t1 = (int) Math.floor(log10(ticMinVal) - 0.5);
+				t1 = (int) FastMath.floor(log10(ticMinVal) - 0.5);
 			if (ticMinVal < 0)
-				t1 = -1 * (int) Math.floor(log10(-1 * ticMinVal) - 0.5);
+				t1 = -1 * (int) FastMath.floor(log10(-1 * ticMinVal) - 0.5);
 			if (ticMaxVal > 0)
-				t2 = (int) Math.floor(log10(ticMaxVal) + 1.0);
+				t2 = (int) FastMath.floor(log10(ticMaxVal) + 1.0);
 			if (ticMaxVal < 0)
-				t2 = -1 * (int) Math.floor(log10(-1 * ticMaxVal) + 1.0);
+				t2 = -1 * (int) FastMath.floor(log10(-1 * ticMaxVal) + 1.0);
 			for (int i = t1; i < t2 + 1; i++)
 				n++;
 		}
@@ -178,7 +178,7 @@ public class Axis {
 		int numfracdigits = numFracDigits(xStep);
 
 		// Compute x starting point so it is a multiple of xStep.
-		double xStart = xStep * Math.ceil(ticMinVal / xStep);
+		double xStart = xStep * FastMath.ceil(ticMinVal / xStep);
 		Vector xgrid = null;
 		Vector<String> labels = new Vector<String>();
 		// Label the axis. The labels are quantized so that
@@ -195,17 +195,17 @@ public class Axis {
 			int t1 = 0;
 			int t2 = 0;
 			if (ticMinVal > 0)
-				t1 = (int) Math.floor(log10(ticMinVal) - 0.5);
+				t1 = (int) FastMath.floor(log10(ticMinVal) - 0.5);
 			if (ticMinVal < 0)
-				t1 = -1 * (int) Math.floor(log10(-1 * ticMinVal) - 0.5);
+				t1 = -1 * (int) FastMath.floor(log10(-1 * ticMinVal) - 0.5);
 			if (ticMaxVal > 0)
-				t2 = (int) Math.floor(log10(ticMaxVal) + 1.0);
+				t2 = (int) FastMath.floor(log10(ticMaxVal) + 1.0);
 			if (ticMaxVal < 0)
-				t2 = -1 * (int) Math.floor(log10(-1 * ticMaxVal) + 1.0);
+				t2 = -1 * (int) FastMath.floor(log10(-1 * ticMaxVal) + 1.0);
 
 			// System.out.println("min = " + xmin + ", max = " + xmax);
 			for (int i = t1; i < t2 + 1; i++) {
-				double pp = Math.pow(10.0, i);
+				double pp = FastMath.pow(10.0, i);
 				// System.out.println(pp);
 				labels.addElement(Double.toString(pp));
 			}
@@ -340,18 +340,18 @@ public class Axis {
 	/*
 	 * Given a number, round up to the nearest power of ten times 1, 2, or 5.
 	 * 
-	 * Note: The argument must be strictly positive.
+	 * @param value - positive
 	 */
 	private static double roundUp(double val) {
-		int exponent = (int) Math.floor(log10(val));
-		val *= Math.pow(10, -exponent);
+		int exponent = (int) FastMath.floor(log10(val));
+		val *= FastMath.pow(10, -exponent);
 		if (val > 5.0)
 			val = 10.0;
 		else if (val > 2.0)
 			val = 5.0;
 		else if (val > 1.0)
 			val = 2.0;
-		val *= Math.pow(10, exponent);
+		val *= FastMath.pow(10, exponent);
 		return val;
 	}
 
@@ -359,10 +359,11 @@ public class Axis {
 	 * Return the number of fractional digits required to display the given
 	 * number. No number larger than 15 is returned (if more than 15 digits are
 	 * required, 15 is returned).
+	 * @param value
 	 */
 	private static int numFracDigits(double num) {
 		int numdigits = 0;
-		while (numdigits <= 15 && num != Math.floor(num)) {
+		while (numdigits <= 15 && num != FastMath.floor(num)) {
 			num *= 10.0;
 			numdigits += 1;
 		}
@@ -381,6 +382,8 @@ public class Axis {
 	 * number of digits after the decimal point. NOTE: java.text.NumberFormat is
 	 * only present in JDK1.1 We use this method as a wrapper so that we can
 	 * cache information.
+	 * @param num
+	 * @param numfracdigits
 	 */
 	private static String formatNum(double num, int numfracdigits) {
 		if (numberFormat == null) {

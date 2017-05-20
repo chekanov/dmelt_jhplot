@@ -29,6 +29,8 @@ import netscape.javascript.*;
 import jhplot.*;
 import hep.aida.*;
 import hep.aida.ref.histogram.*;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
 * Polynomial Regression Data Fit. 
@@ -313,10 +315,10 @@ public final class PolySolve extends javax.swing.JApplet {
                             y = t;
                         }
                         userDataList.add(new Pair(x, y));
-                        ymin = Math.min(y, ymin);
-                        ymax = Math.max(y, ymax);
-                        xmin = Math.min(x, xmin);
-                        xmax = Math.max(x, xmax);
+                        ymin = FastMath.min(y, ymin);
+                        ymax = FastMath.max(y, ymax);
+                        xmin = FastMath.min(x, xmin);
+                        xmax = FastMath.max(x, xmax);
                     }
                     paired = !paired;
                 }
@@ -340,11 +342,11 @@ public final class PolySolve extends javax.swing.JApplet {
         readData();
         int n = userDataList.size();
         if (n > 0) {
-            if (Math.abs(xmin - xmax) < 1e-3) {
+            if (FastMath.abs(xmin - xmax) < 1e-3) {
                 xmin -= 1e-3;
                 xmax += 1e-3;
             }
-            if (Math.abs(ymin - ymax) < 1e-3) {
+            if (FastMath.abs(ymin - ymax) < 1e-3) {
                 ymin -= 1e-3;
                 ymax += 1e-3;
             }
@@ -444,7 +446,7 @@ public final class PolySolve extends javax.swing.JApplet {
             "",
             "",
             "pow",
-            "Math.pow"
+            "FastMath.pow"
         };
         String styleTitle[] = {
             "simple list",
@@ -513,16 +515,16 @@ public final class PolySolve extends javax.swing.JApplet {
         double epsilon = 1e-8;
         double dy = 0;
         double ody = Double.NaN;
-        while (Math.abs(dy = (MatrixFunctions.regress(x, terms) - y)) > epsilon && max-- > 0) {
+        while (FastMath.abs(dy = (MatrixFunctions.regress(x, terms) - y)) > epsilon && max-- > 0) {
             if (Double.isInfinite(x)) {
                 break;
             }
             if (!Double.isNaN(ody)) {
-                if (Math.abs(dy) > ody) {
+                if (FastMath.abs(dy) > ody) {
                     positive = !positive;
                 }
             }
-            ody = Math.abs(dy);
+            ody = FastMath.abs(dy);
             dy *= scale;
             x += (positive) ? dy : -dy;
         }
@@ -536,7 +538,7 @@ public final class PolySolve extends javax.swing.JApplet {
     // begin with small steps, if algorithm fails
     // gradually make them larger
     double findRoot(double y, double x, ArrayList<Double> terms) {
-        double scale = Math.pow(2, -32);
+        double scale = FastMath.pow(2, -32);
         int max = 64;
         double rx;
         while (Double.isNaN(rx = findRoot2(y, x, terms, scale)) && max-- > 0) {

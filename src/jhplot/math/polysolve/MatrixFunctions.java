@@ -21,6 +21,8 @@ package jhplot.math.polysolve;
 
 
 import java.util.*;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  *
@@ -89,7 +91,7 @@ public final class MatrixFunctions {
         double a = 0;
         int exp = 0;
         for (double term : terms) {
-            a += term * Math.pow(x, exp);
+            a += term * FastMath.pow(x, exp);
             exp++;
         }
         return a;
@@ -110,9 +112,9 @@ public final class MatrixFunctions {
             sx2 += x * x;
             sy2 += y * y;
         }
-        double div = Math.sqrt((sx2 - (sx * sx) / n) * (sy2 - (sy * sy) / n));
+        double div = FastMath.sqrt((sx2 - (sx * sx) / n) * (sy2 - (sy * sy) / n));
         if (div != 0) {
-            r = Math.pow((sxy - (sx * sy) / n) / div, 2);
+            r = FastMath.pow((sxy - (sx * sy) / n) / div, 2);
         }
         return r;
     }
@@ -124,9 +126,9 @@ public final class MatrixFunctions {
         if (n > 2) {
             double a = 0;
             for (Pair pr : data) {
-                a += Math.pow((regress(pr.x, terms) - pr.y), 2);
+                a += FastMath.pow((regress(pr.x, terms) - pr.y), 2);
             }
-            r = Math.sqrt(a / (n - 2));
+            r = FastMath.sqrt(a / (n - 2));
         }
         return r;
     }
@@ -151,12 +153,12 @@ public final class MatrixFunctions {
         for (Pair pr : data) {
             // process precalculation array
             for (r = 1; r < rs; r++) {
-                mpc[r] += Math.pow(pr.x, r);
+                mpc[r] += FastMath.pow(pr.x, r);
             }
             // process RH column cells
             m[0][p] += pr.y;
             for (r = 1; r < p; r++) {
-                m[r][p] += Math.pow(pr.x, r) * pr.y;
+                m[r][p] += FastMath.pow(pr.x, r) * pr.y;
             }
         }
         // populate square matrix section

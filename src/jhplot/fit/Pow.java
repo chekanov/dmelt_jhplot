@@ -1,6 +1,7 @@
 package jhplot.fit;
 
 import hep.aida.ref.function.AbstractIFunction;
+import org.apache.commons.math3.util.FastMath;
 
 
 /**
@@ -24,7 +25,7 @@ public class Pow extends AbstractIFunction {
     }
     
     public double value(double[] v) {
-        return p[0]*Math.pow(p[1]-v[0],p[2]);
+        return p[0]*FastMath.pow(p[1]-v[0],p[2]);
     }
     
     // Here change the parameter names

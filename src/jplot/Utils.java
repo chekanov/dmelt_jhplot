@@ -30,9 +30,10 @@ import javax.swing.*;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
-
 import java.util.*;
 import java.awt.*;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * General utilities.
@@ -89,15 +90,15 @@ public class Utils {
 	 * Note: The argument must be strictly positive.
 	 */
 	public static double roundUp(double val) {
-		int exponent = (int) Math.floor(Math.log10(val));
-		val *= Math.pow(10, -exponent);
+		int exponent = (int) Math.floor(FastMath.log10(val));
+		val *= FastMath.pow(10, -exponent);
 		if (val > 5.0)
 			val = 10.0;
 		else if (val > 2.0)
 			val = 5.0;
 		else if (val > 1.0)
 			val = 2.0;
-		val *= Math.pow(10, exponent);
+		val *= FastMath.pow(10, exponent);
 		return val;
 	}
 
@@ -258,7 +259,7 @@ public class Utils {
 	 */
 	public static String FormLin(double f) {
 
-		if (Math.abs(f) < 1001 && Math.abs(f) >= 0.0) {
+		if (FastMath.abs(f) < 1001 && FastMath.abs(f) >= 0.0) {
 
 			DecimalFormat dfb = new DecimalFormat("#.#E00");
 			String yy = dfb.format(f);
@@ -368,7 +369,7 @@ public class Utils {
 
 		Format dfb = null;
 
-		double xx = Math.abs(xmax - xmin);
+		double xx = FastMath.abs(xmax - xmin);
 
 		// System.out.println(xx);
 		// double xx=Math.abs(xmax);
@@ -943,7 +944,7 @@ public class Utils {
 		int exponent;
 		int i;
 
-		exponent = (int) (Math.floor(Math.log10(val)));
+		exponent = (int) (Math.floor(FastMath.log10(val)));
 
 		if (exponent < 0) {
 			for (i = exponent; i < 0; i++) {

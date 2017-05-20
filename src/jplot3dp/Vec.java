@@ -4,6 +4,8 @@ import java.io.*;
 
 import jplot3dp.Printable;
 import jplot3dp.Vec;
+import org.apache.commons.math3.util.FastMath;
+
 
 class Vec implements Printable {
 
@@ -27,7 +29,7 @@ class Vec implements Printable {
 	}
 
 	public double norm() {
-		return Math.sqrt(x * x + y * y + z * z);
+		return FastMath.sqrt(x * x + y * y + z * z);
 	}
 
 	public Vec normalize() {

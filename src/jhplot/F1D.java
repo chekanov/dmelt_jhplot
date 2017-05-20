@@ -594,7 +594,7 @@ public class F1D extends DrawOptions {
 
 	/**
 	 * Parse the function.
-	 * 
+	 * To speed up calculation of repertitive tasks, you can parse the function first. 
 	 * @return true if parsed without problems.
 	 **/
 	public boolean parse() {

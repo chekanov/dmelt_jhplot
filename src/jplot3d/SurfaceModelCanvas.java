@@ -27,6 +27,8 @@ import jhplot.P2D;
 import jhplot.P3D;
 import jplot3d.JPoint;
 import hep.aida.ref.histogram.Histogram2D;
+import org.apache.commons.math3.util.FastMath;
+
 /**
 
  */
@@ -179,8 +181,8 @@ public class SurfaceModelCanvas implements SurfaceModel {
 		//compute  auto scale and repaint
 		if (! autoScaleZ ) return;
 		if (plotFunction1 && plotFunction2) {
-			setZMin(Math.min(z1Min, z2Min));
-			setZMax(Math.max(z1Max, z2Max));
+			setZMin(FastMath.min(z1Min, z2Min));
+			setZMax(FastMath.max(z1Max, z2Max));
 		} else {
 			if (plotFunction1) {
 				setZMin(z1Min);
@@ -1871,11 +1873,11 @@ public class SurfaceModelCanvas implements SurfaceModel {
 		if (d == 0)
 			return d;
 		// computes order of magnitude
-		long og = (long) Math.ceil((Math.log(Math.abs(d)) / Math.log(10)));
+		long og = (long) FastMath.ceil((FastMath.log(FastMath.abs(d)) / FastMath.log(10)));
 		
-		double factor = Math.pow(10, digits - og); 
+		double factor = FastMath.pow(10, digits - og); 
 		// the matissa
-		double res = Math.floor((d * factor)) / factor; 
+		double res = FastMath.floor((d * factor)) / factor; 
 		//res contains the closed power of ten
 		return res;
 	}
@@ -1883,9 +1885,9 @@ public class SurfaceModelCanvas implements SurfaceModel {
 	public  synchronized double ceil(double d, int digits) {
 		if (d == 0)
 			return d;
-		long og = (long) Math.ceil((Math.log(Math.abs(d)) / Math.log(10)));
-		double factor = Math.pow(10, digits - og); 
-		double res = Math.ceil((d * factor)) / factor;
+		long og = (long) FastMath.ceil((FastMath.log(FastMath.abs(d)) / FastMath.log(10)));
+		double factor = FastMath.pow(10, digits - og); 
+		double res = FastMath.ceil((d * factor)) / factor;
 		return res;
 	}
 

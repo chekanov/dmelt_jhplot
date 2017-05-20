@@ -33,20 +33,18 @@ import jhplot.gui.HelpBrowser;
 import jhplot.io.PReader;
 import jhplot.math.*;
 import jhplot.utils.SHisto;
-
 import java.text.DecimalFormat;
-import java.util.StringTokenizer;
 import java.awt.Color;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
 import hep.aida.*;
 import hep.aida.ref.histogram.*;
-import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import cern.colt.list.DoubleArrayList;
 import cern.jet.stat.Descriptive;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * A container to hold data points with 1st and 2nd level errors. The first
@@ -1585,8 +1583,8 @@ public class P1D extends DrawOptions implements Serializable {
 			if (axis == 0) {
 				if ( dimen>5){	
 		 			for (int i = 0; i < size(); i++) {
-		 				XE1left.setQuick(i,Math.sqrt(X.getQuick(i)));
-		 				XE1right.setQuick(i,Math.sqrt(X.getQuick(i)));
+		 				XE1left.setQuick(i,FastMath.sqrt(X.getQuick(i)));
+		 				XE1right.setQuick(i,FastMath.sqrt(X.getQuick(i)));
 		 				}
 		 		}
 		 		
@@ -1597,12 +1595,12 @@ public class P1D extends DrawOptions implements Serializable {
 		     if (axis == 1) { 
 		 	 	if ( dimen == 3){	
 		 			for (int i = 0; i < size(); i++) {
-		 				YE1upper.setQuick(i,Math.sqrt(Y.getQuick(i)));
+		 				YE1upper.setQuick(i,FastMath.sqrt(Y.getQuick(i)));
 		 				}
 		 		}	
 		 	 	if ( dimen>3){	
 		 			for (int i = 0; i < size(); i++) {
-		 				double e=Math.sqrt(Y.getQuick(i));
+		 				double e=FastMath.sqrt(Y.getQuick(i));
 		 				YE1upper.setQuick(i,e);
 		 				YE1down.setQuick(i,e);
 		 				}
@@ -1699,15 +1697,15 @@ public class P1D extends DrawOptions implements Serializable {
 
                if ( dimen ==3 ) {
                  double yup=getYupper(i)*getYupper(i)+ p1.getYupper(i)*p1.getYupper(i);
-                 YE1upper.setQuick(i,Math.sqrt(yup));
+                 YE1upper.setQuick(i,FastMath.sqrt(yup));
  
                }
 
                if ( dimen == 4 || dimen == 6) {
                double yup=getYupper(i)*getYupper(i)+ p1.getYupper(i)*p1.getYupper(i);
                double ylow=getYlower(i)*getYlower(i)+ p1.getYlower(i)*p1.getYlower(i);
-               YE1upper.setQuick(i,Math.sqrt(yup));
-               YE1down.setQuick(i,Math.sqrt(ylow));
+               YE1upper.setQuick(i,FastMath.sqrt(yup));
+               YE1down.setQuick(i,FastMath.sqrt(ylow));
                }
 
 
@@ -1717,10 +1715,10 @@ public class P1D extends DrawOptions implements Serializable {
                double yupS=getYupperSys(i)*getYupperSys(i)+ p1.getYupperSys(i)*p1.getYupperSys(i);
                double ylowS=getYlowerSys(i)*getYlowerSys(i)+ p1.getYlowerSys(i)*p1.getYlowerSys(i);
                
-               YE1upper.setQuick(i,Math.sqrt(yup));
-               YE1down.setQuick(i,Math.sqrt(ylow));
-               YE2upper.setQuick(i,Math.sqrt(yupS));
-               YE2down.setQuick(i,Math.sqrt(ylowS));
+               YE1upper.setQuick(i,FastMath.sqrt(yup));
+               YE1down.setQuick(i,FastMath.sqrt(ylow));
+               YE2upper.setQuick(i,FastMath.sqrt(yupS));
+               YE2down.setQuick(i,FastMath.sqrt(ylowS));
                }
 
             }
@@ -1844,8 +1842,8 @@ public class P1D extends DrawOptions implements Serializable {
 				data.setQuickPoint(i, data.getX(i), data.getY(i),
 						data.getXleft(i), data.getXright(i), data.getYupper(i),
 						data.getYlower(i),
-						Math.abs(data.getX(i) - left.getX(i)),
-						Math.abs(right.getX(i) - data.getX(i)),
+						FastMath.abs(data.getX(i) - left.getX(i)),
+						FastMath.abs(right.getX(i) - data.getX(i)),
 						data.getYupperSys(i), data.getYlowerSys(i));
 			}
 
@@ -1854,8 +1852,8 @@ public class P1D extends DrawOptions implements Serializable {
 						data.getXleft(i), data.getXright(i), data.getYupper(i),
 						data.getYlower(i), data.getXleftSys(i),
 						data.getXrightSys(i),
-						Math.abs(right.getY(i) - data.getY(i)),
-						Math.abs(data.getY(i) - left.getY(i)));
+						FastMath.abs(right.getY(i) - data.getY(i)),
+						FastMath.abs(data.getY(i) - left.getY(i)));
 
 			}
 
@@ -1957,7 +1955,7 @@ public class P1D extends DrawOptions implements Serializable {
 				if (what.equals("+")){
 						for (int i = 0; i < size(); i++) {
 						        Y.setQuick(i,Y.getQuick(i) + a.getY(i));
-						        double y = Math.sqrt(a.getYupper(i) * a.getYupper(i)
+						        double y = FastMath.sqrt(a.getYupper(i) * a.getYupper(i)
 										+ a.getYupper(i) * a.getYupper(i));    
 						        YE1upper.setQuick(i,y);
 						}
@@ -1966,7 +1964,7 @@ public class P1D extends DrawOptions implements Serializable {
 				if (what.equals("-")){
 					for (int i = 0; i < size(); i++) {
 					        Y.setQuick(i,Y.getQuick(i) - a.getY(i));
-			                double y = Math.sqrt(a.getYupper(i) * a.getYupper(i)
+			                double y = FastMath.sqrt(a.getYupper(i) * a.getYupper(i)
 								+ a.getYupper(i) * a.getYupper(i));    
 				            YE1upper.setQuick(i,y); 
 					}
@@ -1985,7 +1983,7 @@ public class P1D extends DrawOptions implements Serializable {
 							else ax1 = 0;
 							if (d1 != 0) x1 = getYupper(i) / d1;
 							else x1 = 0;
-							double e = y * Math.sqrt(ax1 * ax1 + x1 * x1);
+							double e = y * FastMath.sqrt(ax1 * ax1 + x1 * x1);
 							YE1upper.setQuick(i,e); 
 					
 					}
@@ -2004,7 +2002,7 @@ public class P1D extends DrawOptions implements Serializable {
 							else ax1 = 0;
 							if (d1 != 0) x1 = getYupper(i) / d1;
 							else x1 = 0;
-							double e = y * Math.sqrt(ax1 * ax1 + x1 * x1);
+							double e = y * FastMath.sqrt(ax1 * ax1 + x1 * x1);
 							YE1upper.setQuick(i,e); 
 					
 					}
@@ -2020,9 +2018,9 @@ public class P1D extends DrawOptions implements Serializable {
 				if (what.equals("+")){
 						for (int i = 0; i < size(); i++) {
 						        Y.setQuick(i,Y.getQuick(i) + a.getY(i));
-						        double yU = Math.sqrt(a.getYupper(i) * a.getYupper(i)
+						        double yU = FastMath.sqrt(a.getYupper(i) * a.getYupper(i)
 										+ a.getYupper(i) * a.getYupper(i));
-						        double yD = Math.sqrt(a.getYlower(i) * a.getYlower(i)
+						        double yD = FastMath.sqrt(a.getYlower(i) * a.getYlower(i)
 										+ a.getYlower(i) * a.getYlower(i));
 						        YE1upper.setQuick(i,yU);
 						        YE1down.setQuick(i,yD);
@@ -2032,9 +2030,9 @@ public class P1D extends DrawOptions implements Serializable {
 				if (what.equals("-")){
 					for (int i = 0; i < size(); i++) {
 					        Y.setQuick(i,Y.getQuick(i) - a.getY(i));
-				        	double yU = Math.sqrt(a.getYupper(i) * a.getYupper(i)
+				        	double yU = FastMath.sqrt(a.getYupper(i) * a.getYupper(i)
 							+ a.getYupper(i) * a.getYupper(i));
-			                double yD = Math.sqrt(a.getYlower(i) * a.getYlower(i)
+			                double yD = FastMath.sqrt(a.getYlower(i) * a.getYlower(i)
 							+ a.getYlower(i) * a.getYlower(i));
 			        YE1upper.setQuick(i,yU);
 			        YE1down.setQuick(i,yD);
@@ -2054,7 +2052,7 @@ public class P1D extends DrawOptions implements Serializable {
 							else ax1 = 0;
 							if (d1 != 0) x1 = getYupper(i) / d1;
 							else x1 = 0;
-							double e1 = y * Math.sqrt(ax1 * ax1 + x1 * x1);
+							double e1 = y * FastMath.sqrt(ax1 * ax1 + x1 * x1);
 							YE1upper.setQuick(i,e1); 
 					
 							double ad2 = a.getY(i);
@@ -2065,7 +2063,7 @@ public class P1D extends DrawOptions implements Serializable {
 							else ax2 = 0;
 							if (d2 != 0) x2 = getYlower(i) / d2;
 							else x2 = 0;
-							double e2 = y * Math.sqrt(ax2 * ax2 + x2 * x2);
+							double e2 = y * FastMath.sqrt(ax2 * ax2 + x2 * x2);
 							YE1down.setQuick(i,e2); 
 							
 							
@@ -2086,7 +2084,7 @@ public class P1D extends DrawOptions implements Serializable {
 						else ax1 = 0;
 						if (d1 != 0) x1 = getYupper(i) / d1;
 						else x1 = 0;
-						double e1 = y * Math.sqrt(ax1 * ax1 + x1 * x1);
+						double e1 = y * FastMath.sqrt(ax1 * ax1 + x1 * x1);
 						YE1upper.setQuick(i,e1); 
 				
 						double ad2 = a.getY(i);
@@ -2097,7 +2095,7 @@ public class P1D extends DrawOptions implements Serializable {
 						else ax1 = 0;
 						if (d2 != 0) x2 = getYlower(i) / d2;
 						else x2 = 0;
-						double e2 = y * Math.sqrt(ax2 * ax2 + x2 * x2);
+						double e2 = y * FastMath.sqrt(ax2 * ax2 + x2 * x2);
 						YE1down.setQuick(i,e2);
 						
 					} // end loop
@@ -4556,8 +4554,8 @@ public class P1D extends DrawOptions implements Serializable {
 				if (d < 0)
 					down = down + d * d;
 			}
-			up = Math.sqrt(up);
-			down = Math.sqrt(down);
+			up = FastMath.sqrt(up);
+			down = FastMath.sqrt(down);
 			// System.out.println(up);
 	
 			if(p1darray[0].dimension()==2) 
@@ -4610,10 +4608,10 @@ public class P1D extends DrawOptions implements Serializable {
 		
 		for (int i = 0; i < size(); i++) {
 			if (axis == 0) {
-				double eLeft = Math.sqrt(getXleft(i) * getXleft(i)
+				double eLeft = FastMath.sqrt(getXleft(i) * getXleft(i)
 						+ getXleftSys(i) * getXleftSys(i));
 
-				double eRight = Math.sqrt(getXright(i) * getXright(i)
+				double eRight = FastMath.sqrt(getXright(i) * getXright(i)
 						+ getXrightSys(i) * getXrightSys(i));
 
 				setQuick(i, getX(i), getY(i), eLeft, eRight,
@@ -4623,10 +4621,10 @@ public class P1D extends DrawOptions implements Serializable {
 
 			if (axis == 1) {
 
-				double eUpper = Math.sqrt(getYupper(i) * getYupper(i)
+				double eUpper = FastMath.sqrt(getYupper(i) * getYupper(i)
 						+ getYupperSys(i) * getYupperSys(i));
 
-				double eLower = Math.sqrt(getYlower(i) * getYlower(i)
+				double eLower = FastMath.sqrt(getYlower(i) * getYlower(i)
 						+ getYlowerSys(i) * getYlowerSys(i));
 
 				setQuick(i, getQuickX(i), getQuickY(i),
@@ -4752,9 +4750,9 @@ public class P1D extends DrawOptions implements Serializable {
 			} // end loop over input P1D
 
 			ynew = ynew / wsum;
-			wsum = 1.0 / Math.sqrt(wsum);
-			wsum1 = 1.0 / Math.sqrt(wsum1);
-			wsum2 = 1.0 / Math.sqrt(wsum2);
+			wsum = 1.0 / FastMath.sqrt(wsum);
+			wsum1 = 1.0 / FastMath.sqrt(wsum1);
+			wsum2 = 1.0 / FastMath.sqrt(wsum2);
 
 			if (dimen>9)
 			tmp.add(getX(i), ynew, getXleft(i),
@@ -5174,22 +5172,22 @@ public class P1D extends DrawOptions implements Serializable {
 			fDps2D.addPoint();
 			fDps2D.point(i).coordinate(0).setValue(X.getQuick(i));
 			fDps2D.point(i).coordinate(1).setValue(Y.getQuick(i));
-			sup = Math.sqrt(getYupperSys(i) * getYupperSys(i)
+			sup = FastMath.sqrt(getYupperSys(i) * getYupperSys(i)
 					+ getYupper(i) * getYupper(i));
-			slow = Math.sqrt(getYlowerSys(i) * getYlowerSys(i)
+			slow = FastMath.sqrt(getYlowerSys(i) * getYlowerSys(i)
 					+ getYlower(i) * getYlower(i));
 			fDps2D.point(i).coordinate(1).setErrorPlus(sup);
 			fDps2D.point(i).coordinate(1).setErrorMinus(slow);
 
 			// errors on X
 			if (getXleft(i) != 0 && getXleftSys(i) != 0) {
-				xleft = Math.sqrt(getXleftSys(i) * getXleft(i)
+				xleft = FastMath.sqrt(getXleftSys(i) * getXleft(i)
 						+ getXright(i) * getXright(i));
 				fDps2D.point(i).coordinate(0).setErrorMinus(xleft);
 			}
 
 			if (getXright(i) != 0 && getXrightSys(i) != 0) {
-				xright = Math.sqrt(getXleftSys(i) * getXleft(i)
+				xright = FastMath.sqrt(getXleftSys(i) * getXleft(i)
 						+ getXright(i) * getXright(i));
 				fDps2D.point(i).coordinate(0).setErrorPlus(xright);
 			}
@@ -5759,7 +5757,7 @@ public class P1D extends DrawOptions implements Serializable {
 	 * @return standard deviation of values X
 	 */
 	public double stddeviationX() {
-		return Math.sqrt(varianceX());
+		return FastMath.sqrt(varianceX());
 	}
 
 	/**
@@ -5768,7 +5766,7 @@ public class P1D extends DrawOptions implements Serializable {
 	 * @return standard deviation of values Y
 	 */
 	public double stddeviationY() {
-		return Math.sqrt(varianceY());
+		return FastMath.sqrt(varianceY());
 	}
 
 
@@ -5817,7 +5815,7 @@ public class P1D extends DrawOptions implements Serializable {
 		}
 
 		mx = mx / X.size();
-		mx = Math.sqrt(mx);
+		mx = FastMath.sqrt(mx);
 
 		return mx;
 	}
@@ -5839,7 +5837,7 @@ public class P1D extends DrawOptions implements Serializable {
 		}
 
 		mx = mx / Y.size();
-		mx = Math.sqrt(mx);
+		mx = FastMath.sqrt(mx);
 
 		return mx;
 	}
@@ -5870,7 +5868,7 @@ public class P1D extends DrawOptions implements Serializable {
 	 **/
 
 	public double meanXerror() {
-		return stddeviationX()/Math.sqrt(size());
+		return stddeviationX()/FastMath.sqrt(size());
 	}
 	
 	
@@ -5883,7 +5881,7 @@ public class P1D extends DrawOptions implements Serializable {
 	 **/
 
 	public double meanYerror() {
-		return stddeviationY()/Math.sqrt(size());
+		return stddeviationY()/FastMath.sqrt(size());
 	}
 	
 	

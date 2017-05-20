@@ -22,6 +22,7 @@ package jhplot.math.polysolve;
 
 import java.awt.*;
 import javax.swing.*;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  *
@@ -72,13 +73,13 @@ final public class GraphPanel extends JPanel {
 
         double scaleFact = 5.0;
 
-        double ystep = Math.abs((parent.ymax - parent.ymin)) / 5.0;
+        double ystep = FastMath.abs((parent.ymax - parent.ymin)) / 5.0;
 
-        double s = Math.log(ystep) / Math.log(scaleFact);
+        double s = FastMath.log(ystep) / FastMath.log(scaleFact);
 
-        s = Math.floor(s);
+        s = FastMath.floor(s);
 
-        ystep = Math.pow(scaleFact, s);
+        ystep = FastMath.pow(scaleFact, s);
 
         cg.setColor(parent.gridColor);
 
@@ -99,13 +100,13 @@ final public class GraphPanel extends JPanel {
 
         drawScaledLine(cg, parent.xmin, 0, parent.xmax, 0);
 
-        double xstep = Math.abs((parent.xmax - parent.xmin)) / 5.0;
+        double xstep = FastMath.abs((parent.xmax - parent.xmin)) / 5.0;
 
-        s = Math.log(xstep) / Math.log(scaleFact);
+        s = FastMath.log(xstep) / FastMath.log(scaleFact);
 
-        s = Math.floor(s);
+        s = FastMath.floor(s);
 
-        xstep = Math.pow(scaleFact, s);
+        xstep = FastMath.pow(scaleFact, s);
 
         cg.setColor(parent.gridColor);
 

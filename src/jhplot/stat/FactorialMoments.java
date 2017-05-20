@@ -15,8 +15,8 @@
 
 package jhplot.stat;
 
-import java.lang.Math;
 
+import org.apache.commons.math3.util.FastMath;
 import jhplot.P1D;
 import jhplot.gui.HelpBrowser;
 
@@ -234,7 +234,7 @@ public class FactorialMoments {
 		// NFM calculations
 		for (int n = 1; n < Nmax; n++) {
 			for (int i = 0; i < Bins; i++) {
-				FAA[n][i] = FA[n][i] / Math.pow(FA[0][i], n + 1);
+				FAA[n][i] = FA[n][i] / FastMath.pow(FA[0][i], n + 1);
 			}
 		}
 
@@ -243,22 +243,22 @@ public class FactorialMoments {
 			int iipp = (n + 1) * 2;
 			for (int i = 0; i < Bins; i++) {
 				double DWA = EA[n][i] - (FA[n][i] * FA[n][i]);
-				double DWAA = Math.pow(FA[0][i], iipp);
+				double DWAA = FastMath.pow(FA[0][i], iipp);
 				if (DWA < 0) {
 					DWA = 0.1;
 					tmp = false;
 				}
 				double RED = DWAA * (AN - 1);
-				EAA[n][i] = Math.sqrt(DWA / RED);
+				EAA[n][i] = FastMath.sqrt(DWA / RED);
 
 			}
 		}
 
 		/*
 		 * for (int n = 1; n < Nmax; n++) { for (int i = 0; i < Bins; i++) { //
-		 * take logs FAA[n][i]=Math.sqrt(
+		 * take logs FAA[n][i]=FastMath.sqrt(
 		 * (EAA[n][i]*EAA[n][i])/(FAA[n][i]*FAA[n][i])) ;
-		 * EAA[n][i]=Math.log(FAA[n][i]); } }
+		 * EAA[n][i]=FastMath.log(FAA[n][i]); } }
 		 */
 
 		return tmp;

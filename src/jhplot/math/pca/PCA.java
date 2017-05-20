@@ -1,7 +1,7 @@
 package jhplot.math.pca;
 
 import jhplot.math.pca.covmatrixevd.*;
-
+import org.apache.commons.math3.util.FastMath;
 import Jama.Matrix;
 
 /** The class responsible mainly for preparing the PCA transformation parameters 
@@ -174,7 +174,7 @@ public final class PCA {
 		/** Check if all coordinates of the point were zeroed by the 
 		 * transformation */
 		for(int c = 0; c < zerosTransformedPt.getColumnDimension(); c++)
-			if(Math.abs(zerosTransformedPt.get(0, c)) > threshold) {
+			if(FastMath.abs(zerosTransformedPt.get(0, c)) > threshold) {
 				return false;
 			}
 		return true;
@@ -223,7 +223,7 @@ public final class PCA {
 		assert m.getRowDimension()==m.getColumnDimension();
 		Matrix newM = new Matrix(m.getRowDimension(), m.getRowDimension());
 		for(int i = 0; i < m.getRowDimension(); i++)
-			newM.set(i, i, Math.sqrt(m.get(i, i)));
+			newM.set(i, i, FastMath.sqrt(m.get(i, i)));
 		return newM;
 	}
 	
@@ -256,7 +256,7 @@ class EVDWithThreshold {
 	 * (see the paragraph on {@code tol} parameter) it is written that 
 	 * in such setting we will "omit essentially constant components". */
 	public EVDWithThreshold(EVDResult evd){
-		this(evd, Math.sqrt(precision));
+		this(evd, FastMath.sqrt(precision));
 	}
 	/**
 	 * @param tol threshold parameter of the method - the same parameter
@@ -268,7 +268,7 @@ class EVDWithThreshold {
 	}
 
 	private static double firstComponentSD(EVDResult evd){
-		return Math.sqrt(evd.d.get(0, 0));
+		return FastMath.sqrt(evd.d.get(0, 0));
 	}
 	
 	/** Magnitude below which components should be omitted. This parameter
@@ -301,7 +301,7 @@ class EVDWithThreshold {
 	
 	private int getElementsNoAboveThreshold(){
 		for(int i = 0; i < evd.d.getColumnDimension(); i++){
-			double val = Math.sqrt(evd.d.get(i, i));
+			double val = FastMath.sqrt(evd.d.get(i, i));
 			if(!(val > threshold)) return i;
 		}
 		return evd.d.getColumnDimension();

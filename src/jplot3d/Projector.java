@@ -23,6 +23,8 @@ package jplot3d;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * The class <code>Projector</code> projects points in 3D space to 2D space.
@@ -46,7 +48,7 @@ public final class Projector {
   private float sx_cos, sy_cos, sz_cos;
   private float sx_sin, sy_sin, sz_sin;
 
-  private final float DEGTORAD  = (float)Math.PI / 180;
+  private final float DEGTORAD  = (float)FastMath.PI / 180;
    
   //was static in SurfaceVertex ! now Dynamic in Projector
 float zmin, zmax;
@@ -90,8 +92,8 @@ float zfactor;
    
   public void setRotationAngle(float angle) {
     rotation = angle;
-    sin_rotation = (float)Math.sin(angle * DEGTORAD);
-    cos_rotation = (float)Math.cos(angle * DEGTORAD);
+    sin_rotation = (float)FastMath.sin(angle * DEGTORAD);
+    cos_rotation = (float)FastMath.cos(angle * DEGTORAD);
  
     sx_cos = -scale_x * cos_rotation;
     sx_sin = -scale_x * sin_rotation;
@@ -137,8 +139,8 @@ float zfactor;
 
   public void setElevationAngle(float angle) {
     elevation = angle;
-    sin_elevation = (float)Math.sin(angle * DEGTORAD);
-    cos_elevation = (float)Math.cos(angle * DEGTORAD);
+    sin_elevation = (float)FastMath.sin(angle * DEGTORAD);
+    cos_elevation = (float)FastMath.cos(angle * DEGTORAD);
     sz_cos =  scale_z * cos_elevation;
     sz_sin =  scale_z * sin_elevation;
   }
@@ -393,8 +395,8 @@ float zfactor;
     // elevates and projects
 
     temp = factor / (y * cos_elevation - z * sz_sin + distance);
-    return new Point((int)(Math.round(x * temp) + trans_x),
-                     (int)(Math.round((y * sin_elevation + z * sz_cos) * -temp) + trans_y));
+    return new Point((int)(FastMath.round(x * temp) + trans_x),
+                     (int)(FastMath.round((y * sin_elevation + z * sz_cos) * -temp) + trans_y));
   }
 	
 	

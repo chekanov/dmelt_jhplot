@@ -25,6 +25,7 @@
 package jhplot.fit;
 
 import hep.aida.ref.function.AbstractIFunction;
+import org.apache.commons.math3.util.FastMath;
 
 
 /**
@@ -52,7 +53,7 @@ public class BreitWigner extends AbstractIFunction {
     public double value(double[] v) {
 
             double  bw = p[2] /((v[0]-p[1])*(v[0]-p[1]) + p[2]*p[2]/4);
-            return p[0]*bw/(2*Math.PI);
+            return p[0]*bw/(2*FastMath.PI);
 
     }
     

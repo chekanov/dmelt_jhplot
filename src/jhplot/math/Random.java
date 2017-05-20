@@ -5,6 +5,8 @@ import jhplot.math.exp4j.ExpressionBuilder;
 import edu.cornell.lassp.houle.RngPack.RandomSeedable;
 import edu.cornell.lassp.houle.RngPack.Ranmar;
 import graph.ParseFunction;
+import org.apache.commons.math3.util.FastMath;
+
 /**
  * BSD License 
  * @author Yann RICHET
@@ -22,7 +24,7 @@ public class Random {
      * @return A double between 0 and 1.
      */
     public static double rand() {
-        double x = Math.random();
+        double x = FastMath.random();
         return x;
     }
 
@@ -47,7 +49,7 @@ public class Random {
 	 */
 	public static int randInt(int i0, int i1) {
 		double x = raw();
-		int i = i0 + new Double(Math.floor((i1 - i0 + 1) * x)).intValue();
+		int i = i0 + new Double(FastMath.floor((i1 - i0 + 1) * x)).intValue();
 		return i;
 	}
 
@@ -100,7 +102,7 @@ public class Random {
 	 * @return A double.
 	 */
 	public static double normal(double mu, double sigma) {
-		double x = mu + sigma * Math.cos(2 * Math.PI * raw()) * Math.sqrt(-2 * Math.log(raw()));
+		double x = mu + sigma * FastMath.cos(2 * FastMath.PI * raw()) * FastMath.sqrt(-2 * FastMath.log(raw()));
 		return x;
 	}
 
@@ -130,8 +132,8 @@ public class Random {
 	 * @return A double.
 	 */
 	public static double logNormal(double mu, double sigma) {
-		double x = mu + sigma * Math.cos(2 * Math.PI * raw()) * Math.sqrt(-2 * Math.log(raw()));
-		return Math.exp(x);
+		double x = mu + sigma * FastMath.cos(2 * FastMath.PI * raw()) * FastMath.sqrt(-2 * FastMath.log(raw()));
+		return FastMath.exp(x);
 	}
 
 	/**
@@ -143,7 +145,7 @@ public class Random {
 	 * @return A double.
 	 */
 	public static double exponential(double lambda) {
-		double x = -1 / lambda * Math.log(raw());
+		double x = -1 / lambda * FastMath.log(raw());
 		return x;
 	}
 
@@ -176,8 +178,8 @@ public class Random {
 		double y = raw();
 		// if min < x < med, y = (x-min)�/(max-min)(med-min), else, med < x <
 		// max, and y = 1-(max-x)�/(max-min)(max-med)
-		double x = (y < ((med - min) / (max - min))) ? (min + Math.sqrt(y * (max - min) * (med - min)))
-				: (max - Math.sqrt((1 - y) * (max - min) * (max - med)));
+		double x = (y < ((med - min) / (max - min))) ? (min + FastMath.sqrt(y * (max - min) * (med - min)))
+				: (max - FastMath.sqrt((1 - y) * (max - min) * (max - med)));
 		return x;
 	}
 
@@ -194,8 +196,8 @@ public class Random {
 		double try_x;
 		double try_y;
 		do {
-			try_x = Math.pow(raw(), 1 / a);
-			try_y = Math.pow(raw(), 1 / b);
+			try_x = FastMath.pow(raw(), 1 / a);
+			try_y = FastMath.pow(raw(), 1 / b);
 		} while ((try_x + try_y) > 1);
 		return try_x / (try_x + try_y);
 	}
@@ -211,7 +213,7 @@ public class Random {
 	 * @return A double.
 	 */
 	public static double cauchy(double mu, double sigma) {
-		double x = sigma * Math.tan(Math.PI * (raw() - 0.5)) + mu;
+		double x = sigma * FastMath.tan(FastMath.PI * (raw() - 0.5)) + mu;
 		return x;
 	}
 
@@ -225,7 +227,7 @@ public class Random {
 	 * @return A double.
 	 */
 	public static double weibull(double lambda, double c) {
-		double x = Math.pow(-Math.log(1 - raw()), 1 / c) / lambda;
+		double x = FastMath.pow(-FastMath.log(1 - raw()), 1 / c) / lambda;
 		return x;
 	}
 

@@ -25,6 +25,7 @@
 package jhplot.fit;
 
 import hep.aida.ref.function.AbstractIFunction;
+import org.apache.commons.math3.util.FastMath;
 
 
 
@@ -62,8 +63,8 @@ public class Landau extends AbstractIFunction {
  
 
    double yy = ( v[0] - p[1] ) / p[2]; 
-   double tt = Math.exp ( -0.5 * ( yy + Math.exp ( -1.0 * yy ) ) ) 
-             / Math.sqrt ( 2.0 * Math.PI );
+   double tt = FastMath.exp ( -0.5 * ( yy + FastMath.exp ( -1.0 * yy ) ) ) 
+             / FastMath.sqrt ( 2.0 * FastMath.PI );
   return p[0] * tt;
 
 

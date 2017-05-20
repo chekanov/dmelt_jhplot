@@ -1,8 +1,9 @@
 package jhplot.fit;
 
 import hep.aida.ref.function.AbstractIFunction;
-//  import cern.jet.stat.Probability; 
 import jhplot.math.num.pdf.*;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * Poisson distribution.

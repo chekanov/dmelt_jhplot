@@ -2,6 +2,7 @@ package jhplot.math;
 
 
 import java.util.Random;
+import org.apache.commons.math3.util.FastMath;
 
 
 /**
@@ -22,7 +23,7 @@ public class Poisson {
     * @param lambda lambda
     */
     public Poisson(Random rand, double lambda) {
-        elambda = Math.exp(-lambda);
+        elambda = FastMath.exp(-lambda);
         this.rand = rand;
     }
     
@@ -32,7 +33,7 @@ public class Poisson {
      * @param lambda Lambda
      */
     public Poisson(double lambda) {
-        elambda = Math.exp(-lambda);
+        elambda = FastMath.exp(-lambda);
         rand = new Random();
     }
 
@@ -43,7 +44,7 @@ public class Poisson {
      * @param lambda lambda
      */
     public Poisson(long seed, double lambda) {
-        elambda = Math.exp(-lambda);
+        elambda = FastMath.exp(-lambda);
         rand = new Random(seed);
     }
 
@@ -74,7 +75,7 @@ public class Poisson {
         double product = 1;
         int count =  0;
         int result=0;
-        elambda = Math.exp(-lambda);
+        elambda = FastMath.exp(-lambda);
         while(product >= elambda) {
             product *= rand.nextDouble();
             result = count;

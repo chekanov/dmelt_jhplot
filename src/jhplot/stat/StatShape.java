@@ -17,6 +17,8 @@ package jhplot.stat;
 import jhplot.F1D;
 import jhplot.P1D;
 import jhplot.gui.HelpBrowser;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * Shape identification based on a linear regression It calculates
@@ -80,10 +82,10 @@ public class StatShape {
 		double maxY = 0;
 		// swap for the best fits
 		for (int i = 0; i < n; i++) {
-			minX = Math.min(minX, x[i]);
-			maxX = Math.max(maxX, x[i]);
-			minY = Math.min(minY, y[i]);
-			maxY = Math.max(maxY, y[i]);
+			minX = FastMath.min(minX, x[i]);
+			maxX = FastMath.max(maxX, x[i]);
+			minY = FastMath.min(minY, y[i]);
+			maxY = FastMath.max(maxY, y[i]);
 		}
 		if (maxY - minY > maxX - minX) {
 			for (int i = 0; i < n; i++) {
@@ -219,10 +221,10 @@ public class StatShape {
                 a0= wm_y-b0*wm_x; // intercept
 
                 /*rotate axes by 45 deg. to define quadrants*/
-                double rotang = Math.atan(b) + (Math.PI/ 4);
-                double rotangp = Math.atan(b0) + (Math.PI / 4);
-                newb = Math.tan(rotang);
-                newb0 = Math.tan(rotangp);
+                double rotang = FastMath.atan(b) + (FastMath.PI/ 4);
+                double rotangp = FastMath.atan(b0) + (FastMath.PI / 4);
+                newb = FastMath.tan(rotang);
+                newb0 = FastMath.tan(rotangp);
                 newa = wm_y - (newb * wm_x);
                 newa0 = wm_y - (newb0 * wm_x);
 
@@ -413,11 +415,11 @@ public class StatShape {
                         points[0][i] = x[i];
                         points[1][i] = y[i];
                 }
-                double theta = Math.atan(b);
-                R[0][0] = Math.cos(theta);
-                R[0][1] = Math.sin(theta);
-                R[1][0] = -Math.sin(theta);
-                R[1][1] = Math.cos(theta);
+                double theta = FastMath.atan(b);
+                R[0][0] = FastMath.cos(theta);
+                R[0][1] = FastMath.sin(theta);
+                R[1][0] = -FastMath.sin(theta);
+                R[1][1] = FastMath.cos(theta);
                 for (i = 0; i < 2; i++){
                         for (j = 0; j < n; j++){
                                 NewPoints[0][j] = points[0][j] - wm_x;
@@ -546,51 +548,51 @@ public class StatShape {
 
   // distances between opposing centers (length of axes)
                 //method 1
-                double a1 = Math.sqrt((wwm[0][0] - wwm[2][0]) * (wwm[0][0] - wwm[2][0])
+                double a1 = FastMath.sqrt((wwm[0][0] - wwm[2][0]) * (wwm[0][0] - wwm[2][0])
                                 + (wwm[0][1] - wwm[2][1]) * (wwm[0][1] - wwm[2][1]));
-                double a2 = Math.sqrt((wwm[1][0] - wwm[3][0]) * (wwm[1][0] - wwm[3][0])
+                double a2 = FastMath.sqrt((wwm[1][0] - wwm[3][0]) * (wwm[1][0] - wwm[3][0])
                                 + (wwm[1][1] - wwm[3][1]) * (wwm[1][1] - wwm[3][1]));
 
                 //method 2
-                double a7 = Math.sqrt((wwm1[0][1] - wwm1[2][1]) * (wwm1[0][1] - wwm1[2][1]));
-                double a8 = Math.sqrt((wwm1[1][0] - wwm1[3][0]) * (wwm1[1][0] - wwm1[3][0]));
+                double a7 = FastMath.sqrt((wwm1[0][1] - wwm1[2][1]) * (wwm1[0][1] - wwm1[2][1]));
+                double a8 = FastMath.sqrt((wwm1[1][0] - wwm1[3][0]) * (wwm1[1][0] - wwm1[3][0]));
 
                 // distance between the global mean and quadrant centers.
                 // top semiaxis
-                double a3 = Math.sqrt((wm_x - wwm[0][0]) * (wm_x - wwm[0][0])
+                double a3 = FastMath.sqrt((wm_x - wwm[0][0]) * (wm_x - wwm[0][0])
                                 + (wm_y - wwm[0][1]) * (wm_y - wwm[0][1]));
                 //left semiaxis
-                double a4 = Math.sqrt((wm_x - wwm[1][0]) * (wm_x - wwm[1][0])
+                double a4 = FastMath.sqrt((wm_x - wwm[1][0]) * (wm_x - wwm[1][0])
                                 + (wm_y - wwm[1][1]) * (wm_y - wwm[1][1]));
                 //bottom semiaxis
-                double a5 = Math.sqrt((wm_x - wwm[2][0]) * (wm_x - wwm[2][0])
+                double a5 = FastMath.sqrt((wm_x - wwm[2][0]) * (wm_x - wwm[2][0])
                                 + (wm_y - wwm[2][1]) * (wm_y - wwm[2][1]));
                 //right semiaxis
-                double a6 = Math.sqrt((wm_x - wwm[3][0]) * (wm_x - wwm[3][0])
+                double a6 = FastMath.sqrt((wm_x - wwm[3][0]) * (wm_x - wwm[3][0])
                                 + (wm_y - wwm[3][1]) * (wm_y - wwm[3][1]));
 
                 //distance between non-quadrant centers
-                double a9 = Math.sqrt((wwm_a[0][0] - wwm_a[1][0]) * (wwm_a[0][0] - wwm_a[1][0])
+                double a9 = FastMath.sqrt((wwm_a[0][0] - wwm_a[1][0]) * (wwm_a[0][0] - wwm_a[1][0])
                                 + (wwm_a[0][1] - wwm_a[1][1]) * (wwm_a[0][1] - wwm_a[1][1]));
-                double a10 = Math.sqrt((wwm_a[2][0] - wwm_a[3][0]) * (wwm_a[2][0] - wwm_a[3][0])
+                double a10 = FastMath.sqrt((wwm_a[2][0] - wwm_a[3][0]) * (wwm_a[2][0] - wwm_a[3][0])
                                 + (wwm_a[2][1] - wwm_a[3][1]) * (wwm_a[2][1] - wwm_a[3][1]));
 
                 //distance between non-quadrant centers method 2
-                double a11 = Math.sqrt((wwm1_a[0][1] - wwm1_a[1][1]) * (wwm1_a[0][1] - wwm1_a[1][1]));
-                double a12 = Math.sqrt((wwm1_a[2][0] - wwm1_a[3][0]) * (wwm1_a[2][0] - wwm1_a[3][0]));
+                double a11 = FastMath.sqrt((wwm1_a[0][1] - wwm1_a[1][1]) * (wwm1_a[0][1] - wwm1_a[1][1]));
+                double a12 = FastMath.sqrt((wwm1_a[2][0] - wwm1_a[3][0]) * (wwm1_a[2][0] - wwm1_a[3][0]));
 
                 //distance between global mean and non-quadrant centers
                 //top semiaxis
-                double a13 = Math.sqrt((wm_x - wwm_a[0][0]) * (wm_x - wwm_a[0][0])
+                double a13 = FastMath.sqrt((wm_x - wwm_a[0][0]) * (wm_x - wwm_a[0][0])
                                 + (wm_y - wwm_a[0][1]) * (wm_y - wwm_a[0][1]));
                 //bottom semiaxis
-                double a14 = Math.sqrt((wm_x - wwm_a[1][0]) * (wm_x - wwm_a[1][0])
+                double a14 = FastMath.sqrt((wm_x - wwm_a[1][0]) * (wm_x - wwm_a[1][0])
                                 + (wm_y - wwm_a[1][1]) * (wm_y - wwm_a[1][1]));
                 //left semiaxis
-                double a15 = Math.sqrt((wm_x - wwm_a[2][0]) * (wm_x - wwm_a[2][0])
+                double a15 = FastMath.sqrt((wm_x - wwm_a[2][0]) * (wm_x - wwm_a[2][0])
                                 + (wm_y - wwm_a[2][1]) * (wm_y - wwm_a[2][1]));
                 //right semiaxis
-                double a16 = Math.sqrt((wm_x - wwm_a[3][0]) * (wm_x - wwm_a[3][0])
+                double a16 = FastMath.sqrt((wm_x - wwm_a[3][0]) * (wm_x - wwm_a[3][0])
                                 + (wm_y - wwm_a[3][1]) *  (wm_y - wwm_a[3][1]));
 
 

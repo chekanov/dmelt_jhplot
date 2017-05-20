@@ -1,6 +1,7 @@
 package jhplot.math;
 
 import java.io.Serializable;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * Complex implements a complex number and defines complex arithmetic and
@@ -60,7 +61,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 */
 	public double mod() {
 		if (x != 0 || y != 0) {
-			return Math.sqrt(x * x + y * y);
+			return FastMath.sqrt(x * x + y * y);
 		} else {
 			return 0d;
 		}
@@ -73,7 +74,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return arg(z) where z is this Complex number.
 	 */
 	public double arg() {
-		return Math.atan2(y, x);
+		return FastMath.atan2(y, x);
 	}
 
 	/**
@@ -169,7 +170,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return new Complex number z/w where z is this Complex number
 	 */
 	public Complex div(Complex w) {
-		double den = Math.pow(w.mod(), 2);
+		double den = FastMath.pow(w.mod(), 2);
 		return new Complex((x * w.real() + y * w.imag()) / den,
 				(y * w.real() - x * w.imag()) / den);
 	}
@@ -180,7 +181,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return exp(z) where z is this Complex number.
 	 */
 	public Complex exp() {
-		return new Complex(Math.exp(x) * Math.cos(y), Math.exp(x) * Math.sin(y));
+		return new Complex(FastMath.exp(x) * FastMath.cos(y), FastMath.exp(x) * FastMath.sin(y));
 	}
 
 	/**
@@ -191,7 +192,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return log(z) where z is this Complex number.
 	 */
 	public Complex log() {
-		return new Complex(Math.log(this.mod()), this.arg());
+		return new Complex(FastMath.log(this.mod()), this.arg());
 	}
 
 	/**
@@ -202,9 +203,9 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return sqrt(z) where z is this Complex number.
 	 */
 	public Complex sqrt() {
-		double r = Math.sqrt(this.mod());
+		double r = FastMath.sqrt(this.mod());
 		double theta = this.arg() / 2;
-		return new Complex(r * Math.cos(theta), r * Math.sin(theta));
+		return new Complex(r * FastMath.cos(theta), r * FastMath.sin(theta));
 	}
 
 	
@@ -216,7 +217,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 */
 	
 	private double cosh(double theta) {
-		return (Math.exp(theta) + Math.exp(-theta)) / 2;
+		return (FastMath.exp(theta) + FastMath.exp(-theta)) / 2;
 	}
 
 	
@@ -226,7 +227,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @param theta
 	 */
 	private double sinh(double theta) {
-		return (Math.exp(theta) - Math.exp(-theta)) / 2;
+		return (FastMath.exp(theta) - FastMath.exp(-theta)) / 2;
 	}
 
 	/**
@@ -236,7 +237,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return sin(z) where z is this Complex number.
 	 */
 	public Complex sin() {
-		return new Complex(cosh(y) * Math.sin(x), sinh(y) * Math.cos(x));
+		return new Complex(cosh(y) * FastMath.sin(x), sinh(y) * FastMath.cos(x));
 	}
 
 	/**
@@ -246,7 +247,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return cos(z) where z is this Complex number.
 	 */
 	public Complex cos() {
-		return new Complex(cosh(y) * Math.cos(x), -sinh(y) * Math.sin(x));
+		return new Complex(cosh(y) * FastMath.cos(x), -sinh(y) * FastMath.sin(x));
 	}
 
 	/**
@@ -257,7 +258,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return sinh(z) where z is this Complex number.
 	 */
 	public Complex sinh() {
-		return new Complex(sinh(x) * Math.cos(y), cosh(x) * Math.sin(y));
+		return new Complex(sinh(x) * FastMath.cos(y), cosh(x) * FastMath.sin(y));
 	}
 
 	/**
@@ -268,7 +269,7 @@ public class Complex extends Object implements Cloneable, Serializable {
 	 * @return cosh(z) where z is this Complex number.
 	 */
 	public Complex cosh() {
-		return new Complex(cosh(x) * Math.cos(y), sinh(x) * Math.sin(y));
+		return new Complex(cosh(x) * FastMath.cos(y), sinh(x) * FastMath.sin(y));
 	}
 
 	/**

@@ -20,11 +20,12 @@ package graph;
 
 import java.lang.Math;
 import java.lang.ArithmeticException;
+import org.apache.commons.math3.util.FastMath;
 
 /*
 **************************************************************************
 **
-**    This class is an extension of java.lang.Math. It includes a number
+**    This class is an extension of java.lang.FastMath. It includes a number
 **    of special functions not found in the Math class.
 **
 *************************************************************************/
@@ -144,7 +145,7 @@ public final class SpecialFunction extends Object {
    */
     static public double log10(double x) throws ArithmeticException {
          if( x <= 0.0 ) throw new ArithmeticException("range exception");
-         return Math.log(x)/2.30258509299404568401;
+         return FastMath.log(x)/2.30258509299404568401;
     }
 
 
@@ -156,8 +157,8 @@ public final class SpecialFunction extends Object {
     static public double cosh(double x) throws ArithmeticException {
       double a;
       a = x;
-      if( a < 0.0 ) a = Math.abs(x);
-      a = Math.exp(a);
+      if( a < 0.0 ) a = FastMath.abs(x);
+      a = FastMath.exp(a);
       return 0.5*(a+1/a);
     }
 
@@ -169,8 +170,8 @@ public final class SpecialFunction extends Object {
       double a;
       if(x == 0.0) return x;
       a = x;
-      if( a < 0.0 ) a = Math.abs(x);
-      a = Math.exp(a);
+      if( a < 0.0 ) a = FastMath.abs(x);
+      a = FastMath.exp(a);
       if( x < 0.0 )  return -0.5*(a-1/a);
       else           return  0.5*(a-1/a);
     }
@@ -183,8 +184,8 @@ public final class SpecialFunction extends Object {
       double a;
       if( x == 0.0 ) return x;
       a = x;
-      if( a < 0.0 ) a = Math.abs(x);
-      a = Math.exp(2.0*a);
+      if( a < 0.0 ) a = FastMath.abs(x);
+      a = FastMath.exp(2.0*a);
       if(x < 0.0 ) return -( 1.0-2.0/(a+1.0) );
       else         return  ( 1.0-2.0/(a+1.0) );
     }
@@ -196,7 +197,7 @@ public final class SpecialFunction extends Object {
 
     static public double acosh(double x) throws ArithmeticException {
       if( x < 1.0 ) throw new ArithmeticException("range exception");
-      return Math.log( x + Math.sqrt(x*x-1));
+      return FastMath.log( x + FastMath.sqrt(x*x-1));
     }
 
   /**
@@ -214,7 +215,7 @@ public final class SpecialFunction extends Object {
                       sign = 1;
                       x = xx;
       }
-      return sign*Math.log( x + Math.sqrt(x*x+1));
+      return sign*FastMath.log( x + FastMath.sqrt(x*x+1));
     }
 
   /**
@@ -224,7 +225,7 @@ public final class SpecialFunction extends Object {
     static public double atanh(double x) throws ArithmeticException {
       if( x > 1.0 || x < -1.0 ) throw 
                          new ArithmeticException("range exception");
-      return 0.5 * Math.log( (1.0+x)/(1.0-x) );
+      return 0.5 * FastMath.log( (1.0+x)/(1.0-x) );
     }
 
   /**
@@ -235,7 +236,7 @@ public final class SpecialFunction extends Object {
     static public double j0(double x) throws ArithmeticException {
         double ax;
 
-        if( (ax=Math.abs(x)) < 8.0 ) {
+        if( (ax=FastMath.abs(x)) < 8.0 ) {
            double y=x*x;
            double ans1=57568490574.0+y*(-13362590354.0+y*(651619640.7
                        +y*(-11214424.18+y*(77392.33017+y*(-184.9052456)))));
@@ -254,8 +255,8 @@ public final class SpecialFunction extends Object {
                        +y*(-0.6911147651e-5+y*(0.7621095161e-6
                        -y*0.934935152e-7)));
            
-           return Math.sqrt(0.636619772/ax)*
-                  (Math.cos(xx)*ans1-z*Math.sin(xx)*ans2);
+           return FastMath.sqrt(0.636619772/ax)*
+                  (FastMath.cos(xx)*ans1-z*FastMath.sin(xx)*ans2);
 	}
     }
   /**
@@ -269,7 +270,7 @@ public final class SpecialFunction extends Object {
       double y;
       double ans1, ans2;
 
-      if ((ax=Math.abs(x)) < 8.0) {
+      if ((ax=FastMath.abs(x)) < 8.0) {
          y=x*x;
          ans1=x*(72362614232.0+y*(-7895059235.0+y*(242396853.1
                +y*(-2972611.439+y*(15704.48260+y*(-30.16036606))))));
@@ -286,8 +287,8 @@ public final class SpecialFunction extends Object {
          ans2=0.04687499995+y*(-0.2002690873e-3
               +y*(0.8449199096e-5+y*(-0.88228987e-6
               +y*0.105787412e-6)));
-         double ans=Math.sqrt(0.636619772/ax)*
-                   (Math.cos(xx)*ans1-z*Math.sin(xx)*ans2);
+         double ans=FastMath.sqrt(0.636619772/ax)*
+                   (FastMath.cos(xx)*ans1-z*FastMath.sin(xx)*ans2);
          if (x < 0.0) ans = -ans;
          return ans;
        }
@@ -310,7 +311,7 @@ public final class SpecialFunction extends Object {
        if(n == 0) return j0(x);
        if(n == 1) return j1(x);
 
-       ax=Math.abs(x);
+       ax=FastMath.abs(x);
        if(ax == 0.0)  return 0.0;
        else 
        if (ax > (double)n) {
@@ -325,7 +326,7 @@ public final class SpecialFunction extends Object {
          ans=bj;
        } else {
          tox=2.0/ax;
-         m=2*((n+(int)Math.sqrt(ACC*n))/2);
+         m=2*((n+(int)FastMath.sqrt(ACC*n))/2);
          jsum=false;
          bjp=ans=sum=0.0;
          bj=1.0;
@@ -333,7 +334,7 @@ public final class SpecialFunction extends Object {
             bjm=j*tox*bj-bjp;
             bjp=bj;
             bj=bjm;
-            if (Math.abs(bj) > BIGNO) {
+            if (FastMath.abs(bj) > BIGNO) {
                bj *= BIGNI;
                bjp *= BIGNI;
                ans *= BIGNI;
@@ -364,7 +365,7 @@ public final class SpecialFunction extends Object {
          double ans2=40076544269.0+y*(745249964.8+y*(7189466.438
                         +y*(47447.26470+y*(226.1030244+y*1.0))));
 
-         return (ans1/ans2)+0.636619772*j0(x)*Math.log(x);
+         return (ans1/ans2)+0.636619772*j0(x)*FastMath.log(x);
       } else {
          double z=8.0/x;
          double y=z*z;
@@ -375,8 +376,8 @@ public final class SpecialFunction extends Object {
          double ans2 = -0.1562499995e-1+y*(0.1430488765e-3
                       +y*(-0.6911147651e-5+y*(0.7621095161e-6
                       +y*(-0.934945152e-7))));
-         return Math.sqrt(0.636619772/x)*
-                (Math.sin(xx)*ans1+z*Math.cos(xx)*ans2);
+         return FastMath.sqrt(0.636619772/x)*
+                (FastMath.sin(xx)*ans1+z*FastMath.cos(xx)*ans2);
       }
    }
 
@@ -395,7 +396,7 @@ public final class SpecialFunction extends Object {
          double ans2=0.2499580570e14+y*(0.4244419664e12
                      +y*(0.3733650367e10+y*(0.2245904002e8
                      +y*(0.1020426050e6+y*(0.3549632885e3+y)))));
-         return (ans1/ans2)+0.636619772*(j1(x)*Math.log(x)-1.0/x);
+         return (ans1/ans2)+0.636619772*(j1(x)*FastMath.log(x)-1.0/x);
       } else {
          double z=8.0/x;
          double y=z*z;
@@ -405,8 +406,8 @@ public final class SpecialFunction extends Object {
          double ans2=0.04687499995+y*(-0.2002690873e-3
                      +y*(0.8449199096e-5+y*(-0.88228987e-6
                      +y*0.105787412e-6)));
-         return Math.sqrt(0.636619772/x)*
-                (Math.sin(xx)*ans1+z*Math.cos(xx)*ans2);
+         return FastMath.sqrt(0.636619772/x)*
+                (FastMath.sin(xx)*ans1+z*FastMath.cos(xx)*ans2);
       }
    }
   /**
@@ -439,8 +440,8 @@ public final class SpecialFunction extends Object {
    * @return the factorial of the argument
    */
      static public double fac(double x) throws ArithmeticException {
-        double d = Math.abs(x);
-        if(Math.floor(d) == d) return (double)fac( (int)x );
+        double d = FastMath.abs(x);
+        if(FastMath.floor(d) == d) return (double)fac( (int)x );
         else                   return gamma(x+1.0);
      }
 
@@ -451,7 +452,7 @@ public final class SpecialFunction extends Object {
      static public int fac(int j) throws ArithmeticException {
         int i = j;
         int d = 1;
-        if(j < 0) i = Math.abs(j);        
+        if(j < 0) i = FastMath.abs(j);        
         while( i > 1) { d *= i--; }
         if(j < 0) return -d;
         else      return d;
@@ -498,11 +499,11 @@ public final class SpecialFunction extends Object {
      double p, z;
      int i;
 
-     double q = Math.abs(x);
+     double q = FastMath.abs(x);
 
      if( q > 33.0 ) {
        if( x < 0.0 ) {
-            p = Math.floor(q);
+            p = FastMath.floor(q);
 	    if( p == q ) throw new ArithmeticException("gamma: overflow");
 	    i = (int)p;
 	    z = q - p;
@@ -510,10 +511,10 @@ public final class SpecialFunction extends Object {
 			p += 1.0;
 			z = q - p;
 	    }
-	    z = q * Math.sin( Math.PI * z );
+	    z = q * FastMath.sin( FastMath.PI * z );
 	    if( z == 0.0 ) throw new ArithmeticException("gamma: overflow");
-	    z = Math.abs(z);
-	    z = Math.PI/(z * stirf(q) );
+	    z = FastMath.abs(z);
+	    z = FastMath.PI/(z * stirf(q) );
 
             return -z;
        } else {
@@ -576,16 +577,16 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
         double MAXSTIR = 143.01608;
 
         double w = 1.0/x;
-        double  y = Math.exp(x);
+        double  y = FastMath.exp(x);
 
         w = 1.0 + w * polevl( w, STIR, 4 );
 
         if( x > MAXSTIR ) {
-	       /* Avoid overflow in Math.pow() */
-	       double v = Math.pow( x, 0.5 * x - 0.25 );
+	       /* Avoid overflow in FastMath.pow() */
+	       double v = FastMath.pow( x, 0.5 * x - 0.25 );
 	       y = v * (v / y);
 	} else {
-               y = Math.pow( x, x - 0.5 ) / y;
+               y = FastMath.pow( x, x - 0.5 ) / y;
 	}
         y = SQTPI * y * w;
         return y;
@@ -614,10 +615,10 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 
         if( x < 1.0 || x < a ) return 1.0 - igam(a,x);
 
-        ax = a * Math.log(x) - x - lgamma(a);
+        ax = a * FastMath.log(x) - x - lgamma(a);
         if( ax < -MAXLOG ) return 0.0;
 
-        ax = Math.exp(ax);
+        ax = FastMath.exp(ax);
 
         /* continued fraction */
         y = 1.0 - a;
@@ -638,7 +639,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 	    qk = qkm1 * z  -  qkm2 * yc;
 	    if( qk != 0 ) {
 		r = pk/qk;
-		t = Math.abs( (ans - r)/r );
+		t = FastMath.abs( (ans - r)/r );
 		ans = r;
 	    } else
 		t = 1.0;
@@ -647,7 +648,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 	    pkm1 = pk;
 	    qkm2 = qkm1;
 	    qkm1 = qk;
-	    if( Math.abs(pk) > big ) {
+	    if( FastMath.abs(pk) > big ) {
 		pkm2 *= biginv;
 		pkm1 *= biginv;
 		qkm2 *= biginv;
@@ -681,10 +682,10 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
         if( x > 1.0 && x > a ) return 1.0 - igamc(a,x);
 
        /* Compute  x**a * exp(-x) / gamma(a)  */
-        ax = a * Math.log(x) - x - lgamma(a);
+        ax = a * FastMath.log(x) - x - lgamma(a);
         if( ax < -MAXLOG ) return( 0.0 );
 
-        ax = Math.exp(ax);
+        ax = FastMath.exp(ax);
 
         /* power series */
         r = a;
@@ -786,7 +787,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
       double x, y, z;
 
       x = a * SQRTH;
-      z = Math.abs(x);
+      z = FastMath.abs(x);
 
       if( z < SQRTH )   y = 0.5 + 0.5 * erf(x);
       else {
@@ -866,7 +867,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
              else         return( 0.0 );
         }
 
-        z = Math.exp(z);
+        z = FastMath.exp(z);
 
         if( x < 8.0 ) {
           p = polevl( x, P, 8 );
@@ -919,7 +920,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
                      4.92673942608635921086E4
                     };
 
-       if( Math.abs(x) > 1.0 ) return( 1.0 - erfc(x) );
+       if( FastMath.abs(x) > 1.0 ) return( 1.0 - erfc(x) );
        z = x * x;
        y = x * polevl( z, T, 4 ) / p1evl( z, U, 5 );
        return y;
@@ -996,17 +997,17 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
          if( x < -34.0 ) {
   	   q = -x;
 	   w = lgamma(q);
-	   p = Math.floor(q);
+	   p = FastMath.floor(q);
 	   if( p == q ) throw new ArithmeticException("lgam: Overflow");
 	   z = q - p;
 	   if( z > 0.5 ) {
 		p += 1.0;
 		z = p - q;
  	   }
-	   z = q * Math.sin( Math.PI * z );
+	   z = q * FastMath.sin( FastMath.PI * z );
 	   if( z == 0.0 ) throw new 
                                ArithmeticException("lgamma: Overflow");
-	   z = LOGPI - Math.log( z ) - w;
+	   z = LOGPI - FastMath.log( z ) - w;
 	   return z;
 	 }
 
@@ -1023,16 +1024,16 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 		x += 1.0;
 	   }
 	   if( z < 0.0 ) z = -z;
-	   if( x == 2.0 ) return Math.log(z);
+	   if( x == 2.0 ) return FastMath.log(z);
 	   x -= 2.0;
 	   p = x * polevl( x, B, 5 ) / p1evl( x, C, 6);
- 	   return( Math.log(z) + p );
+ 	   return( FastMath.log(z) + p );
 	 }
 
          if( x > 2.556348e305 ) throw new 
                           ArithmeticException("lgamma: Overflow");
 
-         q = ( x - 0.5 ) * Math.log(x) - x + 0.91893853320467274178;
+         q = ( x - 0.5 ) * FastMath.log(x) - x + 0.91893853320467274178;
          if( x > 1.0e8 ) return( q );
 
          p = 1.0/(x*x);
@@ -1114,11 +1115,11 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
            a      b   _             _     _
           x  (1-x)   | (a+b) / ( a | (a) | (b) ) .   */
 
-        y = a * Math.log(x);
-        t = b * Math.log(xc);
-        if( (a+b) < MAXGAM && Math.abs(y) < MAXLOG && Math.abs(t) < MAXLOG ) {
-	        t = Math.pow(xc,b);
-	        t *= Math.pow(x,a);
+        y = a * FastMath.log(x);
+        t = b * FastMath.log(xc);
+        if( (a+b) < MAXGAM && FastMath.abs(y) < MAXLOG && FastMath.abs(t) < MAXLOG ) {
+	        t = FastMath.pow(xc,b);
+	        t *= FastMath.pow(x,a);
 	        t /= a;
 	        t *= w;
 	        t *= gamma(a+b) / (gamma(a) * gamma(b));
@@ -1130,11 +1131,11 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 	    }
         /* Resort to logarithms.  */
         y += t + lgamma(a+b) - lgamma(a) - lgamma(b);
-        y += Math.log(w/a);
+        y += FastMath.log(w/a);
         if( y < MINLOG )
 	                    t = 0.0;
         else
-	                    t = Math.exp(y);
+	                    t = FastMath.exp(y);
 
         if( flag ) {
  	           if( t <= MACHEP ) 	t = 1.0 - MACHEP;
@@ -1192,7 +1193,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 
 	      if( qk != 0 )		r = pk/qk;
 	      if( r != 0 ) {
-		       t = Math.abs( (ans - r)/r );
+		       t = FastMath.abs( (ans - r)/r );
 		       ans = r;
 		  }	else
 		       t = 1.0;
@@ -1208,13 +1209,13 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
       	  k7 += 2.0;
       	  k8 += 2.0;
 
-      	  if( (Math.abs(qk) + Math.abs(pk)) > big ) {
+      	  if( (FastMath.abs(qk) + FastMath.abs(pk)) > big ) {
       		pkm2 *= biginv;
       		pkm1 *= biginv;
       		qkm2 *= biginv;
       		qkm1 *= biginv;
 		  }
-      	  if( (Math.abs(qk) < biginv) || (Math.abs(pk) < biginv) ) {
+      	  if( (FastMath.abs(qk) < biginv) || (FastMath.abs(pk) < biginv) ) {
       		pkm2 *= big;
       		pkm1 *= big;
       		qkm2 *= big;
@@ -1274,7 +1275,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 
 	         if( qk != 0 )  r = pk/qk;
 	         if( r != 0 ) {
-		         t = Math.abs( (ans - r)/r );
+		         t = FastMath.abs( (ans - r)/r );
 		         ans = r;
 		     } else
 		         t = 1.0;
@@ -1290,13 +1291,13 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 	         k7 += 2.0;
 	         k8 += 2.0;
 
-	         if( (Math.abs(qk) + Math.abs(pk)) > big ) {
+	         if( (FastMath.abs(qk) + FastMath.abs(pk)) > big ) {
 		        pkm2 *= biginv;
 		        pkm1 *= biginv;
 		        qkm2 *= biginv;
 		        qkm1 *= biginv;
 		     }
-	         if( (Math.abs(qk) < biginv) || (Math.abs(pk) < biginv) ) {
+	         if( (FastMath.abs(qk) < biginv) || (FastMath.abs(pk) < biginv) ) {
 		        pkm2 *= big;
 		        pkm1 *= big;
 		        qkm2 *= big;
@@ -1321,7 +1322,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
         n = 2.0;
         s = 0.0;
         z = MACHEP * ai;
-        while( Math.abs(v) > z ) {
+        while( FastMath.abs(v) > z ) {
 	       u = (n - b) * x / n;
 	       t *= u;
 	       v = t / (a + n);
@@ -1331,14 +1332,14 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
         s += t1;
         s += ai;
 
-        u = a * Math.log(x);
-        if( (a+b) < MAXGAM && Math.abs(u) < MAXLOG ) {
+        u = a * FastMath.log(x);
+        if( (a+b) < MAXGAM && FastMath.abs(u) < MAXLOG ) {
 	        t = gamma(a+b)/(gamma(a)*gamma(b));
-	        s = s * t * Math.pow(x,a);
+	        s = s * t * FastMath.pow(x,a);
 	    } else {
-	       t = lgamma(a+b) - lgamma(a) - lgamma(b) + u + Math.log(s);
+	       t = lgamma(a+b) - lgamma(a) - lgamma(b) + u + FastMath.log(s);
 	       if( t < MINLOG ) 	s = 0.0;
-	       else  	            s = Math.exp(t);
+	       else  	            s = FastMath.exp(t);
 	    }
         return s;
      }

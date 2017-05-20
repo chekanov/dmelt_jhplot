@@ -28,9 +28,7 @@
 package jplot;
 
 import javax.swing.*;
-
 import org.freehep.graphics2d.VectorGraphics;
-
 import java.awt.*;
 import java.awt.image.*;
 import java.lang.reflect.Array;
@@ -44,6 +42,8 @@ import jhplot.JHPlot;
 import jhplot.shapes.*;
 import jplot.panels.PanelPlot;
 import graph.*;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * The <code>Graph</code> class builds a panel which displays a graph
@@ -183,7 +183,7 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 	private final Color boxColor = Color.gray;
 
 	// the value of Ln(10), need it a few times for logscales:
-	private final static double LNTEN = Math.log(10.0);
+	private final static double LNTEN = FastMath.log(10.0);
 
 	protected Line2D.Double line = new Line2D.Double();
 
@@ -424,7 +424,7 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 	 * @return log10(x)
 	 */
 	public static double log10(double x) {
-		return Math.log(x) / LNTEN;
+		return FastMath.log(x) / LNTEN;
 	}
 
 
@@ -436,7 +436,7 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 		int numDigits = 0;
 		if (num == 0.0)
 			return 0;
-		while (numDigits <= 15 && Math.abs(Math.floor(num) / num - 1.0) > 1e-10) {
+		while (numDigits <= 15 && FastMath.abs(Math.floor(num) / num - 1.0) > 1e-10) {
 			// while (numDigits <= 15 && num != Math.floor(num)) {
 			num *= 10.0;
 			numDigits++;
@@ -458,18 +458,18 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 		int maxFloat = 6;
 		if (num != 0.0) {
 			int exp = (int) Math.floor(log10(num));
-			int x = Math.abs(exp) + n;
+			int x = FastMath.abs(exp) + n;
 			BigDecimal bd = new BigDecimal(num);
 			if (x > maxFloat) {
 				if (exp > 0)
 					bd = bd.movePointLeft(exp);
 				else
-					bd = bd.movePointRight(Math.abs(exp));
+					bd = bd.movePointRight(FastMath.abs(exp));
 			} else {
 				if (exp < 0)
 					n = x;
 				else
-					n = x - Math.abs(exp);
+					n = x - FastMath.abs(exp);
 			}
 			bd = bd.setScale(n, BigDecimal.ROUND_HALF_EVEN);
 			int nn = getNumDigits(bd.doubleValue());
@@ -578,9 +578,9 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 
 			// needed to convert data scale to graphical pixel scaling
 			tan = 2.0 * axisLength[Y] / axisLength[X];
-			arc = Math.atan(tan);
-			sin = Math.sin(arc);
-			cos = Math.cos(arc);
+			arc = FastMath.atan(tan);
+			sin = FastMath.sin(arc);
+			cos = FastMath.cos(arc);
 			normalSep = piperSep * sin;
 
 			triangleBottom = (axisLength[X] - piperSep) / 2.0;
@@ -1206,9 +1206,9 @@ public abstract class GraphGeneral extends JPanel implements Printable {
                     firstDraw=false;
                 }
 
-               double  s1=Math.sqrt(panelSizeOriginal.height*panelSizeOriginal.height + 
+               double  s1=FastMath.sqrt(panelSizeOriginal.height*panelSizeOriginal.height + 
                                    panelSizeOriginal.width*panelSizeOriginal.width);
-               double  s2=Math.sqrt(panelSize.height*panelSize.height + panelSize.width*panelSize.width);
+               double  s2=FastMath.sqrt(panelSize.height*panelSize.height + panelSize.width*panelSize.width);
 
                if (gs.getAttResizable()){
                scalingFrame = (float) (s2/s1);
@@ -1665,7 +1665,7 @@ public abstract class GraphGeneral extends JPanel implements Printable {
                          _isDragging = false;
 
                          // protect for small moves
-                         double ss=Math.sqrt((_lastX-_startX)*(_lastX-_startX) +  
+                         double ss=FastMath.sqrt((_lastX-_startX)*(_lastX-_startX) +  
                                              (_lastY-_startY)*(_lastY-_startY)); 
 
                           if (ss>4) {
@@ -1711,8 +1711,8 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 
                         int beginX = Math.min(startZoomX, currentZoomX);
                         int beginY = Math.min(startZoomY, currentZoomY);
-                        int wX = Math.abs(currentZoomX - startZoomX);
-                        int hY = Math.abs(currentZoomY - startZoomY);
+                        int wX = FastMath.abs(currentZoomX - startZoomX);
+                        int hY = FastMath.abs(currentZoomY - startZoomY);
 
                          // remember default
                         if (zoomFirst) {
@@ -1844,8 +1844,8 @@ public abstract class GraphGeneral extends JPanel implements Printable {
                         currentZoomY=y; 
                         int beginX = Math.min(startZoomX, currentZoomX);
                         int beginY = Math.min(startZoomY, currentZoomY);
-                        int wX = Math.abs(currentZoomX - startZoomX);
-                        int hY = Math.abs(currentZoomY - startZoomY);
+                        int wX = FastMath.abs(currentZoomX - startZoomX);
+                        int hY = FastMath.abs(currentZoomY - startZoomY);
 
                         Graphics g = getGraphics();
                         Color old=g.getColor();
@@ -1966,7 +1966,7 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 		int deltaX = (x2 - x1);
 		int deltaY = (y2 - y1);
 
-		double theta = Math.atan((double) (deltaY) / (double) (deltaX));
+		double theta = FastMath.atan((double) (deltaY) / (double) (deltaX));
 
 		if (deltaX < 0.0) {
 			theta1 = theta + Math.PI; // If theta is negative make it positive
@@ -1974,10 +1974,10 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 			theta1 = theta; // else leave it alone
 		}
 
-		int lengthdeltaX = -(int) (Math.cos(theta1) * headLength);
-		int lengthdeltaY = -(int) (Math.sin(theta1) * headLength);
-		int widthdeltaX = (int) (Math.sin(theta1) * headwidth);
-		int widthdeltaY = (int) (Math.cos(theta1) * headwidth);
+		int lengthdeltaX = -(int) (FastMath.cos(theta1) * headLength);
+		int lengthdeltaY = -(int) (FastMath.sin(theta1) * headLength);
+		int widthdeltaX = (int) (FastMath.sin(theta1) * headwidth);
+		int widthdeltaY = (int) (FastMath.cos(theta1) * headwidth);
 
 		g.drawPolyline(xPoints, yPoints, xPoints.length);
 		g.drawLine(x2, y2, x2 + lengthdeltaX + widthdeltaX, y2 + lengthdeltaY
@@ -2034,9 +2034,9 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 
 	public void calcValuesQuad(int x1, int y1, int x2, int y2) {
 		double arrowAng = Math.toDegrees(Math.atan((double) haw / (double) al));
-		double dist = Math.sqrt(al * al + aw);
-		double lineAng = Math.toDegrees(Math.atan(((double) Math.abs(x1 - x2))
-				/ ((double) Math.abs(y1 - y2))));
+		double dist = FastMath.sqrt(al * al + aw);
+		double lineAng = Math.toDegrees(FastMath.atan(((double) FastMath.abs(x1 - x2))
+				/ ((double) FastMath.abs(y1 - y2))));
 
 		// Adjust line angle for quadrant
 		if (x1 > x2) {
@@ -2075,31 +2075,31 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 
 		// North-East
 		if (dirn <= 90.0) {
-			xValues[index] = x + (int) (Math.sin(Math.toRadians(dirn)) * dist);
-			yValues[index] = y - (int) (Math.cos(Math.toRadians(dirn)) * dist);
+			xValues[index] = x + (int) (FastMath.sin(Math.toRadians(dirn)) * dist);
+			yValues[index] = y - (int) (FastMath.cos(Math.toRadians(dirn)) * dist);
 			return;
 		}
 		// South-East
 		if (dirn <= 180.0) {
 			xValues[index] = x
-					+ (int) (Math.cos(Math.toRadians(dirn - 90)) * dist);
+					+ (int) (FastMath.cos(Math.toRadians(dirn - 90)) * dist);
 			yValues[index] = y
-					+ (int) (Math.sin(Math.toRadians(dirn - 90)) * dist);
+					+ (int) (FastMath.sin(Math.toRadians(dirn - 90)) * dist);
 			return;
 		}
 		// South-West
 		if (dirn <= 90.0) {
 			xValues[index] = x
-					- (int) (Math.sin(Math.toRadians(dirn - 180)) * dist);
+					- (int) (FastMath.sin(Math.toRadians(dirn - 180)) * dist);
 			yValues[index] = y
-					+ (int) (Math.cos(Math.toRadians(dirn - 180)) * dist);
+					+ (int) (FastMath.cos(Math.toRadians(dirn - 180)) * dist);
 		}
 		// Nort-West
 		else {
 			xValues[index] = x
-					- (int) (Math.cos(Math.toRadians(dirn - 270)) * dist);
+					- (int) (FastMath.cos(Math.toRadians(dirn - 270)) * dist);
 			yValues[index] = y
-					- (int) (Math.sin(Math.toRadians(dirn - 270)) * dist);
+					- (int) (FastMath.sin(Math.toRadians(dirn - 270)) * dist);
 		}
 	}
 
@@ -2159,7 +2159,7 @@ public abstract class GraphGeneral extends JPanel implements Printable {
 		int headsize = distance;
 
 		double stretchfactor = 0;
-		stretchfactor = 1 - (headsize/(Math.sqrt(((xdest-xsource)*(xdest-xsource))+((ydest-ysource)*(ydest-ysource)))));
+		stretchfactor = 1 - (headsize/(FastMath.sqrt(((xdest-xsource)*(xdest-xsource))+((ydest-ysource)*(ydest-ysource)))));
 
 		arrowhead[0] = (int) (stretchfactor*(xdest-xsource))+xsource;
 		arrowhead[1] = (int) (stretchfactor*(ydest-ysource))+ysource;
@@ -2264,7 +2264,7 @@ public abstract class GraphGeneral extends JPanel implements Printable {
     g.drawLine(x1,y1,x2,y2);
     return;
     }
-  double linelength=Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+  double linelength=FastMath.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
   double yincrement=(y2-y1)/(linelength/(dashlength+spacelength));
   double xincdashspace=(x2-x1)/(linelength/(dashlength+spacelength));
   double yincdashspace=(y2-y1)/(linelength/(dashlength+spacelength));

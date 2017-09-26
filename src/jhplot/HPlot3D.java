@@ -244,7 +244,7 @@ public class HPlot3D extends GHFrame {
 	}
 
 	/**
-	 * Get the rotation angle
+	 * Set the rotation angle. 
 	 * 
 	 * @param angle
 	 *            angle

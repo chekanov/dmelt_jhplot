@@ -11,7 +11,7 @@ import java.awt.*;
 import jhplot.gui.HelpBrowser;
 
 /**
- * Draw a TEXT in the USER coordinate system. Use HLabel to draw an interactive
+ * Draw a TEXT on {@link jhplot.HPlot} canvas. Use the USER coordinate system. Use HLabel to draw an interactive
  * label.
  * 
  * @author S.Chekanov

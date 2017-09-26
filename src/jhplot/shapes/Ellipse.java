@@ -11,7 +11,7 @@ import java.awt.*;
 import jhplot.gui.HelpBrowser;
 
 /**
- * Draw an ellipse in the USER coordinate system
+ * Draw an ellipse in the USER coordinate system using {@link jhplot.HPlot} canvas. 
  * 
  * @author S.Chekanov
  * 

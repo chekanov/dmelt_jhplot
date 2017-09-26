@@ -17,8 +17,8 @@ import java.io.*;
 
 /**
  * 
- * Main class to build a JAVA 2D primitives
- * 
+ * Build 2D primitives for {@link jhplot.HPlot} canvas.
+ * Can be done in USER and NDS coordinates. 
  * @author S.Chekanov
  * 
  */

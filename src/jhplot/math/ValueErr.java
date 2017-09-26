@@ -9,7 +9,8 @@
 package jhplot.math;
 
 import java.io.*;
-import net.jafama.FastMath;
+import org.apache.commons.math3.util.FastMath;
+
 
 /**
  * A value represented with the number (value) and associated error. This class

@@ -30,8 +30,8 @@ import java.io.Serializable;
 import jhplot.gui.HelpBrowser;
 
 /**
- * Create an interactive Label in the USER or NDC coordinates. The label can be
- * defined in the NDC (normalized coordinate system) or the user coordinate.
+ * Create an interactive label using {@link jhplot.HPlot} canvas. The label can be
+ * defined in the NDC (normalized coordinate system) or the USER coordinate.
  * Only one line of the text can be shown. To show 
  * several lines of the text, use
  * @see HMline class

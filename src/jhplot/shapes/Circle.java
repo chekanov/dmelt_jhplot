@@ -11,7 +11,7 @@ import java.awt.*;
 import jhplot.gui.HelpBrowser;
 
 /**
- * Build a Circle using the USER coordinate system
+ * Build a circle using {@link jhplot.HPlot} canvas. Use USER coordinate system. 
  * 
  * @author S.Chekanov
  * 

@@ -28,8 +28,8 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Create an interactive key label in the USER or NDC coordinates. The label can
- * be defined in the NDC (normalized coordinate system) or the user coordinate.
+ * Create an interactive key label on the {@link jhplot.HPlot} canvas. The label can
+ * be defined in the NDC (normalized coordinate system) or the USER coordinates.
  * Only one line of the text can be shown. The key is not related to any data
  * set, so you can plot this key even if no data are shown.
  * 

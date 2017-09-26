@@ -1222,7 +1222,7 @@ public class GraphXY extends GraphGeneral {
 				continue;
 
 			// contour type. Draw and exit the loop
-			if (da.getGraphStyle() == LinePars.CONTOUR) {
+			if (da.getGraphStyle() == LinePars.CONTOUR && contour != null) {
 
 				// System.out.println( SetEnv.getPlotType() );
 				contour.drawColor(g2, toX(MinAxis[X]), toX(MaxAxis[X]),

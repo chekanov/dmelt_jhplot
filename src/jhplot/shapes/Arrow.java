@@ -11,7 +11,7 @@ import java.awt.*;
 import jhplot.gui.HelpBrowser;
 
 /**
- * Build an arrow. The default is the USER coordinate system.
+ * Build an arrow using {@link jhplot.HPlot} canvas. The default is the USER coordinate system.
  * 
  * @author S.Chekanov
  * 

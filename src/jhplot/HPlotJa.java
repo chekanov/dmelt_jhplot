@@ -156,6 +156,7 @@ public class HPlotJa extends JComponent {
 	public static String PREFS_FILENAME = USER_HOME + java.io.File.separator
 			+ ".jaPlotrc";
 
+
 	/** The current directory. */
 	private static String curDIR = "";
 
@@ -217,11 +218,11 @@ public class HPlotJa extends JComponent {
 
 		isSet = setgraph;
 		// file with preferences
-		PREFS_FILENAME = USER_HOME + java.io.File.separator + ".jehep"
+		PREFS_FILENAME = USER_HOME + java.io.File.separator + ".dmelt"
 				+ java.io.File.separator + "japlot.pref";
 		String OS = System.getProperty("os.name").toLowerCase();
 		if (OS.indexOf("windows") > -1 || OS.indexOf("nt") > -1) {
-			PREFS_FILENAME = USER_HOME + java.io.File.separator + "jehep"
+			PREFS_FILENAME = USER_HOME + java.io.File.separator + "dmelt"
 					+ java.io.File.separator + "japlot.pref";
 		}
 
@@ -1976,9 +1977,9 @@ public class HPlotJa extends JComponent {
 	}
 
 	/**
-	 * Margin from bottom.
+	 * Margin from bottom in NDC coordinates (0-1).
 	 * 
-	 * @param marginBottom
+	 * @param marginBottom margin from botton.  
 	 */
 	public void setMarginBottom(double marginBottom) {
 
@@ -1988,7 +1989,7 @@ public class HPlotJa extends JComponent {
 		double cheight = ja[N1][N2].getRelHndc();
 
 		if (1 - marginBottom < 0 || 1 - marginBottom > 1) {
-			ErrorMessage("Position is not in NDC");
+			ErrorMessage("setMarginBottom: Position is not in NDC (values must be 0-1)");
 			return;
 		}
 		;
@@ -2010,9 +2011,9 @@ public class HPlotJa extends JComponent {
 	}
 
 	/**
-	 * Margin from left
+	 * Margin from lef. Shoule be in NDC coordinates (0-1) 
 	 * 
-	 * @param marginLeft
+	 * @param marginLeft left margin (0-1) 
 	 */
 	public void setMarginLeft(double marginLeft) {
 
@@ -2020,12 +2021,10 @@ public class HPlotJa extends JComponent {
 		double y = ja[N1][N2].getYndc();
 		double cwidth = ja[N1][N2].getRelWndc();
 		double cheight = ja[N1][N2].getRelHndc();
-
-		if (marginLeft < 0 || marginLeft > 1) {
-			ErrorMessage("Position is not in NDC");
+		if (marginLeft < 0 || marginLeft>1) {
+			ErrorMessage("setMarginLeft: Position is not in NDC (values must be 0-1)");
 			return;
-		}
-		;
+		}; 
 		ja[N1][N2].setLocation(marginLeft, y, "NDC");
 		ja[N1][N2].setRelWH(cwidth, cheight, "NDC");
 
@@ -2043,9 +2042,9 @@ public class HPlotJa extends JComponent {
 	}
 
 	/**
-	 * Set margin from right
+	 * Set margin from right. NDC is assumed (0-1). 
 	 * 
-	 * @param marginRight
+	 * @param marginRight  margin from right. 
 	 */
 	public void setMarginRight(double marginRight) {
 
@@ -2055,7 +2054,7 @@ public class HPlotJa extends JComponent {
 		double cheight = ja[N1][N2].getRelHndc();
 
 		if (1 - marginRight < 0) {
-			ErrorMessage("Position is not in NDC");
+			ErrorMessage("setMarginRight: Position is not in NDC");
 			return;
 		}
 		;
@@ -2172,7 +2171,7 @@ public class HPlotJa extends JComponent {
 	}
 
 	/**
-	 * Set location of the current pad in NDC You may need to call update.
+	 * Set location of the current pad in NDC (0-1). You may need to call update.
 	 * 
 	 * @param x
 	 *            position
@@ -2182,12 +2181,12 @@ public class HPlotJa extends JComponent {
 	public void setPadLocation(double x, double y) {
 
 		if (x < 0 || x > 1) {
-			ErrorMessage("Position is not in NDC");
+			ErrorMessage("setPadLocation: Position is not in NDC (0-1)");
 			return;
 		}
 		;
 		if (y < 0 || y > 1) {
-			ErrorMessage("Position is not in NDC");
+			ErrorMessage("setPadLocation: Position is not in NDC (0-1)");
 			return;
 		}
 		;
@@ -2196,7 +2195,7 @@ public class HPlotJa extends JComponent {
 	}
 
 	/**
-	 * Set width and height of the pad in NDC
+	 * Set width and height of the pad in NDC. Allowed values (0-1). 
 	 * 
 	 * @param width
 	 *            width
@@ -2206,12 +2205,12 @@ public class HPlotJa extends JComponent {
 	public void setPadSize(double width, double height) {
 
 		if (width < 0 || width > 1) {
-			ErrorMessage("Position is not in NDC");
+			ErrorMessage("setPadSize: Position is not in NDC");
 			return;
 		}
 		;
 		if (height < 0 || height > 1) {
-			ErrorMessage("Position is not in NDC");
+			ErrorMessage("setPadSize: Position is not in NDC");
 			return;
 		}
 		;
@@ -2222,7 +2221,7 @@ public class HPlotJa extends JComponent {
 	/**
 	 * Set margin from top in NDC system.
 	 * 
-	 * @param marginTop
+	 * @param marginTop margin in NDC (0-1). 
 	 */
 	public void setMarginTop(double marginTop) {
 
@@ -2232,7 +2231,7 @@ public class HPlotJa extends JComponent {
 		double cheight = ja[N1][N2].getRelHndc();
 
 		if (MarginTop < 0 || MarginTop > 1) {
-			ErrorMessage("Position is not in NDC");
+			ErrorMessage("setMarginTop: Position is not in NDC");
 			return;
 		}
 		;

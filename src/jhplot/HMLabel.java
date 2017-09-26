@@ -30,7 +30,7 @@ import java.io.Serializable;
 import jhplot.gui.HelpBrowser;
 
 /**
- * Create an interactive multi-line label in the USER or NDC coordinates. The
+ * An interactive multi-line label in the USER or NDC coordinates for {@link jhplot.HPlot} canvas. The
  * label can be defined in the NDC (normalized coordinate system) or the user
  * coordinate
  * 

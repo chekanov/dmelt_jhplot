@@ -16,7 +16,7 @@ import jhplot.gui.HelpBrowser;
 
 
 /**
- * Insert a picture in the PNG or GIF format.
+ * Insert a picture in the PNG or GIF format on {@link jhplot.HPlot} canvas.
  * The main system is the USER.
  * 
  * @author S.Chekanov

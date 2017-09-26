@@ -16,19 +16,27 @@ import jhplot.gui.GHFrame;
 import jhplot.gui.HelpBrowser;
 
 import org.jgraph.*;
+import org.jgrapht.*;
+import org.jgrapht.ext.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.traverse.*;
+
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.*;
 
+import com.mxgraph.layout.*;
+import com.mxgraph.swing.*;
+
 // resolve ambiguity
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.ListenableDirectedGraph;
+//import org.jgrapht.graph.DefaultEdge;
+//import org.jgrapht.graph.ListenableDirectedGraph;
 
 /**
  * Create a frame with interactive graphs.
- * 
+ * In addition, using the methods buildGraph(), one can make graphs without visualization. 
  * @author S.Chekanov
  * 
  */
@@ -50,42 +58,169 @@ public class HGraph extends GHFrame {
 
 	private Thread1 m_Close;
 
-	/**
-	 * Create HGraph canvas with several graphs.
-	 * 
-	 * @param title
-	 *            Title
-	 * @param xsize
-	 *            size in x direction
-	 * @param ysize
-	 *            size in y direction
-	 * @param n1
-	 *            number of plots/graphs in x
-	 * @param n2
-	 *            number of plots/graphs in y
-	 * @param set
-	 *            set or not the graph
-	 */
 
-	public HGraph(String title, int xsize, int ysize, int n1, int n2,
-			boolean set) {
+         /**
+         * Create HGraph canvas with several graphs.
+         * 
+         * @param title
+         *            Title
+         * @param xsize
+         *            size in x direction
+         * @param ysize
+         *            size in y direction
+         * @param n1
+         *            number of plots/graphs in x
+         * @param n2
+         *            number of plots/graphs in y
+         * @param set
+         *            set or not the graph
+         */
+        public HGraph(String title, int xsize, int ysize, int n1, int n2,
+                        boolean set) {
 
                 // minimalistic
-		super(title, xsize, ysize, n1, n2, set,1);
+                super(title, xsize, ysize, n1, n2, set,1);
 
-		if (set)
-			setGraph();
+                if (set)
+                        setGraph();
 
-	}
+        }
+
+
+
+
+
+
 
 	/**
 	 * Clear all the frames.
 	 * 
 	 */
-
 	protected void clearFrame() {
 
 	}
+
+
+
+
+       /**
+         * Build a  Pseudograph graph without visualization. It assumes DefaultEdges. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public Pseudograph<Object, DefaultEdge> buildPseudograph(){
+           return new Pseudograph<>(DefaultEdge.class);
+        };
+
+
+        /**
+         * Build a  Pseudograph graph without visualization. It assumes DefaultEdges. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public Pseudograph<Object, DefaultWeightedEdge> buildWeightedPseudograph(){
+           return new WeightedPseudograph<>(DefaultWeightedEdge.class);
+        };
+
+
+        /**
+         * Build a directed Pseudograph graph without visualization. It assumes DefaultEdges. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public DirectedPseudograph<Object, DefaultEdge> buildDirectedPseudograph(){
+           return new DirectedPseudograph<>(DefaultEdge.class);
+        };
+
+
+        /**
+         * Build a  simple graph without visualization. It assumes DefaultEdges. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public SimpleGraph<Object, DefaultEdge> buildSimpleGraph(){
+           return new SimpleGraph<>(DefaultEdge.class);
+        };
+
+         /**
+         * Build a simple weighted graph without visualization. It assumes DefaultWeightedEdge. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public SimpleWeightedGraph<Object, DefaultWeightedEdge> buildSimpleWeightedGraph(){
+           return new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        };
+
+
+        /**
+         * Build a  directed graph without visualization. It assumes DefaultEdges. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public DefaultDirectedGraph<Object, DefaultEdge> buildDirectedGraph(){
+           return new DefaultDirectedGraph<>(DefaultEdge.class);
+        };
+
+
+        /**
+         * Build a  directed multi-graph without visualization. It assumes DefaultEdges. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public Multigraph<Object, DefaultEdge> buildMultigraph(){
+           return new Multigraph<>(DefaultEdge.class);
+        };
+
+         /**
+         * Build a  directed multi-graph without visualization. It assumes DefaultEdges. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public DirectedMultigraph<Object, DefaultEdge> buildDirectedMultigraph(){
+           return new DirectedMultigraph<>(DefaultEdge.class);
+        };
+
+
+        /**
+         * Build a weighted directed graph without visualization. It assumes DefaultWeightedEdge. No visualization is assumed. 
+         * @return graph with default edges. 
+         */
+        public DirectedWeightedMultigraph<Object, DefaultWeightedEdge> buildDirectedWeightedMultigraph(){
+           return new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+        };
+
+
+
+        /**
+         * Shows a graph previously built using "build*" methods. It assumes CircleLayout. 
+         *  @param g input graph. 
+         * @return  component with visualized graph. 
+         */
+        public mxGraphComponent showGraph( org.jgrapht.Graph  g){
+        
+
+        // create a visualization using JGraph, via an adapter
+        JGraphXAdapter jgxAdapter = new JGraphXAdapter<>(g);
+
+        // positioning via jgraphx layouts
+        mxCircleLayout layout = new mxCircleLayout(jgxAdapter);
+        layout.execute(jgxAdapter.getDefaultParent());
+        JFrame frame = new JFrame();
+        mxGraphComponent mgraph = new mxGraphComponent(jgxAdapter);
+        mgraph.setAntiAlias(true);
+        mgraph.setAutoExtend(true);
+        mgraph.setAutoScroll(true);
+        mgraph.setCenterPage(true);
+        mgraph.setPageScale(2.0);
+        mgraph.setDragEnabled(true);
+        mgraph.setEventsEnabled(true);
+        mgraph.setExportEnabled(true);
+        mgraph.setSwimlaneSelectionEnabled(false);
+        mgraph.setInvokesStopCellEditing(false); 
+
+        frame.getContentPane().add( mgraph );
+        frame.setTitle("HGraph");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        return  mgraph;
+
+        };
+
+
+
 
 	/**
 	 * Refresh all the frames.
@@ -128,6 +263,18 @@ public class HGraph extends GHFrame {
 
 	}
 
+
+         /**
+         * Update frame. 
+         * 
+         */
+
+        public void update() {
+                mainFrame.validate();
+                mainFrame.repaint();
+        }
+
+
 	/**
 	 * Set the canvas frame visible
 	 * 
@@ -160,9 +307,9 @@ public class HGraph extends GHFrame {
 		for (int i2 = 0; i2 < N2final; i2++) {
 			for (int i1 = 0; i1 < N1final; i1++) {
 
-				ls[i1][i2] = new ListenableDirectedGraph<String, DefaultEdge>(
-						DefaultEdge.class);
-				sc[i1][i2] = new JGraphModelAdapter<String, DefaultEdge>(
+				ls[i1][i2] = new org.jgrapht.graph.ListenableDirectedGraph<String, org.jgrapht.graph.DefaultEdge>(
+						org.jgrapht.graph.DefaultEdge.class);
+				sc[i1][i2] = new JGraphModelAdapter<String, org.jgrapht.graph.DefaultEdge>(
 						ls[i1][i2]);
 				jp[i1][i2] = new JGraph(sc[i1][i2]);
 				adjustDisplaySettings(jp[i1][i2]);
@@ -286,13 +433,14 @@ public class HGraph extends GHFrame {
 	}
 
 	/**
-	 * Construct a HGraph canvas with a plot with the default parameters 600 by
-	 * 400, and 10% space for the global title "Default"
-	 * 
+	 * Construct a Graph without any canvas. This constructor can be used to build graphs without visualization. 
 	 */
 	public HGraph() {
-		this("Default", 600, 400, 1, 1, true);
 	}
+
+
+
+
 
 	/**
 	 * Clear the current graph including graph settings. Note: the current graph

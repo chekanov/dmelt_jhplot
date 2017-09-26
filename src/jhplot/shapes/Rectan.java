@@ -12,7 +12,7 @@ import jhplot.gui.HelpBrowser;
 
 /**
  * 
- * Draw a rectangle using the user or NDC coordinate system
+ * Draw a rectangle on {@link jhplot.HPlot} canvas. Use USER or NDC coordinate system. 
  * 
  * @author S.Chekanov
  *

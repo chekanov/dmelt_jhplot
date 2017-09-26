@@ -42,7 +42,7 @@ import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
 /**
- * Create an equation using the LaTex syntax. The equation position can be
+ * Create an equation using the LaTex syntax on {@link jhplot.HPlot} canvas.  The equation position can be
  * defined in the NDC (normalized coordinate system) or the user coordinate.
  * 
  * @author S.Chekanov

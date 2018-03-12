@@ -16,29 +16,48 @@ import java.nio.file.*;
 
 
 /**
-* Simple file downloader similar to Unix WGET. 
+* Simple file downloader similar to Unix WGET. Use get(url,true) if you do not want download the file if it is already exists.  
+* Use get(url) for downloading the file even if it is already exists in the current directory. 
+* @author S.Chekanov
 */
 
 public class Web {
 
 enum WgetStatus {
-  Success, MalformedUrl, IoException, UnableToCloseOutputStream;
+  DownloadedSuccessfully, MalformedUrl, IoException, UnableToCloseOutputStream, AlreadyExists;
 }
 
 
   /**
-  * Download a file to the local disk. It assumes the current directory. 
+  * Download a file to the local disk. It assumes the current directory. The file will be download even if it exists on the local disk. 
   * @param url input URL for download. 
   **/
   public static WgetStatus get(String url) {
+          return get(url,false);
+  }
+
+  /**
+  * Download a file to the local disk. It assumes the current directory. 
+  * @param url input URL for download. 
+  * @param isCached if true, file will not be download if it is already exists on a local disk (but no checks for sizes). If false, it will be always download even if it exists.
+  **/
+  public static WgetStatus get(String url, boolean isCached) {
 
          String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
          Path currentRelativePath = Paths.get("");
          String s = currentRelativePath.toAbsolutePath().toString();
 
+         if (isCached) {
+            File f = new File(s+File.separator+fileName);
+            if(f.exists() && !f.isDirectory()) return WgetStatus.AlreadyExists;
+         }
+
          return get(url,s+File.separator+fileName);
- 
+
   }
+
+
+
 
   /**
   * Download a file to the local disk. 
@@ -79,7 +98,7 @@ enum WgetStatus {
         return WgetStatus.UnableToCloseOutputStream;
       }
     }
-    return WgetStatus.Success;
+    return WgetStatus.DownloadedSuccessfully;
   }
 
 }

@@ -1,16 +1,13 @@
 package jhplot;
 
 
-//import jas.hist.FunctionFactoryError;
-import jas.hist.FunctionRegistry;
-import jas.hist.JASHist;
-//import jas.hist.JASHistData;
-//import jas.hist.test.Gauss;
-import jas.loader.ClassPathLoader;
-import jas.plugin.ExtensionPluginContext;
-import jas.plugin.IExtensionPlugin;
-import jas.swingstudio.JASToolbarHolder;
-import jas.swingstudio.JavaAnalysisStudio;
+import jas2.hist.FunctionRegistry;
+import jas2.hist.JASHist;
+import jas2.loader.ClassPathLoader;
+import jas2.plugin.ExtensionPluginContext;
+import jas2.plugin.IExtensionPlugin;
+import jas2.swingstudio.JASToolbarHolder;
+import jas2.swingstudio.JavaAnalysisStudio;
 
 
 import java.awt.Color;
@@ -57,11 +54,11 @@ import hepjas.analysis.Job;
 //import jasext.jhplotserver.RefHistogram1D;
 import java.util.Random;
 
-import jas.swingstudio.JASPage;
+import jas2.swingstudio.JASPage;
 //import jas.swingstudio.JASToolbarHolder;
 //import jas.swingstudio.JavaAnalysisStudio;
-import jas.swingstudio.JASJob;
-import jas.swingstudio.LocalJob;
+import jas2.swingstudio.JASJob;
+import jas2.swingstudio.LocalJob;
 //import jas.hist.DefaultFunctionFactory;
 import hep.aida.*;
 
@@ -159,10 +156,10 @@ public class HPlotJas  {
    
    
       jhserver= new jasext.jhplotserver.JHServer();
-      jas.jds.module.ServerRegistry.registerServer(jhserver);
+      jas2.jds.module.ServerRegistry.registerServer(jhserver);
       
       FlatFileServer fhserver= new jasext.flatfileserver.FlatFileServer(new String[]{});
-      jas.jds.module.ServerRegistry.registerServer(fhserver);
+      jas2.jds.module.ServerRegistry.registerServer(fhserver);
       
      // theApp.getApp().getJob().loadClass("jasext.hist.Register");
       

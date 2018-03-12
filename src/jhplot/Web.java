@@ -16,8 +16,8 @@ import java.nio.file.*;
 
 
 /**
-* Simple file downloader similar to Unix WGET. Use get(url,true) if you do not want download the file if it is already exists.  
-* Use get(url) for downloading the file even if it is already exists in the current directory. 
+* Simple file downloader similar to Unix WGET. Use get(url,true) if you want to replace the existiong file.
+* Use get(url) for downloading the file only if it does not exist on the local disk. 
 * @author S.Chekanov
 */
 
@@ -29,7 +29,7 @@ enum WgetStatus {
 
 
   /**
-  * Download a file to the local disk. It assumes the current directory. The file will be download even if it exists on the local disk. 
+  * Download a file to the local disk. It assumes the current directory.  If file exists locally, the file will not be overwritten. 
   * @param url input URL for download. 
   **/
   public static WgetStatus get(String url) {
@@ -39,15 +39,15 @@ enum WgetStatus {
   /**
   * Download a file to the local disk. It assumes the current directory. 
   * @param url input URL for download. 
-  * @param isCached if true, file will not be download if it is already exists on a local disk (but no checks for sizes). If false, it will be always download even if it exists.
+  * @param isOverwrite set to true if the local file need to be replaced from the web.  
   **/
-  public static WgetStatus get(String url, boolean isCached) {
+  public static WgetStatus get(String url, boolean isOverwrite) {
 
          String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
          Path currentRelativePath = Paths.get("");
          String s = currentRelativePath.toAbsolutePath().toString();
 
-         if (isCached) {
+         if (isOverwrite==false) {
             File f = new File(s+File.separator+fileName);
             if(f.exists() && !f.isDirectory()) return WgetStatus.AlreadyExists;
          }

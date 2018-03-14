@@ -42,29 +42,30 @@ enum WgetStatus {
   * @param isOverwrite set to true if the local file need to be replaced from the web.  
   **/
   public static WgetStatus get(String url, boolean isOverwrite) {
-
          String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
          Path currentRelativePath = Paths.get("");
          String s = currentRelativePath.toAbsolutePath().toString();
-
-         if (isOverwrite==false) {
-            File f = new File(s+File.separator+fileName);
-            if(f.exists() && !f.isDirectory()) return WgetStatus.AlreadyExists;
-         }
-
-         return get(url,s+File.separator+fileName);
+         return get(url,s+File.separator+fileName,isOverwrite);
 
   }
-
 
 
 
   /**
   * Download a file to the local disk. 
   * @param url input URL for download. 
-  * @param saveAsFile saved name 
+  * @param saveAsFile file name with the path where the file will be saved
+  * @param isOverwrite set to true if the local file need to be replaced from the web. 
   **/
-  public static WgetStatus get(String url, String saveAsFile) {
+  public static WgetStatus get(String url, String saveAsFile, boolean isOverwrite) {
+
+
+   if (isOverwrite==false) {
+            File f = new File(saveAsFile);
+            if(f.exists() && !f.isDirectory()) return WgetStatus.AlreadyExists;
+    }
+
+
     InputStream httpIn = null;
     OutputStream fileOutput = null;
     OutputStream bufferedOut = null;

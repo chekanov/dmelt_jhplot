@@ -74,10 +74,11 @@ import jhplot.io.images.Export;
 import jhplot.gui.GHFrame;
 import jhplot.gui.HelpBrowser;
 import org.freehep.graphicsbase.util.export.*;
+import org.jfree.chart.plot.PlotOrientation;
 
 /**
  * Create various charts, such as pie, histograms, bar charts including 3D
- * emulation, lines.
+ * emulation, lines. This canvas uses JFreeChart project.
  * 
  * @author S.Chekanov
  * 
@@ -142,6 +143,8 @@ public class HChart extends GHFrame {
 
 	private float axisPenwidth;
 
+        private PlotOrientation orientation=PlotOrientation.VERTICAL;
+ 
 	/**
 	 * Create HChart canvas with a several chart plots
 	 * 
@@ -240,7 +243,7 @@ public class HChart extends GHFrame {
 
 				xyplot[i1][i2]
 						.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
-				xyplot[i1][i2].setOrientation(PlotOrientation.VERTICAL);
+				xyplot[i1][i2].setOrientation(orientation);
 
 				chart[i1][i2] = new JFreeChart(this.title[i1][i2],
 						JFreeChart.DEFAULT_TITLE_FONT, xyplot[i1][i2], true);
@@ -313,16 +316,35 @@ public class HChart extends GHFrame {
 				(int) (h * heightScale)));
 	}
 
-	/**
-	 * Clear all the frames
-	 * 
-	 */
-	protected void clearFrame() {
 
-	}
+        /**
+         * Set plot vertical orientation (default).
+         * 
+         */
+        public void setPlotVertical() {
+                orientation=PlotOrientation.VERTICAL;
+        }
+
+         /**
+         * Set plot hirizontal orientation.
+         * 
+         */
+        public void setPlotHorizontal() {
+                orientation=PlotOrientation.HORIZONTAL;
+        }
+
+
+         /**
+         * Get current plot orientation.
+         * @return Plot orientation. 
+         */
+        public PlotOrientation getPlotOrientation() {
+                return orientation;
+        }
+
 
 	/**
-	 * Se5t color of the labels.
+	 * Set color of the labels.
 	 * 
 	 * @param labelColor
 	 */
@@ -355,7 +377,7 @@ public class HChart extends GHFrame {
 	}
 
 	/**
-	 * Set tick color
+	 * Set tick color. 
 	 * 
 	 * @param tickColor
 	 */
@@ -376,7 +398,7 @@ public class HChart extends GHFrame {
 	}
 
 	/**
-	 * Set font of ticks
+	 * Set font of ticks. 
 	 * 
 	 * @param tickFont
 	 */
@@ -464,7 +486,7 @@ public class HChart extends GHFrame {
 	}
 
 	/**
-	 * Set a custom theme for chart.. It can be: LEGACY_THEME, JFREE_THEME,
+	 * Set a custom theme for chart. It can be: LEGACY_THEME, JFREE_THEME,
 	 * DARKNESS_THEME
 	 * 
 	 * @param s
@@ -907,9 +929,9 @@ public class HChart extends GHFrame {
 	}
 
 	/**
-	 * Set font for legend title
+	 * Set font for legend title. 
 	 * 
-	 * @param f
+	 * @param f font of title 
 	 */
 
 	public void setFontTitle(Font f) {
@@ -1268,6 +1290,16 @@ public class HChart extends GHFrame {
 
 	}
 
+
+
+       /**
+         * Clear the frame.
+         */
+        public void clearFrame(){
+              clearAll();
+         }
+
+
 	/**
 	 * Set a value to 3D pie data set. You should call update() method to
 	 * display it
@@ -1541,7 +1573,7 @@ public class HChart extends GHFrame {
 				chart[N1][N2] = ChartFactory.createBarChart(title[N1][N2],
 						titleX[N1][N2], titleY[N1][N2],
 						(CategoryDataset) cdatBar[N1][N2],
-						PlotOrientation.VERTICAL, true, true, true);
+						orientation, true, true, true);
 				CategoryPlot lineplot = (CategoryPlot) chart[N1][N2].getPlot();
 
 				CategoryAxis yy = lineplot.getDomainAxis();
@@ -1563,12 +1595,12 @@ public class HChart extends GHFrame {
 				chart[N1][N2] = ChartFactory.createBarChart3D(title[N1][N2],
 						titleX[N1][N2], titleY[N1][N2],
 						(CategoryDataset) cdatBar3D[N1][N2],
-						PlotOrientation.VERTICAL, true, true, true);
+						orientation, true, true, true);
 			} else if (cdatLine[N1][N2] != null) {
 				chart[N1][N2] = ChartFactory.createLineChart(title[N1][N2],
 						titleX[N1][N2], titleY[N1][N2],
 						(CategoryDataset) cdatLine[N1][N2],
-						PlotOrientation.VERTICAL, true, true, true);
+						orientation, true, true, true);
 				CategoryPlot lineplot = (CategoryPlot) chart[N1][N2].getPlot();
 				lineplot.setOutlineStroke(new BasicStroke(axisPenwidth));
 				CategoryAxis yy = lineplot.getDomainAxis();
@@ -1610,7 +1642,7 @@ public class HChart extends GHFrame {
 				chart[N1][N2] = ChartFactory.createAreaChart(title[N1][N2],
 						titleX[N1][N2], titleY[N1][N2],
 						(CategoryDataset) cdatArea[N1][N2],
-						PlotOrientation.VERTICAL, true, true, true);
+						orientation, true, true, true);
 				CategoryPlot lineplot = (CategoryPlot) chart[N1][N2].getPlot();
 
 				CategoryAxis yy = lineplot.getDomainAxis();

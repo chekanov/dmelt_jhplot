@@ -134,34 +134,48 @@ public class Web {
 
 	/**
 	 * Download a jar file from the web and attach to the classpath.
-	 * The downloaded jar file will be located inside "lib/user" directory.
+	 * The downloaded jar file will be located inside "lib/user" directory of the installation.
 	 * @param url2 input URL of jar for download. 
 	 * @param isOwerwrite true if the existing file needs to be replaced. Set to False if skip download in the case of existing file.
 	 * @return string with the status.
 	 **/
 	public static String load(String url2, boolean isOverwrite) {
 
-		if ( (url2.toLowerCase()).endsWith(".jar") == false) {
-			System.err.println("The input file is not a jar file and cannot be loaded");
-			return WgetStatus.MalformedUrl.toString();
-		}
-
-		String fileName = getCurrentPath()+fSep+"lib"+fSep+"user"+fSep+url2.substring( url2.lastIndexOf('/')+1, url2.length() );
-		WgetStatus status= get(url2, fileName, isOverwrite);
-
-		try {
-			loadLibrary(new File(fileName));
-		} catch ( IOException e) {
-		}
-
-
-		String out=status.toString()+" "+fileName;
-		return out;
-
-
+                return load(url2, getCurrentPath()+fSep+"lib"+fSep+"user", isOverwrite);
 
 	}
 
+
+        /**
+         * Download a jar file from the web and attach to the classpath.
+         * The downloaded jar file will be located inside "dir" directory.
+         * @param url2 input URL of jar for download. 
+         * @param dir directory path where the jar file should be stored
+         * @param isOwerwrite true if the existing file needs to be replaced. Set to False if skip download in the case of existing file.
+         * @return string with the status.
+         **/
+        public static String load(String url2, String dir, boolean isOverwrite) {
+
+                if ( (url2.toLowerCase()).endsWith(".jar") == false) {
+                        System.err.println("The input file is not a jar file and cannot be loaded");
+                        return WgetStatus.MalformedUrl.toString();
+                }
+
+                String fileName = dir+fSep+url2.substring( url2.lastIndexOf('/')+1, url2.length() );
+                WgetStatus status= get(url2, fileName, isOverwrite);
+
+                try {
+                        loadLibrary(new File(fileName));
+                } catch ( IOException e) {
+                }
+
+
+                String out=status.toString()+" "+fileName;
+                return out;
+
+
+
+        }
 
 
 

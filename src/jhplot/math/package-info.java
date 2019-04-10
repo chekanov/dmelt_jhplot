@@ -1,5 +1,5 @@
 /**
- * Provides the classes for DMelt mathematics.
+ * Provides classes for DataMelt mathematics.
  *
  * @since  1.0
  * @author S.Chekanov 

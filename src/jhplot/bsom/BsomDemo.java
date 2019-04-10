@@ -57,6 +57,10 @@ public class BsomDemo extends JFrame {
 	protected int n_data, n_unit;
 	protected int dstep;
 
+
+        public static double delta=0.000001;
+
+
 	double width_range = 2.;
 	double height_range = 2.;
 	double phase_range = 0.5;
@@ -769,7 +773,6 @@ class DrawArea extends Canvas implements Runnable {
 	BsomDemo demo;
 	int xd, yd;
 	double scale;
-	double delta = 0.000001;
 	int ntot = 0;
 
 	int n_data, n_unit; // Number of points
@@ -855,7 +858,7 @@ class DrawArea extends Canvas implements Runnable {
 					// System.out.println("gamma="+Double.toString(gamma));
 					// System.out.println("alpha="+Double.toString(alpha));
 					// System.out.println("beta="+Double.toString(beta));
-					if (FastMath.abs(gamma - ini_gam) < delta)
+					if (FastMath.abs(gamma - ini_gam) < BsomDemo.delta)
 						break;
 					ini_gam = gamma;
 				}

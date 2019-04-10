@@ -379,8 +379,13 @@ public class Bsom extends BsomDemo {
 	}
 
 	public void setDelta(double delta) {
-		bsomDrawArea.delta = delta;
+		BsomDemo.delta = delta;
 	}
+
+
+       public double  getDelta() {
+                return BsomDemo.delta;
+        }
 
 	public void loadData(P1D p1d) {
 

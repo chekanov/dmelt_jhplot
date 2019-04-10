@@ -170,8 +170,8 @@ abstract public class GHFrame extends GHPanel implements Serializable {
 		infoPanel.setBorder(new javax.swing.border.EtchedBorder());
 		infoPanel.add(JHPlot.statusbar, BorderLayout.WEST);
 		memMon = new MemoryMonitor();
-		memMon.setPreferredSize(new java.awt.Dimension(70, 14));
-		memMon.setMinimumSize(new java.awt.Dimension(30, 10));
+		memMon.setPreferredSize(new java.awt.Dimension(100, 14));
+		memMon.setMinimumSize(new java.awt.Dimension(80, 10));
 		infoPanel.add(memMon, BorderLayout.EAST);
 
 		mainFrame.add(CanvasPanel, BorderLayout.CENTER);

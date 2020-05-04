@@ -40,7 +40,7 @@ public class HelpBrowser {
 
 	
 	// WWW for Java API for jHPLOT
-	public final static String JHPLOT_HTTP = "http://jwork.org/dmelt/api/doc.php/";
+	public final static String JHPLOT_HTTP = "https://datamelt.org/api/doc.php/";
 	
 	/**
 	 * Show online browser

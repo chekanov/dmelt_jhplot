@@ -28,7 +28,7 @@ import hep.aida.*;
  * <p>
  * The file extension of HBook is "jdat".
  * 
- * @see <a href="http://jwork.org/jhepwork/cbook/">CFBook web page</a>. Look at
+ * @see <a href="https://datamelt.org/cbook/">CFBook web page</a>. Look at
  *      examples in examples/hbook.py and hbook2d.py.
  *      <p>
  *      Generally, however, use HFile or Serialized class to keep objects to

@@ -1,6 +1,6 @@
 // * This code is licensed under:
 // * JHPlot License, Version 1.0
-// * - for license details see http://jwork.org/jhepwork/
+// * - for license details see http://datamelt.org/
 // * Based on the work of Eric.Atienza (surfaceplotter) licensed under GNU
 // *
 // * Copyright (c) 2005 by S.Chekanov (chekanov@mail.desy.de). 

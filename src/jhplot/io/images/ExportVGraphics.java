@@ -143,7 +143,7 @@ public class ExportVGraphics {
 		props.put(SAVE_AS_FILE, file);
 		props.put(SAVE_AS_TYPE, a);
 
-		final String metadata = "(C) DMelt. jWork.ORG (http://jwork.org/dmelt/). S.Chekanov";
+		final String metadata = "(C) DataMelt (https://datamelt.org/). S.Chekanov";
 
 		// first, SVGZ
 		if (isSVGZ) {

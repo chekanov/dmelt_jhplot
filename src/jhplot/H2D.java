@@ -856,13 +856,16 @@ public class H2D extends DrawOptions implements Serializable {
 	public double[][] binHeights(){
 		binsX = h1.xAxis().bins();
 		binsY = h1.yAxis().bins();
-		double[][] newHeights = new double[binsX][binsY];
-		for (int i = 0; i < binsX; i++) {
-			for (int j = 0; j < binsY; j++) {
-				newHeights[i][j] = h1.binHeight(i, j);
-			}
-		}
-		
+                int ibinsX = binsX + 2;
+                int ibinsY = binsY + 2;
+                double[][] newHeights = new double[ibinsX][ibinsY];
+                newHeights[0][0] = getUnderflowHeightX();
+                newHeights[ibinsX - 1][ibinsY - 1] = getOverflowHeightY();
+                for (int i = 0; i < ibinsX - 1; i++) {
+                        for (int j = 0; j < ibinsY - 1; j++) {
+                                newHeights[i + 1][j + 1] = h1.binHeight(i, j);
+                        }
+                }
 		return newHeights;
 	}
 	
@@ -872,16 +875,21 @@ public class H2D extends DrawOptions implements Serializable {
 	 * @return errors on heights as 2D array
 	 */
 	public double[][] binErrors(){
-		binsX = h1.xAxis().bins();
-		binsY = h1.yAxis().bins();
-		double[][] errors = new double[binsX][binsY];
-		for (int i = 0; i < binsX; i++) {
-			for (int j = 0; j < binsY; j++) {
-				errors[i][j] = h1.binError(i, j);
-			}
-		}
-		
-		return errors;
+                binsX = h1.xAxis().bins();
+                binsY = h1.yAxis().bins();
+                int ibinsX = binsX + 2;
+                int ibinsY = binsY + 2;
+                double[][] newErr = new double[ibinsX][ibinsY];
+                newErr[0][0] = getUnderflowHeightX();
+                newErr[ibinsX - 1][ibinsY - 1] = getOverflowHeightY();
+                for (int i = 0; i < ibinsX - 1; i++) {
+                        for (int j = 0; j < ibinsY - 1; j++) {
+                                newErr[i + 1][j + 1] = h1.binError(i, j);
+                        }
+                }
+                return newErr;
+
+	
 	}
 	
 	/**
@@ -891,10 +899,10 @@ public class H2D extends DrawOptions implements Serializable {
 	public double[][] binMeansX(){
 		binsX = h1.xAxis().bins();
 		binsY = h1.yAxis().bins();
-		double[][] xx = new double[binsX][binsY];
-		for (int i = 0; i < binsX; i++) {
-			for (int j = 0; j < binsY; j++) {
-				xx[i][j] = h1.binMeanX(i, j);
+		double[][] xx = new double[binsX+2][binsY+2];
+		for (int i = 0; i < binsX+1; i++) {
+			for (int j = 0; j < binsY+1; j++) {
+				xx[i+1][j+1] = h1.binMeanX(i, j);
 			}
 		}
 		return xx;
@@ -935,10 +943,10 @@ public class H2D extends DrawOptions implements Serializable {
 	public double[][] binMeansY(){
 		binsX = h1.xAxis().bins();
 		binsY = h1.yAxis().bins();
-		double[][] xx = new double[binsX][binsY];
-		for (int i = 0; i < binsX; i++) {
-			for (int j = 0; j < binsY; j++) {
-				xx[i][j] = h1.binMeanY(i, j);
+		double[][] xx = new double[binsX+2][binsY+2];
+		for (int i = 0; i < binsX+1; i++) {
+			for (int j = 0; j < binsY+1; j++) {
+				xx[i+1][j+1] = h1.binMeanY(i, j);
 			}
 		}
 		return xx;

@@ -38,6 +38,7 @@ import jv.object.PsConfig;
 import jv.object.PsUtil;
 import java.awt.event.*;
 import jv.project.PgGeometryIf;
+import jv.project.PgGeometry; 
 import javax.swing.*;
 import java.io.File;
 
@@ -58,7 +59,7 @@ public class HJavaView  {
 	private int xsize=600;
 	private int ysize=400;
 	private PsMainFrame frame;
-
+        private JDialog dialog;
 
 	/**
 	 * Create canvas for showing mathematical object. 
@@ -84,7 +85,7 @@ public class HJavaView  {
 		//System.out.println(dir);
 		PsConfig.setApplication(true);
 		PsConfig.setCodeBase(dir);
-		//PsConfig.setUserBase(dir);
+		PsConfig.setUserBase(dir);
 
 		this.exhibitName=exhibitName;
 		this.background = background;
@@ -135,13 +136,19 @@ public class HJavaView  {
 		boolean exists = tempFile.exists();
 
 		if (!exists){
+
+
+                        Thread t = new Thread(new ThreadSleep5());
+                        t.start();
+
 			String mess="<html><body>Missing license <br>"+license+"<br>Obtain it from http://www.javaview.de/</body></html>";
-			JDialog dialog = new JDialog(frame,false); // Sets its owner but makes it non-modal
+			dialog = new JDialog(frame,false); // Sets its owner but makes it non-modal
 			JButton b = new JButton ("OK");
 			b.addActionListener ( new ActionListener()
 			                      {
 				                      public void actionPerformed( ActionEvent e )
 				                      {
+                                                              t.stop();
 					                      dialog.dispose();
 				                      }
 			                      });
@@ -153,7 +160,7 @@ public class HJavaView  {
 			jhplot.utils.Util.centreWithin(frame,dialog);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.pack(); // Packs the dialog so that the JOptionPane can be seen
-			dialog.setVisible(true); // Shows the dialog
+			//dialog.setVisible(true); // Shows the dialog
 		}
 
 
@@ -195,7 +202,7 @@ public class HJavaView  {
 	 * Draw a mathematical object.
 	 * @param geom mathematical object to be shown.
 	 */
-	public void draw(PgElementSet geom){
+	public void draw(PgGeometry geom){
 		PvDisplayIf disp = viewer.getDisplay();
 		// Register geometry in display, and make it active.
 		// For more advanced applications it is advisable to create a separate project
@@ -204,6 +211,22 @@ public class HJavaView  {
 		disp.selectGeometry(geom);
 		//disp.update(geom);
 	}
+
+
+
+         /**
+         * Draw array of objects. 
+         * 
+         * @param obj 
+         *            array of 3D objects
+         */
+        public void draw(PgGeometry[] obj) {
+
+                for (int i = 0; i < obj.length; i++) {
+                        draw(obj[i]);
+                }
+
+        }
 
 
 
@@ -328,5 +351,20 @@ public class HJavaView  {
 
 	}
 
-	// end
+
+private class ThreadSleep5 implements Runnable {
+
+   Thread t;
+
+   public void run() {
+         //System.out.println(Thread.currentThread().getName() + "  " + i);
+         try {
+            Thread.sleep(7000);
+            dialog.setVisible(true); // Shows the dialog
+         } catch (Exception e) {
+            System.out.println(e);
+      }
+   }
+
+  }
 }

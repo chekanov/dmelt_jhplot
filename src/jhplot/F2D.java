@@ -150,7 +150,7 @@ public class F2D extends DrawOptions {
 	}
 
 	/**
-	 * Create a function in 2D. This is a ranged function. Uses 500 points
+	 * Create a function in 2D. This is a ranged function. Uses 200 points
 	 * between min and max value for evaluation. The function may have up to 2
 	 * independent variables in it (x,y).
 	 * 
@@ -301,7 +301,7 @@ public class F2D extends DrawOptions {
 	
 	
 	/**
-	 * Create a function in 2D. 500 points are used between Min and Max for
+	 * Create a function in 2D. 200 points are used between Min and Max for
 	 * evaluation. The function may have x as independent variable. Make sure
 	 * that expression has 2 variables, x and y.
 	 * 
@@ -681,7 +681,7 @@ public class F2D extends DrawOptions {
 	
 	
 	/**
-	 * Get the number of points
+	 * Set the number of points
 	 * 
 	 * @param bins
 	 *            Number of points

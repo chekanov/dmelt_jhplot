@@ -31,7 +31,6 @@ import javax.swing.JFrame;
 import java.awt.*;
 import jv.geom.PgElementSet;
 import jv.object.PsMainFrame;
-//import jhplot.gui.PMainFrame;
 import jv.project.PvDisplayIf;
 import jv.viewer.PvViewer;
 import jv.object.PsConfig;
@@ -39,6 +38,7 @@ import jv.object.PsUtil;
 import java.awt.event.*;
 import jv.project.PgGeometryIf;
 import jv.project.PgGeometry; 
+import jv.object.PsObject;
 import javax.swing.*;
 import java.io.File;
 
@@ -213,6 +213,33 @@ public class HJavaView  {
 	}
 
 
+        /**
+         * Draw a 2D function.
+         * @param f2d function for drawing 
+         */
+        public void draw(F2D f2d){
+                PvDisplayIf disp = viewer.getDisplay();
+                PgGeometry geom=add(f2d);
+                disp.addGeometry(geom);
+                disp.selectGeometry(geom);
+        }
+
+
+         /**
+         * Draw array of functions. 
+         * 
+         * @param  f2d 
+         *            array of 2D functions. 
+         */
+        public void draw(F2D[] f2d) {
+
+                for (int i = 0; i < f2d.length; i++) {
+                        draw(add(f2d[i]));
+                }
+
+        }
+
+
 
          /**
          * Draw array of objects. 
@@ -228,6 +255,68 @@ public class HJavaView  {
 
         }
 
+       /**
+         * Create a list of graphic objects from  2D functions;
+         * @param f2d list with mathematical objects to be shown.
+         * @return list with geometry objects which can be directly plotted.
+         */
+        public PgGeometry[] add(F2D[] f2d){
+
+               PgGeometry arr[]= new PgGeometry[f2d.length];
+               for (int i = 0; i < f2d.length; i++) {
+                        arr[i]=add(f2d[i]);
+               }
+
+                return arr;
+        }
+
+       /**
+         * Create a graphic object from a 2D function. Prepare it for drawing as a surface plot.
+         * Ranges and number of points are taken from F2D definitions.  
+         * @param f2d mathematical object to be shown.
+         * @return geometry object which can be directly plotted.
+         */
+        public PgGeometry add(F2D f2d){
+
+            PgElementSet   geom = new PgElementSet(3); 
+            geom.setName(f2d.getTitle()); 
+            int numXLines=f2d.getPoints();
+            int numYLines=f2d.getPoints();
+            geom.setNumVertices(numXLines*numYLines); 
+
+            double xMin=f2d.getMinX();
+            double xMax=f2d.getMaxX();
+            double yMin=f2d.getMinY();
+            double yMax=f2d.getMaxY();
+
+            double dX=(xMax-xMin)/(numXLines-1); 
+            double dY=(yMax-yMin)/(numYLines-1); 
+
+            //System.out.println( numXLines ); 
+            //System.out.println( numYLines ); 
+            //System.out.println( xMax ); 
+            //System.out.println( yMax );
+
+            double x,y;
+            int ind=0;
+            for (int i=0; i<numXLines; i++){
+                 x = xMin + i*dX;
+                 for (int j=0; j<numYLines; j++){
+                 y = yMin + j*dY;
+                 geom.setVertex(ind, x, y, f2d.eval(x,y)); 
+                 //System.out.println( f2d.eval(x,y) );
+                 ind++;
+        }
+        }
+
+         geom.makeQuadrConn(numXLines, numYLines); 
+         geom.makeElementColorsFromXYZ(); // add color and transparancy  
+         geom.showElementColors(true);
+         geom.showEdges(false); 
+ 
+         return geom;
+
+         }
 
 
 	/**

@@ -6,7 +6,7 @@ package jhplot.stat;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Vector;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 /**
  * Class for performing simple 1-way ANOVA. For multi-way ANOVA, try
@@ -50,14 +50,14 @@ public class Anova {
 			}
 			for (int j = 0; j < p_data[i].length; j++) {
 				if (!Double.isNaN(p_data[i][j]))
-					s_residual += FastMath.pow(p_data[i][j] - all_means[i], 2);
+					s_residual += Math.pow(p_data[i][j] - all_means[i], 2);
 			}
 		}
 		overall_mean /= total_size;
 		// double overall_mean = weka.core.Utils.mean (all_means);
 		for (int i = 0; i < p_data.length; i++) {
 			s_between += all_sizes[i]
-					* FastMath.pow(all_means[i] - overall_mean, 2);
+					* Math.pow(all_means[i] - overall_mean, 2);
 		}
 
 		dof1 = p_data.length - 1;
@@ -77,7 +77,7 @@ public class Anova {
 		Vector all_data = new Vector();
 		for (int i = 0; i < data.length; i++) {
 			System.out.print(df.format(Statistics.mean(data[i])) + " "
-					+ df.format(FastMath.sqrt(Statistics.variance(data[i])))
+					+ df.format(Math.sqrt(Statistics.variance(data[i])))
 					+ " |");
 			for (int j = 0; j < data[i].length; j++) {
 				if (!Double.isNaN(data[i][j])) {
@@ -93,7 +93,7 @@ public class Anova {
 			vall_data[i] = ((Double) (all_data.elementAt(i))).doubleValue();
 		}
 		System.out.println(df.format(Statistics.mean(vall_data)) + " "
-				+ df.format(FastMath.sqrt(Statistics.variance(vall_data)))
+				+ df.format(Math.sqrt(Statistics.variance(vall_data)))
 				+ " |");
 		System.out.println("-----------------------------------------");
 	}

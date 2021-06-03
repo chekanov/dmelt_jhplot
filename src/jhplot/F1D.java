@@ -35,7 +35,7 @@ import jhplot.math.exp4j.*;
  * using setPar(x) method for evaluation.
  * <p></p>
  * One can enabled fast math calculation using @see jhplot.HParam. 
- * For example, setting jhplot.HParam.setFastMath(true) makes calculation of elementary functions 
+ * For example, setting jhplot.HParam.setMath(true) makes calculation of elementary functions 
  * a factot 4-5 faster than using the standard Java Math, with precision of E-14. 
  * <p></p> 
  * The function may have one independent variable: x

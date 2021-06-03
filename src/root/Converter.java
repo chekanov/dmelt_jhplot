@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import org.apache.commons.math3.util.FastMath;
 
 
 /**
@@ -85,19 +84,19 @@ public class Converter
       {
          errors = new double[nBins + 2];
          for (int i = 0; i < (nBins + 2); i++)
-            errors[i] = FastMath.sqrt(values[i]);
+            errors[i] = Math.sqrt(values[i]);
       }
       else
       {
          for (int i = 0; i < (nBins + 2); i++)
-            errors[i] = FastMath.sqrt(errors[i]);
+            errors[i] = Math.sqrt(errors[i]);
       }
 
       double sumw = h1.getTsumw();
       double sumwx = h1.getTsumwx();
       double sumwx2 = h1.getTsumwx2();
       double meanx = sumwx / sumw;
-      double rmsx  = FastMath.sqrt((sumwx2 / sumw) - ((sumwx * sumwx) / sumw / sumw));
+      double rmsx  = Math.sqrt((sumwx2 / sumw) - ((sumwx * sumwx) / sumw / sumw));
       hist.setContents(values, errors, null, null, null);
       hist.setNEntries((int) h1.getEntries());
       hist.setValidEntries((int) h1.getEntries()-hist.extraEntries());
@@ -157,7 +156,7 @@ public class Converter
          for (int i = 0; i < (nXbins + 2); i++)
             for (int j=0; j < (nYbins + 2); j++)
             {
-               errors2d[i][j] = FastMath.sqrt(values[i][j]);
+               errors2d[i][j] = Math.sqrt(values[i][j]);
             }
       }
       else
@@ -180,8 +179,8 @@ public class Converter
       
       double meanx = sumwx / sumw;
       double meany = sumwy / sumw;
-      double rmsx  = FastMath.sqrt((sumwx2 / sumw) - ((sumwx * sumwx) / sumw / sumw));
-      double rmsy  = FastMath.sqrt((sumwy2 / sumw) - ((sumwy * sumwy) / sumw / sumw));
+      double rmsx  = Math.sqrt((sumwx2 / sumw) - ((sumwx * sumwx) / sumw / sumw));
+      double rmsy  = Math.sqrt((sumwy2 / sumw) - ((sumwy * sumwy) / sumw / sumw));
 
       hist.setContents(values,errors2d,null,null,null,null,null);
       hist.setNEntries((int) h2.getEntries());
@@ -222,19 +221,19 @@ public class Converter
       {
          errors = new double[nBins + 2];
          for (int i = 0; i < (nBins + 2); i++)
-            errors[i] = FastMath.sqrt(heights[i]);
+            errors[i] = Math.sqrt(heights[i]);
       }
       else
       {
          for (int i = 0; i < (nBins + 2); i++)
-            errors[i] = FastMath.sqrt(errors[i]);
+            errors[i] = Math.sqrt(errors[i]);
       }
 
       double sumw = h1.getTsumw();
       double sumwx = h1.getTsumwx();
       double sumwx2 = h1.getTsumwx2();
       double meanx = sumwx / sumw;
-      double rmsx  = FastMath.sqrt((sumwx2 / sumw) - ((sumwx * sumwx) / sumw / sumw));
+      double rmsx  = Math.sqrt((sumwx2 / sumw) - ((sumwx * sumwx) / sumw / sumw));
       profile.setContents(heights, errors, entries, null, null);
       profile.setNEntries((int) h1.getEntries());
       profile.setValidEntries((int) h1.getEntries()-profile.extraEntries());

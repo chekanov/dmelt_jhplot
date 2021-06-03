@@ -34,7 +34,7 @@ import java.text.NumberFormat;
 import jhplot.F1D;
 import jhplot.P1D;
 import jhplot.gui.HelpBrowser;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 /**
  * A linear regression analysis.
@@ -153,10 +153,10 @@ public class LinReg {
 	private void doStatistics() {
 		// Find sum of squares for x,y and sum of xy
 		for (int i = 0; i < dataLength; i++) {
-			minX = FastMath.min(minX, x[i]);
-			maxX = FastMath.max(maxX, x[i]);
-			minY = FastMath.min(minY, y[i]);
-			maxY = FastMath.max(maxY, y[i]);
+			minX = Math.min(minX, x[i]);
+			maxX = Math.max(maxX, x[i]);
+			minY = Math.min(minY, y[i]);
+			maxY = Math.max(maxY, y[i]);
 			sumX += x[i];
 			sumY += y[i];
 			sumXsquared += x[i] * x[i];
@@ -173,16 +173,16 @@ public class LinReg {
 		SSR = Sxy * Sxy / Sxx;
 		SSE = Syy - SSR;
 
-		sCorr = Sxy / FastMath.sqrt(Sxx * Syy);
+		sCorr = Sxy / Math.sqrt(Sxx * Syy);
 
 		MSE = 0;
 		if (n > 2)
 			MSE = SSE / (n - 2);
 
-		double sMSE = FastMath.sqrt(MSE);
+		double sMSE = Math.sqrt(MSE);
 		sP0 = sMSE
-				* FastMath.sqrt((1.0 / (double) n) + (getXBar() * getXBar()) / Sxx);
-		sP1 = sMSE / FastMath.sqrt(Sxx);
+				* Math.sqrt((1.0 / (double) n) + (getXBar() * getXBar()) / Sxx);
+		sP1 = sMSE / Math.sqrt(Sxx);
 
 		xRangeLow = getMinX();
 		yRangeLow = getMinY();
@@ -200,7 +200,7 @@ public class LinReg {
 			residual[i] = new double[2];
 			residual[i][0] = x[i];
 			residual[i][1] = y[i] - (a + b * x[i]);
-			maxAbsoluteResidual = FastMath.max(maxAbsoluteResidual, FastMath.abs(y[i]
+			maxAbsoluteResidual = Math.max(maxAbsoluteResidual, Math.abs(y[i]
 					- (a + b * x[i])));
 		}
 	}
@@ -229,16 +229,16 @@ public class LinReg {
 		SSR = Sxy * Sxy / Sxx;
 		SSE = Syy - SSR;
 
-		sCorr = Sxy / FastMath.sqrt(Sxx * Syy);
+		sCorr = Sxy / Math.sqrt(Sxx * Syy);
 
 		MSE = 0;
 		if (n > 2)
 			MSE = SSE / (n - 2);
 
-		double sMSE = FastMath.sqrt(MSE);
+		double sMSE = Math.sqrt(MSE);
 		sP0 = sMSE
-				* FastMath.sqrt(1.0 / (double) n + (getXBar() * getXBar()) / Sxx);
-		sP1 = sMSE / FastMath.sqrt(Sxx);
+				* Math.sqrt(1.0 / (double) n + (getXBar() * getXBar()) / Sxx);
+		sP1 = sMSE / Math.sqrt(Sxx);
 
 		xRangeLow = getMinX();
 		yRangeLow = getMinY();
@@ -494,7 +494,7 @@ public class LinReg {
 	 * @return pearson R
 	 */
 	public double getPearsonR() {
-		return Sxy / FastMath.sqrt(Sxx * Syy);
+		return Sxy / Math.sqrt(Sxx * Syy);
 	}
 
 	/**
@@ -629,7 +629,7 @@ public class LinReg {
 
 		double n = x.length;
 		double t;
-		double S = FastMath.sqrt(getMSE());
+		double S = Math.sqrt(getMSE());
 
 		Sxx = getSxx();
 		double xBar = getXBar();
@@ -646,7 +646,7 @@ public class LinReg {
 		double xs = xRangeLow;
 		double ys = a + b * xs;
 		double sError = S
-				* FastMath.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
+				* Math.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
 
 		double deltaX = (xRangeHigh - xRangeLow) / Npoints;
 
@@ -654,14 +654,14 @@ public class LinReg {
 			pp[0].add(xs, ys + t * sError);
 			xs = xs + deltaX;
 			ys = a + b * xs;
-			sError = S * FastMath.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
+			sError = S * Math.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
 
 		}
 
 		for (int i = Npoints; i >= 0; i--) {
 			xs = xs - deltaX;
 			ys = a + b * xs;
-			sError = S * FastMath.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
+			sError = S * Math.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
 			pp[1].add(xs, ys - t * sError);
 		}
 
@@ -711,7 +711,7 @@ public class LinReg {
 
 		double n = x.length;
 		double t;
-		double S = FastMath.sqrt(getMSE());
+		double S = Math.sqrt(getMSE());
 
 		Sxx = getSxx();
 		double xBar = getXBar();
@@ -725,7 +725,7 @@ public class LinReg {
 
 		double xs = xRangeLow;
 		double ys = a + b * xs;
-		double sError = S * FastMath.sqrt(1.0 / n + (xs - xBar) * (xs - xBar) / Sxx);
+		double sError = S * Math.sqrt(1.0 / n + (xs - xBar) * (xs - xBar) / Sxx);
 		
 		double deltaX = (xRangeHigh - xRangeLow) / (Npoints);
 
@@ -733,7 +733,7 @@ public class LinReg {
 			pp.add(xs, ys, t*sError);
 			xs = xs + deltaX;
 			ys = a + b * xs;
-			sError = S * FastMath.sqrt(1.0 / n + (xs - xBar) * (xs - xBar) / Sxx);
+			sError = S * Math.sqrt(1.0 / n + (xs - xBar) * (xs - xBar) / Sxx);
 		}
 
 		return pp;
@@ -807,7 +807,7 @@ public class LinReg {
 
 		double n = x.length;
 		double t;
-		double S = FastMath.sqrt(getMSE());
+		double S = Math.sqrt(getMSE());
 
 		Sxx = getSxx();
 		double xBar = getXBar();
@@ -821,7 +821,7 @@ public class LinReg {
 		
 		double xs = xRangeLow;
 		double ys = a + b * xs;
-		double sError = S* FastMath.sqrt(1 + 1.0/ n + (xs - xBar) * (xs - xBar) / Sxx);
+		double sError = S* Math.sqrt(1 + 1.0/ n + (xs - xBar) * (xs - xBar) / Sxx);
 		
 		double deltaX = (xRangeHigh - xRangeLow) / (Npoints);
 
@@ -829,7 +829,7 @@ public class LinReg {
 			pp.add(xs, ys, t * sError);
 			xs = xs + deltaX;
 			ys = a + b * xs;
-			sError = S * FastMath.sqrt(1 + 1.0/n + (xs - xBar) * (xs - xBar) / Sxx);
+			sError = S * Math.sqrt(1 + 1.0/n + (xs - xBar) * (xs - xBar) / Sxx);
 		}
 
 		return pp;
@@ -906,7 +906,7 @@ public class LinReg {
 	private void drawBand(Graphics g, int type) {
 		double n = x.length;
 		double t;
-		double S = FastMath.sqrt(getMSE());
+		double S = Math.sqrt(getMSE());
 
 		Graphics2D g2d = (Graphics2D) g;
 		Sxx = getSxx();
@@ -933,20 +933,20 @@ public class LinReg {
 		double xs = xRangeLow;
 		double ys = a + b * xs;
 		double sError = S
-				* FastMath.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
+				* Math.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
 		// bandLimit.moveTo(scaleX(xs), scaleY(ys+t*sError));
 		double deltaX = (xRangeHigh - xRangeLow) / 10.0;
 		for (int i = 1; i <= 10; i++) {
 			xs = xs + deltaX;
 			ys = a + b * xs;
-			sError = S * FastMath.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
+			sError = S * Math.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
 			// bandLimit.lineTo(scaleX(xs), scaleY(ys+t*sError));
 		}
 		// bandLimit.lineTo(scaleX(xs), scaleY(ys-t*sError));
 		for (int i = 9; i >= 0; i--) {
 			xs = xs - deltaX;
 			ys = a + b * xs;
-			sError = S * FastMath.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
+			sError = S * Math.sqrt(A + 1 / n + (xs - xBar) * (xs - xBar) / Sxx);
 			// bandLimit.lineTo(scaleX(xs), scaleY(ys-t*sError));
 		}
 		// bandLimit.closePath();

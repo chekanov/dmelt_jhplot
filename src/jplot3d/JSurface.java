@@ -26,7 +26,7 @@ package jplot3d;
 
 
 import org.freehep.graphics2d.VectorGraphics;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 import graph.RTextLine;
@@ -565,12 +565,12 @@ public class JSurface extends javax.swing.JComponent {
 		                          first_frame=false; 
 		                           model.setInitScaling(projector.get2DScaling());}
 
-         double dd1=FastMath.sqrt(w*w + h*h);
+         double dd1=Math.sqrt(w*w + h*h);
          // System.out.println(dd1);
          
          double w1=comp_init.getWidth();
          double h1=comp_init.getHeight();
-         double dd2=FastMath.sqrt(w1*w1 + h1*h1);
+         double dd2=Math.sqrt(w1*w1 + h1*h1);
         // System.out.println(dd2);
          scalingFrame=(float) (dd1/dd2);
          model.setFrameScale((float)scalingFrame);
@@ -698,7 +698,7 @@ public class JSurface extends javax.swing.JComponent {
 		this.graphics = VectorGraphics.create(graphics);
 		// System.out.println("filling graphics "+ graphics);
 		
-		//int fontsize = (int) (FastMath.round(projector.get2DScaling() * 0.5));
+		//int fontsize = (int) (Math.round(projector.get2DScaling() * 0.5));
 		
 		// graphics.setFont(new Font("Helvetica",Font.PLAIN,fontsize));
 
@@ -1332,7 +1332,7 @@ public class JSurface extends javax.swing.JComponent {
 		text.setRotation(angle);
 		
 		
-        double rotation = angle * FastMath.PI / 180.0;
+        double rotation = angle * Math.PI / 180.0;
         if (angle !=0) g2d.rotate(rotation, x, y);
 		
 		switch (x_align) {
@@ -1360,7 +1360,7 @@ public class JSurface extends javax.swing.JComponent {
 	 * @return
 	 */
     protected Font scaleFont(Font fo){
-        int fontSize = (int)FastMath.round( fo.getSize() * model.getFrameScale());
+        int fontSize = (int)Math.round( fo.getSize() * model.getFrameScale());
         return new Font(fo.getName(), fo.getStyle(), fontSize);
      };
 
@@ -1890,7 +1890,7 @@ public class JSurface extends javax.swing.JComponent {
 	 */
 
 	public final int contourConvertX(float x) {
-		return (int) FastMath.round(x * contour_width_x + contour_center_x);
+		return (int) Math.round(x * contour_width_x + contour_center_x);
 	}
 
 	/**
@@ -1902,7 +1902,7 @@ public class JSurface extends javax.swing.JComponent {
 	 */
 
 	public final int contourConvertY(float y) {
-		return (int) FastMath.round(-y * contour_width_y + contour_center_y);
+		return (int) Math.round(-y * contour_width_y + contour_center_y);
 	}
 
 	/**

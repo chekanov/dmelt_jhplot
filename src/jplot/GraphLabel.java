@@ -30,7 +30,7 @@ import java.awt.*;
 import java.text.*;
 import javax.swing.*;
 import java.io.*;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 /**
  * This class defines a label in terms of the actual text, font, color and
@@ -663,8 +663,8 @@ public class GraphLabel implements Serializable {
 		while (rotation > 2.0 * Math.PI)
 			rotation -= 2.0 * Math.PI;
 		if (rotation != 0.0) {
-			sin = FastMath.abs(FastMath.sin(rotation));
-			cos = FastMath.abs(FastMath.cos(rotation));
+			sin = Math.abs(Math.sin(rotation));
+			cos = Math.abs(Math.cos(rotation));
 		} else {
 			sin = 0.0;
 			cos = 1.0;

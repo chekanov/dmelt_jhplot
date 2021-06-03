@@ -2,7 +2,7 @@ package jhplot.fit;
 
 import hep.aida.ref.function.AbstractIFunction;
 import jhplot.math.num.pdf.*;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 /**
@@ -58,7 +58,7 @@ public class NegativeBinomial extends AbstractIFunction {
 	        if (x < 0) {
 	            ret = 0.0;
 	        } else {
-	            ret = FastMath.exp(jhplot.math.num.pdf.SaddlePoint.logBinomialProbability(
+	            ret = Math.exp(jhplot.math.num.pdf.SaddlePoint.logBinomialProbability(
 	                numberOfSuccesses, x + numberOfSuccesses, probabilityOfSuccess,
 	                1.0 - probabilityOfSuccess));
 	            ret = (numberOfSuccesses * ret) / (x + numberOfSuccesses);

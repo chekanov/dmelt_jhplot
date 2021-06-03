@@ -36,7 +36,7 @@ import jhplot.io.*;
 import jhplot.shapes.*;
 import jhplot.utils.ExtensionFileFilter;
 import jhplot.utils.HelpDialog;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 // JAIDA 
@@ -2049,7 +2049,7 @@ public class HPlot extends GHFrame implements Serializable {
 	 */
 	public void setNameY(String s, Font f, Color c) {
 		GraphLabel label = new GraphLabel(GraphLabel.YLABEL, s, f, c);
-		label.setRotation(FastMath.PI * 1.5);
+		label.setRotation(Math.PI * 1.5);
 		gs[N1][N2].addLabel(label);
 	}
 
@@ -2278,7 +2278,7 @@ public class HPlot extends GHFrame implements Serializable {
 	public int toX(double x) {
 		double d;
 		if (gs[N1][N2].useLogScale(0))
-			d = FastMath.log10(x / gs[N1][N2].getMinValue(0));
+			d = Math.log10(x / gs[N1][N2].getMinValue(0));
 		else
 			d = x - gs[N1][N2].getMinValue(0);
 
@@ -2286,16 +2286,16 @@ public class HPlot extends GHFrame implements Serializable {
 		double max = gs[N1][N2].getMaxValue(0);
 
 		if (gs[N1][N2].useLogScale(0)) {
-			min = FastMath.log10(min);
-			max = FastMath.log10(max);
+			min = Math.log10(min);
+			max = Math.log10(max);
 		}
 
 		// if (gs[N1][N2].useLogScale(0)){
-		// min = FastMath.pow(10, min);
-		// max = FastMath.pow(10, max);
+		// min = Math.pow(10, min);
+		// max = Math.pow(10, max);
 		// }
 
-		double diff = FastMath.abs(min - max);
+		double diff = Math.abs(min - max);
 		double inv = (min < max) ? 1.0 : -1.0;
 		int tmp = (int) (gs[N1][N2].getLeftMargin() + inv * d * axisLengthX()
 				/ diff);
@@ -2316,22 +2316,22 @@ public class HPlot extends GHFrame implements Serializable {
 
 		double d;
 		if (gs[N1][N2].useLogScale(1))
-			d = FastMath.log10(y / gs[N1][N2].getMinValue(1));
+			d = Math.log10(y / gs[N1][N2].getMinValue(1));
 		else
 			d = y - gs[N1][N2].getMinValue(1);
 
 		double min = gs[N1][N2].getMinValue(1);
 		double max = gs[N1][N2].getMaxValue(1);
 		// if (gs[N1][N2].useLogScale(1)){
-		// min = FastMath.pow(10, min);
-		// max = FastMath.pow(10, max);
+		// min = Math.pow(10, min);
+		// max = Math.pow(10, max);
 		// }
 		if (gs[N1][N2].useLogScale(1)) {
-			min = FastMath.log10(min);
-			max = FastMath.log10(max);
+			min = Math.log10(min);
+			max = Math.log10(max);
 		}
 
-		double diff = FastMath.abs(min - max);
+		double diff = Math.abs(min - max);
 		double inv = (min < max) ? 1.0 : -1.0;
 
 		// System.out.println(min);
@@ -3517,7 +3517,7 @@ public class HPlot extends GHFrame implements Serializable {
 			double hh = h1.binHeight(i);
 			double errX1 = dd - ax.binLowerEdge(i);
 			double errX2 = ax.binUpperEdge(i) - dd;
-			double errY = h.binError(i); // FastMath.sqrt(hh);
+			double errY = h.binError(i); // Math.sqrt(hh);
 			data1.addPoint(dd, hh, errX1, errX2, errY, errY);
 
 		}
@@ -3549,7 +3549,7 @@ public class HPlot extends GHFrame implements Serializable {
 	 * 
 	 * for (int i = 0; i < Bin; i++) { double dd = Min + BinWidth * i; double hh
 	 * = h1.binEntries(i); double errX = 0.5 * BinWidth; double errY =
-	 * FastMath.sqrt(hh); // supress 0 // also, add some systematical error for
+	 * Math.sqrt(hh); // supress 0 // also, add some systematical error for
 	 * checks // if (hh != 0) data.addPoint(dd,hh,errX,errX,errY,errY);
 	 * data1.addPoint(dd + 0.5 * BinWidth, hh, errX, errX, errY, errY); }
 	 * 

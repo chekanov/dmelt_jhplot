@@ -32,7 +32,7 @@ package jhplot;
  * If you set false to fast calculations,  the standard Java Math is used.  
  * They are usually about 2-3 times slower, but have higher accuracy. By default, fast calculations are enabled.
  * <p> </p>
- * If you need full Java accuracy, set setFastMath(False).
+ * If you need full Java accuracy, set setMath(False).
  *
  * @author S.Chekanov
  *
@@ -50,7 +50,7 @@ public class HParam{
 	     * @param fast 
 	     *   if false, all elementary functions are calculated with the standard Java Math precision. If true, fast calculation with the jafama FastJava  E-11 precision. 
 	*/
-	public static void setFastMath(boolean fast) {
+	public static void setMath(boolean fast) {
 		fastmath=fast;
 	}
 
@@ -60,7 +60,7 @@ public class HParam{
 	     * Check is fast math calculation enabled. 
 	     * @return  is fast calculation enabled? 
 	*/
-	public static boolean isFastMath() {
+	public static boolean isMath() {
 		return fastmath;
 	}
 
@@ -69,7 +69,7 @@ public class HParam{
 	    * 
 	    * Set fast math calculation (4-5 times faster than Java Math). The typical precision is E-14 for fast calculations. 
 	 */
-	public static void setFastMath() {
+	public static void setMath() {
 		fastmath=true;
 	}
 

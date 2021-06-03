@@ -2,7 +2,7 @@
 
 package jplot3dp.MathParser;
 
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
         public class MathParser implements MathParserConstants {
@@ -13,8 +13,8 @@ import org.apache.commons.math3.util.FastMath;
                 }
                 public void resetVariables() {
                         userVars.clear();
-                        setVariable("Pi",FastMath.PI);
-                        setVariable("E",FastMath.E);
+                        setVariable("Pi",Math.PI);
+                        setVariable("E",Math.E);
                 }
                 public void setVariable(String varName,double varValue) {
                         //userVars.put(varName.toUpperCase(),new Double(varValue));
@@ -66,224 +66,224 @@ import org.apache.commons.math3.util.FastMath;
       jj_consume_token(60);
       d2 = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                                         {if (true) return FastMath.atan2(d,d2);}
+                                                                         {if (true) return Math.atan2(d,d2);}
       break;
     case SIN:
       jj_consume_token(SIN);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                   {if (true) return FastMath.sin(d);}
+                                                   {if (true) return Math.sin(d);}
       break;
     case COS:
       jj_consume_token(COS);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                   {if (true) return FastMath.cos(d);}
+                                                   {if (true) return Math.cos(d);}
       break;
     case TAN:
       jj_consume_token(TAN);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                   {if (true) return FastMath.tan(d);}
+                                                   {if (true) return Math.tan(d);}
       break;
     case COSEC:
       jj_consume_token(COSEC);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                     {if (true) return 1/FastMath.sin(d);}
+                                                     {if (true) return 1/Math.sin(d);}
       break;
     case SEC:
       jj_consume_token(SEC);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                   {if (true) return 1/FastMath.cos(d);}
+                                                   {if (true) return 1/Math.cos(d);}
       break;
     case COT:
       jj_consume_token(COT);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                   {if (true) return 1/FastMath.tan(d);}
+                                                   {if (true) return 1/Math.tan(d);}
       break;
     case ARCSIN:
       jj_consume_token(ARCSIN);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                      {if (true) return FastMath.asin(d);}
+                                                      {if (true) return Math.asin(d);}
       break;
     case ARCCOS:
       jj_consume_token(ARCCOS);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                      {if (true) return FastMath.acos(d);}
+                                                      {if (true) return Math.acos(d);}
       break;
     case ARCTAN:
       jj_consume_token(ARCTAN);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                      {if (true) return FastMath.atan(d);}
+                                                      {if (true) return Math.atan(d);}
       break;
     case ARCCOSEC:
       jj_consume_token(ARCCOSEC);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                        {if (true) return FastMath.asin(1/d);}
+                                                        {if (true) return Math.asin(1/d);}
       break;
     case ARCSEC:
       jj_consume_token(ARCSEC);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                      {if (true) return FastMath.acos(1/d);}
+                                                      {if (true) return Math.acos(1/d);}
       break;
     case ARCCOT:
       jj_consume_token(ARCCOT);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                      {if (true) return FastMath.atan(1/d);}
+                                                      {if (true) return Math.atan(1/d);}
       break;
     case SINH:
       jj_consume_token(SINH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return (FastMath.exp(d)-FastMath.exp(-d))/2;}
+                                                    {if (true) return (Math.exp(d)-Math.exp(-d))/2;}
       break;
     case COSH:
       jj_consume_token(COSH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return (FastMath.exp(d)+FastMath.exp(-d))/2;}
+                                                    {if (true) return (Math.exp(d)+Math.exp(-d))/2;}
       break;
     case TANH:
       jj_consume_token(TANH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return (FastMath.exp(d)-FastMath.exp(-d))/(FastMath.exp(d)+FastMath.exp(-d));}
+                                                    {if (true) return (Math.exp(d)-Math.exp(-d))/(Math.exp(d)+Math.exp(-d));}
       break;
     case COSECH:
       jj_consume_token(COSECH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                      {if (true) return 2/(FastMath.exp(d)-FastMath.exp(-d));}
+                                                      {if (true) return 2/(Math.exp(d)-Math.exp(-d));}
       break;
     case SECH:
       jj_consume_token(SECH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return 2/(FastMath.exp(d)+FastMath.exp(-d));}
+                                                    {if (true) return 2/(Math.exp(d)+Math.exp(-d));}
       break;
     case COTH:
       jj_consume_token(COTH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return (FastMath.exp(d)+FastMath.exp(-d))/(FastMath.exp(d)-FastMath.exp(-d));}
+                                                    {if (true) return (Math.exp(d)+Math.exp(-d))/(Math.exp(d)-Math.exp(-d));}
       break;
     case ARCSINH:
       jj_consume_token(ARCSINH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                       {if (true) return FastMath.log(d+FastMath.sqrt(d*d+1));}
+                                                       {if (true) return Math.log(d+Math.sqrt(d*d+1));}
       break;
     case ARCCOSH:
       jj_consume_token(ARCCOSH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                       {if (true) return FastMath.log(d+FastMath.sqrt(d*d-1));}
+                                                       {if (true) return Math.log(d+Math.sqrt(d*d-1));}
       break;
     case ARCTANH:
       jj_consume_token(ARCTANH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                       {if (true) return FastMath.log((1+d)/(1-d))/2;}
+                                                       {if (true) return Math.log((1+d)/(1-d))/2;}
       break;
     case ARCCOSECH:
       jj_consume_token(ARCCOSECH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                         {if (true) return FastMath.log(FastMath.sqrt(1/d/d-1)+1/d);}
+                                                         {if (true) return Math.log(Math.sqrt(1/d/d-1)+1/d);}
       break;
     case ARCSECH:
       jj_consume_token(ARCSECH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                       {if (true) return FastMath.log(FastMath.sqrt(1/d/d-1)+1/d);}
+                                                       {if (true) return Math.log(Math.sqrt(1/d/d-1)+1/d);}
       break;
     case ARCCOTH:
       jj_consume_token(ARCCOTH);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                       {if (true) return FastMath.log((d+1)/(d-1))/2;}
+                                                       {if (true) return Math.log((d+1)/(d-1))/2;}
       break;
     case SQRT:
       jj_consume_token(SQRT);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return FastMath.sqrt(d);}
+                                                    {if (true) return Math.sqrt(d);}
       break;
     case EXP:
       jj_consume_token(EXP);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                   {if (true) return FastMath.exp(d);}
+                                                   {if (true) return Math.exp(d);}
       break;
     case LN:
       jj_consume_token(LN);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                  {if (true) return FastMath.log(d);}
+                                                  {if (true) return Math.log(d);}
       break;
     case LOG10:
       jj_consume_token(LOG10);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                     {if (true) return FastMath.log(d)/FastMath.log(10);}
+                                                     {if (true) return Math.log(d)/Math.log(10);}
       break;
     case LOG2:
       jj_consume_token(LOG2);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return FastMath.tan(d)/FastMath.log(2);}
+                                                    {if (true) return Math.tan(d)/Math.log(2);}
       break;
     case ABS:
       jj_consume_token(ABS);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return FastMath.abs(d);}
+                                                    {if (true) return Math.abs(d);}
       break;
     case FLOOR:
       jj_consume_token(FLOOR);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                     {if (true) return FastMath.floor(d);}
+                                                     {if (true) return Math.floor(d);}
       break;
     case SIGN:
       jj_consume_token(SIGN);
@@ -297,14 +297,14 @@ import org.apache.commons.math3.util.FastMath;
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return FastMath.ceil(d);}
+                                                    {if (true) return Math.ceil(d);}
       break;
     case FRAC:
       jj_consume_token(FRAC);
       jj_consume_token(BRACE_OPEN);
       d = Expression();
       jj_consume_token(BRACE_CLOSE);
-                                                    {if (true) return d-FastMath.floor(d);}
+                                                    {if (true) return d-Math.floor(d);}
       break;
     default:
       jj_la1[0] = jj_gen;
@@ -577,7 +577,7 @@ import org.apache.commons.math3.util.FastMath;
       }
       jj_consume_token(POWER);
       x = ParseLevel3();
-                 value=FastMath.pow(value,x);
+                 value=Math.pow(value,x);
     }
          {if (true) return value;}
     throw new Error("Missing return statement in function");

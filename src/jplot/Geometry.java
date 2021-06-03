@@ -1,7 +1,6 @@
 
 package jplot;
-
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 /*
@@ -63,7 +62,7 @@ public final class Geometry
    */
   private static boolean equals (double a, double b, double limit)
   {
-    return FastMath.abs (a - b) < limit;
+    return Math.abs (a - b) < limit;
   }
 
 
@@ -295,7 +294,7 @@ public final class Geometry
    */
   public static double length (double[] v)
   {
-    return FastMath.sqrt (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+    return Math.sqrt (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
   }
 
 
@@ -341,7 +340,7 @@ public final class Geometry
     double dx = x1 - x0;
     double dy = y1 - y0;
   
-    return FastMath.sqrt (dx*dx + dy*dy);
+    return Math.sqrt (dx*dx + dy*dy);
   }
 
 
@@ -426,7 +425,7 @@ public final class Geometry
     
     double product = denominator != 0.0 ? dotProduct / denominator : 0.0;
   
-    double angle = FastMath.acos (product);
+    double angle = Math.acos (product);
 
     return angle;
   }
@@ -1099,7 +1098,7 @@ public final class Geometry
   
     // dx / dy  
     double dx = Geometry.length (x0, y0, x[1], y[1]);
-    double dy = Geometry.length (x0, y0, x[0], y[0]) * FastMath.sin (axisAngle);
+    double dy = Geometry.length (x0, y0, x[0], y[0]) * Math.sin (axisAngle);
     
     // Create geometry for unrotated / unsheared ellipse
     int[] ellipse = createEllipse (x0, y0, (int) Math.round (dx),
@@ -1112,7 +1111,7 @@ public final class Geometry
     if (!Geometry.equals (axisAngle, Math.PI/2.0, 0.1) && 
         !Geometry.equals (axisAngle, Math.PI,     0.1) &&
         !Geometry.equals (axisAngle, 0.0,         0.1)) {
-      double xShear = 1.0 / FastMath.tan (axisAngle);
+      double xShear = 1.0 / Math.tan (axisAngle);
       for (int i = 0; i < nPoints; i++)
         ellipse[i*2 + 0] += Math.round ((ellipse[i*2 + 1] - y0) * xShear);
     }
@@ -1124,11 +1123,11 @@ public final class Geometry
     double angle;
     if      (ddx == 0 && ddy == 0) angle = 0.0;
     else if (ddx == 0)             angle = Math.PI / 2.0;
-    else                           angle = FastMath. atan ((double) ddy /
+    else                           angle = Math. atan ((double) ddy /
                                                        (double) ddx);
     
-    double cosAngle = FastMath.cos (angle);
-    double sinAngle = FastMath.sin (angle);
+    double cosAngle = Math.cos (angle);
+    double sinAngle = Math.sin (angle);
     
     for (int i = 0; i < nPoints; i++) {
       int xr = (int) Math.round (x0 +
@@ -1160,8 +1159,8 @@ public final class Geometry
   public static int[] createEllipse (int x0, int y0, int dx, int dy)
   {
     // Make sure deltas are positive
-    dx = FastMath.abs (dx);
-    dy = FastMath.abs (dy);
+    dx = Math.abs (dx);
+    dy = Math.abs (dy);
 
     // This is an approximate number of points we need to make a smooth
     // surface on a quater of the ellipse
@@ -1206,9 +1205,9 @@ public final class Geometry
     for (int i = 1; i < nPoints; i++) {
       a += angleStep;
 
-      double t = FastMath.tan (a);
+      double t = Math.tan (a);
 
-      double x = (double) dxdy / FastMath.sqrt (t * t * dx2 + dy2);
+      double x = (double) dxdy / Math.sqrt (t * t * dx2 + dy2);
       double y = x * t;
     
       int xi = (int) (x + 0.5);
@@ -1244,8 +1243,8 @@ public final class Geometry
                                         double dx, double dy)
   {
     // Make sure deltas are positive
-    dx = FastMath.abs (dx);
-    dy = FastMath.abs (dy);
+    dx = Math.abs (dx);
+    dy = Math.abs (dy);
 
     // As we don't know the resolution of the appliance of the ellipse
     // we create one vertex per 2nd degree. The nPoints variable holds
@@ -1289,9 +1288,9 @@ public final class Geometry
     for (int i = 1; i < nPoints; i++) {
       a += angleStep;
 
-      double t = FastMath.tan (a);
+      double t = Math.tan (a);
 
-      double x = (double) dxdy / FastMath.sqrt (t * t * dx2 + dy2);
+      double x = (double) dxdy / Math.sqrt (t * t * dx2 + dy2);
       double y = x * t + 0.5;   
     
       ellipse[(nPoints*0 + i) * 2 + 0] = x0 + x;
@@ -1356,7 +1355,7 @@ public final class Geometry
                                     double angle0, double angle1)
   {
     // Determine a sensible number of points for arc
-    double angleSpan   = FastMath.abs (angle1 - angle0);
+    double angleSpan   = Math.abs (angle1 - angle0);
     double arcDistance = Math.max (dx, dy) * angleSpan;
     int    nPoints     = (int) Math.round (arcDistance / 15);
     double angleStep   = angleSpan / (nPoints - 1);
@@ -1366,8 +1365,8 @@ public final class Geometry
     int index = 0;
     for (int i = 0; i < nPoints; i++) {
       double angle = angle0 + angleStep * i;
-      double x = dx * FastMath.cos (angle);
-      double y = dy * FastMath.sin (angle);
+      double x = dx * Math.cos (angle);
+      double y = dy * Math.sin (angle);
 
       xy[index+0] = x0 + (int) Math.round (x);
       xy[index+1] = y0 - (int) Math.round (y);
@@ -1466,16 +1465,16 @@ public final class Geometry
 
     double edgeLength = length / Math.cos (angle);
     
-    arrow[0] = x0 + (int) Math.round (edgeLength * FastMath.cos (v0));
-    arrow[1] = y0 - (int) Math.round (edgeLength * FastMath.sin (v0));    
+    arrow[0] = x0 + (int) Math.round (edgeLength * Math.cos (v0));
+    arrow[1] = y0 - (int) Math.round (edgeLength * Math.sin (v0));    
     
-    arrow[4] = x0 + (int) Math.round (edgeLength * FastMath.cos (v1));
-    arrow[5] = y0 - (int) Math.round (edgeLength * FastMath.sin (v1));
+    arrow[4] = x0 + (int) Math.round (edgeLength * Math.cos (v1));
+    arrow[5] = y0 - (int) Math.round (edgeLength * Math.sin (v1));
 
     double c1 = inset * length;
 
-    arrow[6] = x0 + (int) Math.round (c1 * FastMath.cos (v));
-    arrow[7] = y0 - (int) Math.round (c1 * FastMath.sin (v));
+    arrow[6] = x0 + (int) Math.round (c1 * Math.cos (v));
+    arrow[7] = y0 - (int) Math.round (c1 * Math.sin (v));
 
     // Close polygon
     arrow[8] = arrow[0];
@@ -1579,8 +1578,8 @@ public final class Geometry
       double angle = i * angleStep;
       double radius = (i % 2) == 0 ? innerRadius : outerRadius;
 
-      double x = x0 + radius * FastMath.cos (angle);
-      double y = y0 + radius * FastMath.sin (angle);
+      double x = x0 + radius * Math.cos (angle);
+      double y = y0 + radius * Math.sin (angle);
 
       xy[i*2 + 0] = (int) Math.round (x);
       xy[i*2 + 1] = (int) Math.round (y);
@@ -1619,8 +1618,8 @@ public final class Geometry
       double angle = i * angleStep;
       double radius = (i % 2) == 0 ? innerRadius : outerRadius;
 
-      xy[i*2 + 0] = x0 + radius * FastMath.cos (angle);
-      xy[i*2 + 1] = y0 + radius * FastMath.sin (angle);
+      xy[i*2 + 0] = x0 + radius * Math.cos (angle);
+      xy[i*2 + 1] = y0 + radius * Math.sin (angle);
     }
 
     // Close polygon

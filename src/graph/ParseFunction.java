@@ -3,7 +3,7 @@ package graph;
 import java.awt.*;
 import java.util.*;
 import java.io.Serializable;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 /*
 **************************************************************************
@@ -552,12 +552,12 @@ public class ParseFunction extends ScanString implements Serializable {
        	       
         case PI:
       	       node.type = Node.VALUE;
-      	       node.value = FastMath.PI;
+      	       node.value = Math.PI;
                return parseString(node);
       	       
         case E:
       	       node.type = Node.VALUE;
-      	       node.value = FastMath.E;
+      	       node.value = Math.E;
       	       return parseString(node);
         case BOLTZMAN:
       	       node.type = Node.VALUE;
@@ -605,12 +605,12 @@ public class ParseFunction extends ScanString implements Serializable {
       	       return parseString(node);
       	case RAD:
       	       node.type = Node.VALUE;
-      	       node.value = FastMath.PI/180.0;
+      	       node.value = Math.PI/180.0;
       	       return parseString(node);
 
 	case RANDOM:
       	       node.type = Node.VALUE;
-      	       node.value = FastMath.random();
+      	       node.value = Math.random();
       	       return parseString(node);
 
 	 /*
@@ -859,7 +859,7 @@ public class ParseFunction extends ScanString implements Serializable {
         	 	           value *= evaluate(node.right);
         	 	           break;
         	  	case POWER:
-        	 	           value = FastMath.pow(evaluate(node.left),
+        	 	           value = Math.pow(evaluate(node.left),
         	 	                            evaluate(node.right));
         	 	           break;
         	 	default:
@@ -881,35 +881,35 @@ public class ParseFunction extends ScanString implements Serializable {
         	  switch (node.op)  {
         	  	
         	  	case SIN:
-        	 	           value = FastMath.sin(evaluate(node.left));
+        	 	           value = Math.sin(evaluate(node.left));
         	 	           break;
         	  	case COS:
-        	 	           value = FastMath.cos(evaluate(node.left));
+        	 	           value = Math.cos(evaluate(node.left));
         	 	           break;
         	  	case TAN:
-        	 	           value = FastMath.tan(evaluate(node.left));
+        	 	           value = Math.tan(evaluate(node.left));
         	 	           break;
         	  	case ASIN:
-        	 	           value = FastMath.asin(evaluate(node.left));
+        	 	           value = Math.asin(evaluate(node.left));
         	 	           break;
         	  	case ACOS:
-        	 	           value = FastMath.acos(evaluate(node.left));
+        	 	           value = Math.acos(evaluate(node.left));
         	 	           break;
         	  	case ATAN:
-        	 	           value = FastMath.atan(evaluate(node.left));
+        	 	           value = Math.atan(evaluate(node.left));
         	 	           break;
         	  	case LOG:
-        	 	           value = FastMath.log(evaluate(node.left));
+        	 	           value = Math.log(evaluate(node.left));
         	 	           break;
 			case SQRT: 
-                                   value = FastMath.sqrt(evaluate(node.left));
+                                   value = Math.sqrt(evaluate(node.left));
                                    break;
 
 			case LOG10:
-                                   value = FastMath.log(evaluate(node.left))/
-                                           FastMath.E;
+                                   value = Math.log(evaluate(node.left))/
+                                           Math.E;
                         case EXP:
-                                   value = FastMath.exp(evaluate(node.left));
+                                   value = Math.exp(evaluate(node.left));
                                    break;
 		        case J0:
                                    value = SpecialFunction.j0(
@@ -1007,7 +1007,7 @@ public class ParseFunction extends ScanString implements Serializable {
                                    break;
 
 	  	        case ATAN2:
-                                   value = FastMath.atan2(evaluate(node.left),
+                                   value = Math.atan2(evaluate(node.left),
                                                       evaluate(node.right));
                                    break;
 

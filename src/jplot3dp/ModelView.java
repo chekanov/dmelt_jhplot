@@ -18,7 +18,7 @@ import org.freehep.graphics2d.VectorGraphics;
 import graph.RTextLine;
 import jplot.Translate;
 import jplot3dp.MathParser.MathParser;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 public class ModelView extends JPanel
@@ -158,7 +158,7 @@ public class ModelView extends JPanel
                 vec1 = project(vec1).substract(project(new Vec(0.0D, 0.0D, 0.0D)));
                 tickX = vec1.y;
                 tickY = vec1.x;
-                double d1 = FastMath.sqrt(tickX * tickX + tickY * tickY);
+                double d1 = Math.sqrt(tickX * tickX + tickY * tickY);
                 tickX /= d1;
                 tickY /= d1;
                 tick = true;
@@ -293,7 +293,7 @@ public class ModelView extends JPanel
                 Vec vec9 = vec4.crossProduct(vec5);
                 vec9 = vec9.add(vec6.crossProduct(vec7));
                 d += vec9.normalize().dotProduct(vec8);
-                d = FastMath.abs(d);
+                d = Math.abs(d);
                 d = (d - 1.0D) / (1.0D - shineyNess) + 1.0D;
                 if(d < 0.0D)
                     d = 0.0D;
@@ -381,7 +381,7 @@ public class ModelView extends JPanel
                 Rectangle rectangle = getBounds();
                 double d2 = point.x - (rectangle.x + rectangle.width / 2);
                 double d3 = point.y - (rectangle.y + rectangle.height / 2);
-                double d4 = FastMath.sqrt(d2 * d2 + d3 * d3);
+                double d4 = Math.sqrt(d2 * d2 + d3 * d3);
                 cameraBank((d * d3 - d1 * d2) / d4);
             } else
             if(mouseevent.isAltDown())
@@ -413,36 +413,36 @@ public class ModelView extends JPanel
             double d = (double)l1 / 100D;
             lastTime = l;
             boolean flag = true;
-            double d1 = FastMath.pow(0.20000000000000001D, d);
+            double d1 = Math.pow(0.20000000000000001D, d);
             keyBoard.velForward = keyBoard.velForward * d1 + keyBoard.targetForward * d * (1.0D - d1);
-            if(FastMath.abs(keyBoard.velForward) > 0.001D)
+            if(Math.abs(keyBoard.velForward) > 0.001D)
             {
                 flag = false;
                 cameraForward(keyBoard.velForward);
             }
             keyBoard.velTranslate.x = keyBoard.velTranslate.x * d1 + keyBoard.targetTranslate.x * d * (1.0D - d1);
             keyBoard.velTranslate.y = keyBoard.velTranslate.y * d1 + keyBoard.targetTranslate.y * d * (1.0D - d1);
-            if(FastMath.abs(keyBoard.velTranslate.x) > 0.001D || FastMath.abs(keyBoard.velTranslate.y) > 0.001D)
+            if(Math.abs(keyBoard.velTranslate.x) > 0.001D || Math.abs(keyBoard.velTranslate.y) > 0.001D)
             {
                 flag = false;
                 cameraTranslate(keyBoard.velTranslate.x, keyBoard.velTranslate.y);
             }
             keyBoard.velRotate.x = keyBoard.velRotate.x * d1 + keyBoard.targetRotate.x * d * (1.0D - d1);
             keyBoard.velRotate.y = keyBoard.velRotate.y * d1 + keyBoard.targetRotate.y * d * (1.0D - d1);
-            if(FastMath.abs(keyBoard.velRotate.x) > 0.001D || FastMath.abs(keyBoard.velRotate.y) > 0.001D)
+            if(Math.abs(keyBoard.velRotate.x) > 0.001D || Math.abs(keyBoard.velRotate.y) > 0.001D)
             {
                 flag = false;
                 cameraRotate(keyBoard.velRotate.x, keyBoard.velRotate.y, false);
             }
             keyBoard.velBank = keyBoard.velBank * d1 + keyBoard.targetBank * d * (1.0D - d1);
-            if(FastMath.abs(keyBoard.velBank) > 0.001D)
+            if(Math.abs(keyBoard.velBank) > 0.001D)
             {
                 flag = false;
                 cameraBank(keyBoard.velBank);
             }
             keyBoard.velPivotRotate.x = keyBoard.velPivotRotate.x * d1 + keyBoard.targetPivotRotate.x * d * (1.0D - d1);
             keyBoard.velPivotRotate.y = keyBoard.velPivotRotate.y * d1 + keyBoard.targetPivotRotate.y * d * (1.0D - d1);
-            if(FastMath.abs(keyBoard.velPivotRotate.x) > 0.001D || FastMath.abs(keyBoard.velPivotRotate.y) > 0.001D)
+            if(Math.abs(keyBoard.velPivotRotate.x) > 0.001D || Math.abs(keyBoard.velPivotRotate.y) > 0.001D)
             {
                 flag = false;
                 cameraRotate(keyBoard.velPivotRotate.x, keyBoard.velPivotRotate.y, true);
@@ -617,7 +617,7 @@ public class ModelView extends JPanel
                     modelfunction.name = s;
                     modelfunction.expression = "z=0";
                     modelfunction.curveColor = Color.BLACK;
-                    modelfunction.surfaceColor = new Color((float)FastMath.random(), (float)FastMath.random(), (float)FastMath.random());
+                    modelfunction.surfaceColor = new Color((float)Math.random(), (float)Math.random(), (float)Math.random());
                     functions.add(modelfunction);
                     return modelfunction;
                 }
@@ -1014,8 +1014,8 @@ public class ModelView extends JPanel
     private void recalcScale()
     {
         Dimension dimension = getSize();
-        double d = FastMath.sqrt(dimension.height * dimension.height + dimension.width * dimension.width);
-        scale = d / (2D * FastMath.tan((fov * 3.1415926535897931D) / 180D / 2D) * 1.0D);
+        double d = Math.sqrt(dimension.height * dimension.height + dimension.width * dimension.width);
+        scale = d / (2D * Math.tan((fov * 3.1415926535897931D) / 180D / 2D) * 1.0D);
     }
 
     public ModelView()
@@ -1130,7 +1130,7 @@ public class ModelView extends JPanel
             int i = up.y <= 0.0D ? -1 : 1;
             double d2 = (double)i * screenUp.y;
             double d3 = (double)i * eyeDirection.y;
-            double d4 = FastMath.sqrt(d2 * d2 + d3 * d3);
+            double d4 = Math.sqrt(d2 * d2 + d3 * d3);
             up = screenUp.scalarMult(d2 / d4).add(eyeDirection.scalarMult(d3 / d4));
             up = up.add(new Vec(0.0D, 0.10000000000000001D * (double)i, 0.0D)).normalize();
         } else
@@ -1225,9 +1225,9 @@ public class ModelView extends JPanel
 
 
             // show tics
-            for(double d4 = FastMath.ceil(d / axesDefinition.tickDensity) * axesDefinition.tickDensity; d4 <= d1 + 1E-08D; d4 += axesDefinition.tickDensity)
+            for(double d4 = Math.ceil(d / axesDefinition.tickDensity) * axesDefinition.tickDensity; d4 <= d1 + 1E-08D; d4 += axesDefinition.tickDensity)
             {
-                double d5 = (double)FastMath.round(d4 * 1000D) / 1000D;
+                double d5 = (double)Math.round(d4 * 1000D) / 1000D;
                 if(d5 != 0.0D)
                     linkedlist.add(new ElementString(String.valueOf(d5), vec.scalarMult(d4), axesDefinition.color, vec));
             }

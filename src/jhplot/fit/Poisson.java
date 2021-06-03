@@ -2,7 +2,7 @@ package jhplot.fit;
 
 import hep.aida.ref.function.AbstractIFunction;
 import jhplot.math.num.pdf.*;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 /**

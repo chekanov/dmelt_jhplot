@@ -8,7 +8,7 @@ import java.lang.Double;
 import java.util.Vector;
 import javax.swing.*;
 import jhplot.P1D;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 /**
@@ -120,11 +120,11 @@ public class Bsom extends BsomDemo {
 			for (int i = 0; i < n; i++) {
 				value[i][0] -= mx;
 				value[i][1] -= my;
-				if (FastMath.abs(value[i][0]) > dmax) {
-					dmax = FastMath.abs(value[i][0]);
+				if (Math.abs(value[i][0]) > dmax) {
+					dmax = Math.abs(value[i][0]);
 				}
-				if (FastMath.abs(value[i][1]) > dmax) {
-					dmax = FastMath.abs(value[i][1]);
+				if (Math.abs(value[i][1]) > dmax) {
+					dmax = Math.abs(value[i][1]);
 				}
 			}
 
@@ -164,8 +164,8 @@ public class Bsom extends BsomDemo {
 		alpha_max_power = 5.0;
 		beta_min_power = 0.0;
 		beta_max_power = 5.0;
-		initial_alpha = FastMath.pow(10., alpha_max_power);
-		initial_beta = FastMath.pow(10., beta_min_power);
+		initial_alpha = Math.pow(10., alpha_max_power);
+		initial_beta = Math.pow(10., beta_min_power);
 		initPar(initial_alpha, initial_beta,units);
 		if (p1d != null)
 			input_file = p1d.getTitle();

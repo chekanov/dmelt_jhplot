@@ -10,7 +10,7 @@
 package jhplot.stat;
 
 import jhplot.gui.HelpBrowser;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 /**
  * A static class for statistical calculations.
@@ -65,7 +65,7 @@ public class Statistics {
 	 * @return
 	 */
 	public static double stddeviation(double[] v) {
-		return FastMath.sqrt(variance(v));
+		return Math.sqrt(variance(v));
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Statistics {
 	public static double[] stddeviation(double[][] v) {
 		double[] var = variance(v);
 		for (int i = 0; i < var.length; i++)
-			var[i] = FastMath.sqrt(var[i]);
+			var[i] = Math.sqrt(var[i]);
 		return var;
 	}
 
@@ -233,7 +233,7 @@ public class Statistics {
 	}
 
 	/**
-	 * Correlation coefficient, covariance(v1, v2) / FastMath.sqrt(variance(v1) *
+	 * Correlation coefficient, covariance(v1, v2) / Math.sqrt(variance(v1) *
 	 * variance(v2)
 	 * 
 	 * @param v1
@@ -243,11 +243,11 @@ public class Statistics {
 	 * @return
 	 */
 	public static double correlation(double[] v1, double[] v2) {
-		return covariance(v1, v2) / FastMath.sqrt(variance(v1) * variance(v2));
+		return covariance(v1, v2) / Math.sqrt(variance(v1) * variance(v2));
 	}
 
 	/**
-	 * Correlation coefficient, covariance(v1, v2) / FastMath.sqrt(variance(v1) *
+	 * Correlation coefficient, covariance(v1, v2) / Math.sqrt(variance(v1) *
 	 * variance(v2)
 	 * 
 	 * @param v1
@@ -262,7 +262,7 @@ public class Statistics {
 		double[][] cov = covariance(v1, v2);
 		for (int i = 0; i < cov.length; i++)
 			for (int j = 0; j < cov[i].length; j++)
-				cov[i][j] = cov[i][j] / FastMath.sqrt(Varv1[i] * Varv2[j]);
+				cov[i][j] = cov[i][j] / Math.sqrt(Varv1[i] * Varv2[j]);
 		return cov;
 	}
 
@@ -299,7 +299,7 @@ public class Statistics {
 		}
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
-				X[i][j] = V[i][j] / FastMath.sqrt(V[i][i] * V[j][j]);
+				X[i][j] = V[i][j] / Math.sqrt(V[i][i] * V[j][j]);
 		return X;
 	}
 
@@ -390,11 +390,11 @@ public class Statistics {
 		 * ) .
 		 */
 
-		y = a * FastMath.log(x);
-		t = b * FastMath.log(xc);
-		if ((a + b) < MAXGAM && FastMath.abs(y) < MAXLOG && FastMath.abs(t) < MAXLOG) {
-			t = FastMath.pow(xc, b);
-			t *= FastMath.pow(x, a);
+		y = a * Math.log(x);
+		t = b * Math.log(xc);
+		if ((a + b) < MAXGAM && Math.abs(y) < MAXLOG && Math.abs(t) < MAXLOG) {
+			t = Math.pow(xc, b);
+			t *= Math.pow(x, a);
 			t /= a;
 			t *= w;
 			t *= gamma(a + b) / (gamma(a) * gamma(b));
@@ -408,11 +408,11 @@ public class Statistics {
 		}
 		/* Resort to logarithms. */
 		y += t + lnGamma(a + b) - lnGamma(a) - lnGamma(b);
-		y += FastMath.log(w / a);
+		y += Math.log(w / a);
 		if (y < MINLOG)
 			t = 0.0;
 		else
-			t = FastMath.exp(y);
+			t = Math.exp(y);
 
 		if (flag) {
 			if (t <= MACHEP)
@@ -439,7 +439,7 @@ public class Statistics {
 		n = 2.0;
 		s = 0.0;
 		z = MACHEP * ai;
-		while (FastMath.abs(v) > z) {
+		while (Math.abs(v) > z) {
 			u = (n - b) * x / n;
 			t *= u;
 			v = t / (a + n);
@@ -449,16 +449,16 @@ public class Statistics {
 		s += t1;
 		s += ai;
 
-		u = a * FastMath.log(x);
-		if ((a + b) < MAXGAM && FastMath.abs(u) < MAXLOG) {
+		u = a * Math.log(x);
+		if ((a + b) < MAXGAM && Math.abs(u) < MAXLOG) {
 			t = gamma(a + b) / (gamma(a) * gamma(b));
-			s = s * t * FastMath.pow(x, a);
+			s = s * t * Math.pow(x, a);
 		} else {
-			t = lnGamma(a + b) - lnGamma(a) - lnGamma(b) + u + FastMath.log(s);
+			t = lnGamma(a + b) - lnGamma(a) - lnGamma(b) + u + Math.log(s);
 			if (t < MINLOG)
 				s = 0.0;
 			else
-				s = FastMath.exp(t);
+				s = Math.exp(t);
 		}
 		return s;
 	}
@@ -489,7 +489,7 @@ public class Statistics {
 		if (x < -34.0) {
 			q = -x;
 			w = lnGamma(q);
-			p = FastMath.floor(q);
+			p = Math.floor(q);
 			if (p == q)
 				throw new ArithmeticException("lnGamma: Overflow");
 			z = q - p;
@@ -497,10 +497,10 @@ public class Statistics {
 				p += 1.0;
 				z = p - q;
 			}
-			z = q * FastMath.sin(FastMath.PI * z);
+			z = q * Math.sin(Math.PI * z);
 			if (z == 0.0)
 				throw new ArithmeticException("lnGamma: Overflow");
-			z = LOGPI - FastMath.log(z) - w;
+			z = LOGPI - Math.log(z) - w;
 			return z;
 		}
 
@@ -519,16 +519,16 @@ public class Statistics {
 			if (z < 0.0)
 				z = -z;
 			if (x == 2.0)
-				return FastMath.log(z);
+				return Math.log(z);
 			x -= 2.0;
 			p = x * polevl(x, B, 5) / p1evl(x, C, 6);
-			return (FastMath.log(z) + p);
+			return (Math.log(z) + p);
 		}
 
 		if (x > 2.556348e305)
 			throw new ArithmeticException("lnGamma: Overflow");
 
-		q = (x - 0.5) * FastMath.log(x) - x + 0.91893853320467274178;
+		q = (x - 0.5) * Math.log(x) - x + 0.91893853320467274178;
 
 		if (x > 1.0e8)
 			return (q);
@@ -601,11 +601,11 @@ public class Statistics {
 		double p, z;
 		int i;
 
-		double q = FastMath.abs(x);
+		double q = Math.abs(x);
 
 		if (q > 33.0) {
 			if (x < 0.0) {
-				p = FastMath.floor(q);
+				p = Math.floor(q);
 				if (p == q)
 					throw new ArithmeticException("gamma: overflow");
 				i = (int) p;
@@ -614,11 +614,11 @@ public class Statistics {
 					p += 1.0;
 					z = q - p;
 				}
-				z = q * FastMath.sin(FastMath.PI * z);
+				z = q * Math.sin(Math.PI * z);
 				if (z == 0.0)
 					throw new ArithmeticException("gamma: overflow");
-				z = FastMath.abs(z);
-				z = FastMath.PI / (z * stirlingFormula(q));
+				z = Math.abs(z);
+				z = Math.PI / (z * stirlingFormula(q));
 
 				return -z;
 			} else {
@@ -673,16 +673,16 @@ public class Statistics {
 		double MAXSTIR = 143.01608;
 
 		double w = 1.0 / x;
-		double y = FastMath.exp(x);
+		double y = Math.exp(x);
 
 		w = 1.0 + w * polevl(w, STIR, 4);
 
 		if (x > MAXSTIR) {
-			/* Avoid overflow in FastMath.pow() */
-			double v = FastMath.pow(x, 0.5 * x - 0.25);
+			/* Avoid overflow in Math.pow() */
+			double v = Math.pow(x, 0.5 * x - 0.25);
 			y = v * (v / y);
 		} else {
-			y = FastMath.pow(x, x - 0.5) / y;
+			y = Math.pow(x, x - 0.5) / y;
 		}
 		y = SQTPI * y * w;
 		return y;
@@ -770,7 +770,7 @@ public class Statistics {
 			if (qk != 0)
 				r = pk / qk;
 			if (r != 0) {
-				t = FastMath.abs((ans - r) / r);
+				t = Math.abs((ans - r) / r);
 				ans = r;
 			} else
 				t = 1.0;
@@ -787,13 +787,13 @@ public class Statistics {
 			k7 += 2.0;
 			k8 += 2.0;
 
-			if ((FastMath.abs(qk) + FastMath.abs(pk)) > big) {
+			if ((Math.abs(qk) + Math.abs(pk)) > big) {
 				pkm2 *= biginv;
 				pkm1 *= biginv;
 				qkm2 *= biginv;
 				qkm1 *= biginv;
 			}
-			if ((FastMath.abs(qk) < biginv) || (FastMath.abs(pk) < biginv)) {
+			if ((Math.abs(qk) < biginv) || (Math.abs(pk) < biginv)) {
 				pkm2 *= big;
 				pkm1 *= big;
 				qkm2 *= big;
@@ -853,7 +853,7 @@ public class Statistics {
 			if (qk != 0)
 				r = pk / qk;
 			if (r != 0) {
-				t = FastMath.abs((ans - r) / r);
+				t = Math.abs((ans - r) / r);
 				ans = r;
 			} else
 				t = 1.0;
@@ -870,13 +870,13 @@ public class Statistics {
 			k7 += 2.0;
 			k8 += 2.0;
 
-			if ((FastMath.abs(qk) + FastMath.abs(pk)) > big) {
+			if ((Math.abs(qk) + Math.abs(pk)) > big) {
 				pkm2 *= biginv;
 				pkm1 *= biginv;
 				qkm2 *= biginv;
 				qkm1 *= biginv;
 			}
-			if ((FastMath.abs(qk) < biginv) || (FastMath.abs(pk) < biginv)) {
+			if ((Math.abs(qk) < biginv) || (Math.abs(pk) < biginv)) {
 				pkm2 *= big;
 				pkm1 *= big;
 				qkm2 *= big;

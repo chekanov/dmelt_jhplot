@@ -26,7 +26,7 @@
 *******************************************************************************/
 
 package jhplot.stat;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 /**
@@ -61,11 +61,11 @@ public abstract class Entropy
     {
       if (prob > 0) 
       {
-        entropy -= prob * FastMath.log(prob);
+        entropy -= prob * Math.log(prob);
       }
     }
 
-    entropy /= FastMath.log(LOG_BASE);
+    entropy /= Math.log(LOG_BASE);
     
     return entropy;
   }//calculateEntropy(double [])
@@ -94,11 +94,11 @@ public abstract class Entropy
       condValue = state.secondProbMap.get(key / numFirstStates);
       if ((jointValue > 0) && (condValue > 0))
       {
-        condEntropy -= jointValue * FastMath.log(jointValue / condValue);
+        condEntropy -= jointValue * Math.log(jointValue / condValue);
       }
     }
     
-    condEntropy /= FastMath.log(LOG_BASE);
+    condEntropy /= Math.log(LOG_BASE);
 
     return condEntropy;
   }//calculateConditionalEntropy(double [],double [])
@@ -123,11 +123,11 @@ public abstract class Entropy
     {
       if (prob > 0) 
       {
-        entropy -= prob * FastMath.log(prob);
+        entropy -= prob * Math.log(prob);
       }
     }
 
-    entropy /= FastMath.log(LOG_BASE);
+    entropy /= Math.log(LOG_BASE);
     
     return entropy;
   }//calculateJointEntropy(double [],double [])

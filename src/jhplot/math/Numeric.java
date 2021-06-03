@@ -4,7 +4,7 @@ package jhplot.math;
 import jhplot.math.ArrayMath;
 import jhplot.F1D;
 import jhplot.F2D;
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 /**
@@ -40,7 +40,7 @@ public final class Numeric {
    */
   public static double[] solveQuadratic(final double a, final double b, final double c) {
     final double roots[] = new double[2];
-    final double q = FastMath.sqrt(b * b - 4.0 * a * c);
+    final double q = Math.sqrt(b * b - 4.0 * a * c);
     roots[0] = (-b - q) / (2 * a);
     roots[1] = (-b + q) / (2 * a);
     return roots;
@@ -57,15 +57,15 @@ public final class Numeric {
    
   public static double[] solveCubic(final double a, final double b, final double c, final double d) {
     final double roots[] = new double[3];
-    final double twoonethird = FastMath.pow(2, (1 / 3));
-    final double delta = FastMath.pow((-2 * b * b * b + 9 * a * b * c - 27 * a * a * d + FastMath.sqrt(4 * FastMath.pow((-b * b + 3 * a * c), 3) + FastMath.pow((-2 * b * b * b + 9 * a * b * c - 27 * a * a * d), 2))), (1 / 3));
+    final double twoonethird = Math.pow(2, (1 / 3));
+    final double delta = Math.pow((-2 * b * b * b + 9 * a * b * c - 27 * a * a * d + Math.sqrt(4 * Math.pow((-b * b + 3 * a * c), 3) + Math.pow((-2 * b * b * b + 9 * a * b * c - 27 * a * a * d), 2))), (1 / 3));
 //we can further improve this computation
     roots[0] = -b / (3 * a) - (twoonethird * (-b * b + 3 * a * c)) / (3 * a * delta) + delta / (3 * twoonethird * a);
-   // roots[1]= -b/(3*a) + ((1 + i*FastMath.sqrt(3))*(-b*b + 3*a*c))/(3*FastMath.pow(2,(2/3))*a*delta) - (1 - i*FastMath.sqrt(3))*delta/(6*twoonethird *a);
-   // roots[2]= -b/(3*a) + ((1 - i*FastMath.sqrt(3))*(-b*b + 3*a*c))/(3*FastMath.pow(2,(2/3))*a*delta) - (1 + i*FastMath.sqrt(3))*delta/(6*twoonethird *a);
+   // roots[1]= -b/(3*a) + ((1 + i*Math.sqrt(3))*(-b*b + 3*a*c))/(3*Math.pow(2,(2/3))*a*delta) - (1 - i*Math.sqrt(3))*delta/(6*twoonethird *a);
+   // roots[2]= -b/(3*a) + ((1 - i*Math.sqrt(3))*(-b*b + 3*a*c))/(3*Math.pow(2,(2/3))*a*delta) - (1 + i*Math.sqrt(3))*delta/(6*twoonethird *a);
 //we return the norm of the complex roots although there may be a better solution like thworing an error when imaginary part is not null
-    roots[1] = new Complex(1, FastMath.sqrt(3)).times(-b * b + 3 * a * c).divide(3 * FastMath.pow(2, (2 / 3)) * a * delta).minus(new Complex(1, -FastMath.sqrt(3)).times(delta / (6 * twoonethird * a))).minusReal(b / (3 * a)).mod();
-    roots[2] = new Complex(1, -FastMath.sqrt(3)).times(-b * b + 3 * a * c).divide(3 * FastMath.pow(2, (2 / 3)) * a * delta).minus(new Complex(1, FastMath.sqrt(3)).times(delta / (6 * twoonethird * a))).minusReal(b / (3 * a)).mod();
+    roots[1] = new Complex(1, Math.sqrt(3)).times(-b * b + 3 * a * c).divide(3 * Math.pow(2, (2 / 3)) * a * delta).minus(new Complex(1, -Math.sqrt(3)).times(delta / (6 * twoonethird * a))).minusReal(b / (3 * a)).mod();
+    roots[2] = new Complex(1, -Math.sqrt(3)).times(-b * b + 3 * a * c).divide(3 * Math.pow(2, (2 / 3)) * a * delta).minus(new Complex(1, Math.sqrt(3)).times(delta / (6 * twoonethird * a))).minusReal(b / (3 * a)).mod();
 
     
     return roots;
@@ -81,14 +81,14 @@ public final class Numeric {
   //as found at http://www.josechu.com/ecuaciones_polinomicas/
   public static double[] solveQuartic(final double a, final double b, final double c, final double d, final double e) {
     final double roots[] = new double[4];
-    final double twoonethird = FastMath.pow(2, (1 / 3));
+    final double twoonethird = Math.pow(2, (1 / 3));
     final double delta0 = c * c - 3 * b * d + 12 * a * e;
-    final double delta1 = FastMath.pow(2 * c * c * c - 9 * b * c * d + 27 * a * d * d + 27 * b * b * e - 72 * a * c * e + FastMath.sqrt(-4 * FastMath.pow(delta0, 3) + FastMath.pow(2 * c * c * c - 9 * b * c * d + 27 * a * d * d + 27 * b * b * e - 72 * a * c * e, 2)), 1 / 3);
+    final double delta1 = Math.pow(2 * c * c * c - 9 * b * c * d + 27 * a * d * d + 27 * b * b * e - 72 * a * c * e + Math.sqrt(-4 * Math.pow(delta0, 3) + Math.pow(2 * c * c * c - 9 * b * c * d + 27 * a * d * d + 27 * b * b * e - 72 * a * c * e, 2)), 1 / 3);
     final double delta2 = twoonethird * delta0 / (3 * a * delta1);
     final double delta3 = delta1 / (3 * a * twoonethird);
-    final double delta4 = 0.5 * FastMath.sqrt(b * b / (4 * a * a) - 2 * c / (3 * a) + delta2 + delta3);
-    final double delta5 = 0.5 * FastMath.sqrt(b * b / (2 * a * a) - 4 * c / (3 * a) - delta2 - delta3);
-    final double delta6 = (-b * b * b / (a * a * a) + 4 * b * c / (a * a) - 8 * d / a) / (4 * FastMath.sqrt(b * b / (4 * a * a) - 2 * c / (3 * a) + delta2 + delta3));
+    final double delta4 = 0.5 * Math.sqrt(b * b / (4 * a * a) - 2 * c / (3 * a) + delta2 + delta3);
+    final double delta5 = 0.5 * Math.sqrt(b * b / (2 * a * a) - 4 * c / (3 * a) - delta2 - delta3);
+    final double delta6 = (-b * b * b / (a * a * a) + 4 * b * c / (a * a) - 8 * d / a) / (4 * Math.sqrt(b * b / (4 * a * a) - 2 * c / (3 * a) + delta2 + delta3));
     roots[0] = -b / (4 * a) - delta4 - delta5 - delta6;
     roots[0] = -b / (4 * a) - delta4 + delta5 - delta6;
     roots[0] = -b / (4 * a) + delta4 - delta5 + delta6;
@@ -273,7 +273,7 @@ public final class Numeric {
    * Otherwise, we divide up the interval into two equal 
    * subintervals from a to c and c to b, where c is 
    * the midpoint (a + b) / 2. 
-   * The iterations are finished if FastMath.abs(Q2 - Q1) <= EPSILON,
+   * The iterations are finished if Math.abs(Q2 - Q1) <= EPSILON,
    * EPSILON = 1E-6
    * @param F1D input function
    * @param a min X
@@ -287,7 +287,7 @@ public final class Numeric {
       double e = (b + c) / 2.0;
       double Q1 = h/6  * (func.eval(a) + 4*func.eval(c) + func.eval(b));
       double Q2 = h/12 * (func.eval(a) + 4*func.eval(d) + 2*func.eval(c) + 4*func.eval(e) + func.eval(b));
-      if (FastMath.abs(Q2 - Q1) <= EPSILON)
+      if (Math.abs(Q2 - Q1) <= EPSILON)
           return Q2 + (Q2 - Q1) / 15;
       else
           return adaptive(func, a, c) + adaptive(func, c, b);
@@ -426,8 +426,8 @@ public final class Numeric {
    */
   public static double[] metropolis(final double list[], final F1D func, final double dx) {
     for (int i = 0; i < list.length - 1; i++) {
-      list[i + 1] = list[i] + dx * (2.0 * FastMath.random() - 1.0);
-      if (func.eval(list[i + 1]) / func.eval(list[i]) < FastMath.random())
+      list[i + 1] = list[i] + dx * (2.0 * Math.random() - 1.0);
+      if (func.eval(list[i + 1]) / func.eval(list[i]) < Math.random())
         list[i + 1] = list[i];
     }
     return list;

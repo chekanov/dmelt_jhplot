@@ -1,6 +1,6 @@
 package jhplot.math;
 
-import org.apache.commons.math3.util.FastMath;
+import java.lang.Math;
 
 
 /**
@@ -361,7 +361,7 @@ public final class ArrayMath extends Object {
      * the percentage of correlation.
      */
     public static double correlation(double[] v1, double[] v2) {
-        double denom = FastMath.sqrt(variance(v1) * variance(v2));
+        double denom = Math.sqrt(variance(v1) * variance(v2));
         if (denom != 0)
             return (covariance(v1, v2) / denom);
         else {
@@ -385,7 +385,7 @@ public final class ArrayMath extends Object {
      * Computes the (bias-corrected sample) standard deviation of an array.
      */
     public static double standardDeviation(double[] v) {
-        return (FastMath.sqrt(variance(v)));
+        return (Math.sqrt(variance(v)));
     }
 
     /**
@@ -418,8 +418,8 @@ public final class ArrayMath extends Object {
             throw new IllegalArgumentException("Percentile must be between 0 and 1 : " + p);
         }
         double[] ans = sortMinToMax(v);
-        int pos = (int) FastMath.floor(p * (ans.length - 1));
-        double dif = p * (ans.length - 1) - FastMath.floor(p * (ans.length - 1));
+        int pos = (int) Math.floor(p * (ans.length - 1));
+        double dif = p * (ans.length - 1) - Math.floor(p * (ans.length - 1));
         if (pos == (ans.length - 1))
             return (ans[ans.length - 1]);
         else
@@ -558,7 +558,7 @@ public final class ArrayMath extends Object {
     public static double[] abs(double[] v) {
         double[] ans = new double[v.length];
         for (int i = 0; i < v.length; i++) {
-            ans[i] = FastMath.abs(v[i]);
+            ans[i] = Math.abs(v[i]);
         }
         return (ans);
     }
@@ -658,7 +658,7 @@ public final class ArrayMath extends Object {
      * Computes the L2 norm of an array (Euclidean norm or "length").
      */
     public static double norm(double[] data) {
-        return (FastMath.sqrt(sumSquares(data)));
+        return (Math.sqrt(sumSquares(data)));
     }
 
 //for the sum of the elements of an array, see mass
@@ -699,7 +699,7 @@ public final class ArrayMath extends Object {
         for (int k = 0; k < data.length; k++) {
             ans += data[k];
         }
-        return FastMath.pow(ans,n);
+        return Math.pow(ans,n);
     }
 
     /**
@@ -855,7 +855,7 @@ public final class ArrayMath extends Object {
             ans[0] = a;
             return (ans);
         }
-        int sizeOfArray = (new Double(FastMath.abs(a - b) / step)).intValue() + 1;
+        int sizeOfArray = (new Double(Math.abs(a - b) / step)).intValue() + 1;
         double[] ans = new double[sizeOfArray];
         ans[0] = a;
         if (a > b) {
@@ -898,9 +898,9 @@ public final class ArrayMath extends Object {
     public static double softmax(int index, double[] x) {
         double sum = 0;
         for (int i = 0; i < x.length; i++) {
-            sum = sum + FastMath.exp(x[i]);
+            sum = sum + Math.exp(x[i]);
         }
-        return (FastMath.exp(x[index]) / sum);
+        return (Math.exp(x[index]) / sum);
     }
 
     /**
@@ -1104,7 +1104,7 @@ public final class ArrayMath extends Object {
      * the percentage of correlation.
      */
     public static double correlation(int[] v1, int[] v2) {
-        double denom = FastMath.sqrt(variance(v1) * variance(v2));
+        double denom = Math.sqrt(variance(v1) * variance(v2));
         if (denom != 0)
             return (covariance(v1, v2) / denom);
         else {
@@ -1128,7 +1128,7 @@ public final class ArrayMath extends Object {
      * Returns the (bias-corrected sample) standard deviation of an array.
      */
     public static double standardDeviation(int[] v) {
-        return (FastMath.sqrt(variance(v)));
+        return (Math.sqrt(variance(v)));
     }
 
     /**
@@ -1187,8 +1187,8 @@ public final class ArrayMath extends Object {
             throw new IllegalArgumentException("Percentile must be between 0 and 1 : " + p);
         }
         int[] ans = sortMinToMax(v);
-        int pos = (int) FastMath.floor(p * (ans.length - 1));
-        double dif = p * (ans.length - 1) - FastMath.floor(p * (ans.length - 1));
+        int pos = (int) Math.floor(p * (ans.length - 1));
+        double dif = p * (ans.length - 1) - Math.floor(p * (ans.length - 1));
         if (pos == (ans.length - 1))
             return (ans[ans.length - 1]);
         else
@@ -1338,7 +1338,7 @@ public final class ArrayMath extends Object {
     public static int[] abs(int[] v) {
         int[] ans = new int[v.length];
         for (int i = 0; i < v.length; i++) {
-            ans[i] = FastMath.abs(v[i]);
+            ans[i] = Math.abs(v[i]);
         }
         return (ans);
     }
@@ -1410,7 +1410,7 @@ public final class ArrayMath extends Object {
      * Computes the L2 norm of an array (Euclidean norm or "length").
      */
     public static double norm(int[] data) {
-        return (FastMath.sqrt(sumSquares(data)));
+        return (Math.sqrt(sumSquares(data)));
     }
 
     /**
@@ -1602,7 +1602,7 @@ public final class ArrayMath extends Object {
             ans[0] = a;
             return (ans);
         }
-        int sizeOfArray = (new Double(FastMath.abs(a - b) / step)).intValue();
+        int sizeOfArray = (new Double(Math.abs(a - b) / step)).intValue();
         int[] ans = new int[sizeOfArray];
         ans[0] = a;
         if (a > b) {
@@ -1753,7 +1753,7 @@ public final class ArrayMath extends Object {
             /* Arbitrarily establishing partition element as the midpoint of
             * the array.
             */
-            mid = a[(int) FastMath.round((lo0 + hi0) / 2.0)];
+            mid = a[(int) Math.round((lo0 + hi0) / 2.0)];
 
             // loop through the array until indices cross
             while (lo <= hi) {
@@ -1819,7 +1819,7 @@ public final class ArrayMath extends Object {
             /* Arbitrarily establishing partition element as the midpoint of
             * the array.
             */
-            mid = a[(int) FastMath.round((lo0 + hi0) / 2.0)];
+            mid = a[(int) Math.round((lo0 + hi0) / 2.0)];
 
             // loop through the array until indices cross
             while (lo <= hi) {
@@ -1886,7 +1886,7 @@ public final class ArrayMath extends Object {
             /* Arbitrarily establishing partition element as the midpoint of
             * the array.
             */
-            mid = a[(int) FastMath.round((lo0 + hi0) / 2.0)];
+            mid = a[(int) Math.round((lo0 + hi0) / 2.0)];
 
             // loop through the array until indices cross
             while (lo <= hi) {
@@ -1952,7 +1952,7 @@ public final class ArrayMath extends Object {
             /* Arbitrarily establishing partition element as the midpoint of
             * the array.
             */
-            mid = a[(int) FastMath.round((lo0 + hi0) / 2.0)];
+            mid = a[(int) Math.round((lo0 + hi0) / 2.0)];
 
             // loop through the array until indices cross
             while (lo <= hi) {

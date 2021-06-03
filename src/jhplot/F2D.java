@@ -31,7 +31,7 @@ import jhplot.gui.HelpBrowser;
  * Create 2D function. The function may have up to 2 independent variables: x,y.
  * <p></p>
  * One can enabled fast math calculation using @see jhplot.HParam.
- * For example, setting jhplot.HParam.setFastMath(true) makes calculation of elementary functions 
+ * For example, setting jhplot.HParam.setMath(true) makes calculation of elementary functions 
  * a factot 4-5 faster than using the standard Java Math, with precision of E-14. 
  * <p></p> 
  * <b>Operators and functions</b>

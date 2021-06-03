@@ -1,7 +1,6 @@
 package root; 
 import hep.io.root.interfaces.*;
 import jas.hist.*;
-import org.apache.commons.math3.util.FastMath;
 
 
 
@@ -33,7 +32,7 @@ public class RootHistogramAdapter
          if (darray != null && darray.length>0)
          {
             double[] error = new double[bins];
-            for (int i=0; i<bins; i++) error[i] = FastMath.sqrt(darray[i+1]);
+            for (int i=0; i<bins; i++) error[i] = Math.sqrt(darray[i+1]);
             return new double[][]
             { data, error };
          }
@@ -61,7 +60,7 @@ public class RootHistogramAdapter
          if (darray != null && darray.length>0)
          {
             double[] error = new double[bins];
-            for (int i=0; i<bins; i++) error[i] = FastMath.sqrt(darray[i+1]);
+            for (int i=0; i<bins; i++) error[i] = Math.sqrt(darray[i+1]);
             return new double[][]
             { data, error };
          }
@@ -125,7 +124,7 @@ public class RootHistogramAdapter
          double sumw = rootHisto.getTsumw();
          double sumwx = rootHisto.getTsumwx();
          double sumwx2 = rootHisto.getTsumwx2();
-         return FastMath.sqrt(sumwx2/sumw - sumwx*sumwx/sumw/sumw);
+         return Math.sqrt(sumwx2/sumw - sumwx*sumwx/sumw/sumw);
       }
       public double getStatistic(String name)
       {
